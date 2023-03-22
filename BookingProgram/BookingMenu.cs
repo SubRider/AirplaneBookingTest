@@ -2,6 +2,7 @@
 {
     private static ButtonTemplate StartButton = new(ConsoleColor.Green, "Start", "start");
     private static ButtonTemplate ExitButton = new(ConsoleColor.DarkRed, "Exit", "exit");
+    private static ButtonTemplate LoginButton = new(ConsoleColor.Green, "Login", "login");
     public static bool Quit = false;
 
     static void Main()
@@ -28,6 +29,9 @@
     {
         Console.Clear();
         Console.WriteLine("Welcome [user]");
+        Button login = new(LoginButton, 2);
+        login.Show();
+        
     }
 }
 

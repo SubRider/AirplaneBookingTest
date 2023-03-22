@@ -45,6 +45,9 @@
             case "exit":
                 BookingMenu.Quit = true;
                 break;
+            case "login":
+                UserLogin.Start();
+                break;
             case "account":
                 break;
             case "seat":
