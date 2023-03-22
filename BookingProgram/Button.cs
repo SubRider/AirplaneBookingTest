@@ -40,10 +40,10 @@
         switch (Type)
         {
             case "start":
-                ConsoleApp.MainMenu();
+                BookingMenu.MainMenu();
                 break;
             case "exit":
-                ConsoleApp.Quit = true;
+                BookingMenu.Quit = true;
                 break;
             case "account":
                 break;

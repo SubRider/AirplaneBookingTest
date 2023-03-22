@@ -11,7 +11,7 @@
             {
                 Console.ReadKey(true);
             }
-            if (input == ConsoleKey.Escape) ConsoleApp.Quit = true;
+            if (input == ConsoleKey.Escape) BookingMenu.Quit = true;
             if (input == ConsoleKey.Enter)
             {
                 int index = Button.ButtonYLocations.IndexOf(cursorTop);
