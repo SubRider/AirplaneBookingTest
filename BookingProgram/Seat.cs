@@ -4,7 +4,6 @@
     public int RowNumber { get; set; }
     public char SeatLetter { get; set; }
     public int SeatNumber { get; set; }
-
     public bool Booked { get; set; }
 
     public Seat(string _class, int rowNumber, int seatNumber)

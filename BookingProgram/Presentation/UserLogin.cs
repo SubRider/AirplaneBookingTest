@@ -13,6 +13,12 @@
             string email = Console.ReadLine();
             Console.WriteLine("Please enter your password");
             string password = Console.ReadLine();
+            BookingMenu.MainMenu();
+            break;
+
+            //AccountChecking not working yet
+
+            /*
             AccountModel acc = accountsLogic.CheckLogin(email, password);
             if (acc != null)
             {
@@ -24,8 +30,9 @@
             else
             {
                 Console.WriteLine("No account found with that email and password");
-                continue;
+                continue; 
             }
+            }*/
         }
     }
 }

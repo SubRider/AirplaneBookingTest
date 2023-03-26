@@ -53,7 +53,7 @@
             case "seat":
                 break;
             case "browse":
-                Console.WriteLine("Here you can browse flights in the future");
+                BookingMenu.SeatMenu();
                 break;
             case "history":
                 Console.WriteLine("Here you can see your flight history in the future");

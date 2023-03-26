@@ -31,7 +31,14 @@
                 else if (input == ConsoleKey.A || input == ConsoleKey.LeftArrow) cursorLeft--;
                 else if (input == ConsoleKey.D || input == ConsoleKey.RightArrow) cursorLeft++;
             }
-            Console.SetCursorPosition(cursorLeft, cursorTop);
+            try
+            {
+                Console.SetCursorPosition(cursorLeft, cursorTop);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+
+            }
         }
         return;
     }
