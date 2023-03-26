@@ -5,22 +5,27 @@
 
     public static void Start()
     {
+        Console.Clear();
         Console.WriteLine("Welcome to the login page");
-        Console.WriteLine("Please enter your email address");
-        string email = Console.ReadLine();
-        Console.WriteLine("Please enter your password");
-        string password = Console.ReadLine();
-        AccountModel acc = accountsLogic.CheckLogin(email, password);
-        if (acc != null)
+        while (true)
         {
-            Console.WriteLine("Welcome back " + acc.FullName);
-            Console.WriteLine("Your email number is " + acc.EmailAddress);
-
-            Menu.Start();
-        }
-        else
-        {
-            Console.WriteLine("No account found with that email and password");
+            Console.WriteLine("\nPlease enter your email address");
+            string email = Console.ReadLine();
+            Console.WriteLine("Please enter your password");
+            string password = Console.ReadLine();
+            AccountModel acc = accountsLogic.CheckLogin(email, password);
+            if (acc != null)
+            {
+                Console.WriteLine("\nWelcome back " + acc.FullName);
+                Thread.Sleep(500);
+                BookingMenu.UserMenu();
+                break;
+            }
+            else
+            {
+                Console.WriteLine("No account found with that email and password");
+                continue;
+            }
         }
     }
 }

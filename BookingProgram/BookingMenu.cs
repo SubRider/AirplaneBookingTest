@@ -3,6 +3,8 @@
     private static ButtonTemplate StartButton = new(ConsoleColor.Green, "Start", "start");
     private static ButtonTemplate ExitButton = new(ConsoleColor.DarkRed, "Exit", "exit");
     private static ButtonTemplate LoginButton = new(ConsoleColor.Green, "Login", "login");
+    private static ButtonTemplate BrowseButton = new(ConsoleColor.Green, "Browse flights", "browse");
+    private static ButtonTemplate HistoryButton = new(ConsoleColor.Green, "Flight history", "history");
     public static bool Quit = false;
 
     static void Main()
@@ -31,7 +33,15 @@
         Console.WriteLine("Welcome [user]");
         Button login = new(LoginButton, 2);
         login.Show();
-        
+    }
+
+    public static void UserMenu()
+    {
+        Console.Clear();
+        Button browse = new(BrowseButton, 3);
+        Button history = new(HistoryButton, 4);
+        browse.Show();
+        history.Show();
     }
 }
 
