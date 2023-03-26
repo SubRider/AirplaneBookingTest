@@ -7,8 +7,8 @@
   },
   {
     "id": 2,
-    "emailAddress": "t@b.c",
-    "password": "xyz",
+    "emailAddress": "123",
+    "password": "abc",
     "fullName": "Thomas Edison"
   }
 ]
