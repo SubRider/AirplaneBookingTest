@@ -2,7 +2,7 @@
 
 static class AccountsAccess
 {
-    static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"DataSources/accounts.json"));
+    static string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Environment.CurrentDirectory, @"accounts.json"));
 
 
     public static List<AccountModel> LoadAll()

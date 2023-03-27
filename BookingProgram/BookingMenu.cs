@@ -49,17 +49,31 @@
     {
         Button.Clear();
         Console.Clear();
-        Console.WriteLine("How many seats? (Test Maximum: 12):");
         bool choosing = true;
         while (choosing)
         {
-            AmountOfSeatsReserved = Convert.ToInt32(Console.ReadLine());
-            if (AmountOfSeatsReserved > 12)
+            Console.Clear();
+            Console.WriteLine("How many seats? (Test Maximum: 12):");
+            
+            try
             {
-                Console.WriteLine("Unable to reserve more than twelve seats");
-                continue;
+                AmountOfSeatsReserved = Convert.ToInt32(Console.ReadLine());
+                if (AmountOfSeatsReserved > 12)
+                {
+                    Console.WriteLine("Unable to reserve more than twelve seats");
+                    Thread.Sleep(700);
+                    continue;
+                }
+
+                break;
             }
-            break;
+
+            catch (Exception e)
+            {
+                
+                Console.WriteLine("Not a valid number");
+                Thread.Sleep(700);
+            }
         }
         SeatMenu();
     }
