@@ -1,0 +1,9 @@
+[
+    {
+        "ID": 1,
+        "destination": "Dublin",
+        "origin": "Amsterdam",
+        "date": "22-09-2023",
+        "plane": "Boeing 737"
+    }
+]
