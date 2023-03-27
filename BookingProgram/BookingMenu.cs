@@ -19,7 +19,7 @@
         ToASCIIArt.Write("Rotterdam");
         ToASCIIArt.Write("Airlines", 1);
         Console.ForegroundColor = ConsoleColor.Green;
-        Button login = new(ConsoleColor.Green, "Login", 21, () => MainMenu());   
+        Button login = new(ConsoleColor.Green, "Login", 21, () => UserLogin.Start());   
         Button exit = new(ConsoleColor.DarkRed, "Exit", 22, ()=> Quit = true);
         Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
@@ -29,9 +29,8 @@
     {
         Button.Clear();
         Console.Clear();
-        Console.WriteLine("Welcome [user]");
-        Button browse = new(ConsoleColor.White, "Browse flights", 3,() => ClassReservationMenu());
-        Button history = new(ConsoleColor.White, "Flight history", 4, () => History());
+        Button browse = new(ConsoleColor.White, "Browse flights", 1,() => ClassReservationMenu());
+        Button history = new(ConsoleColor.White, "Flight history", 2, () => History());
         Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
     }
@@ -40,10 +39,11 @@
         Button.Clear();
         Console.Clear();
         Console.WriteLine("Select Class");
-        Button first = new(ConsoleColor.White, "First Class", 3, () => ReservationChoice = "first", () => SeatsReservationMenu());
-        Button business = new(ConsoleColor.White, "Business Class", 4, () => ReservationChoice = "business", () => SeatsReservationMenu());
-        Button economy = new(ConsoleColor.White, "Economy Class", 5, () => ReservationChoice = "economy", () => SeatsReservationMenu());
+        Button first = new(ConsoleColor.White, "First Class", 2, () => ReservationChoice = "first", () => SeatsReservationMenu());
+        Button business = new(ConsoleColor.White, "Business Class", 3, () => ReservationChoice = "business", () => SeatsReservationMenu());
+        Button economy = new(ConsoleColor.White, "Economy Class", 4, () => ReservationChoice = "economy", () => SeatsReservationMenu());
         Renderer.ShowButtons();
+        InputChecker.JumpToButton(0);
     }
     public static void SeatsReservationMenu()
     {
