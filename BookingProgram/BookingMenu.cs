@@ -83,6 +83,7 @@
 
     public static void SeatMenu()
     {
+        Console.CursorVisible = false;
         Button.Clear();
         Console.Clear();
         Plane plane = new("747");
