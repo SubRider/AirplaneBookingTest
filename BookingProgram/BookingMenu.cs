@@ -1,6 +1,8 @@
 ﻿static class BookingMenu
 {
     public static bool Quit = false;
+    public static string ReservationChoice;
+    public static int AmountOfSeatsReserved;
     static void Main()
     {
         Console.Clear();
@@ -28,10 +30,38 @@
         Button.Clear();
         Console.Clear();
         Console.WriteLine("Welcome [user]");
-        Button browse = new(ConsoleColor.Green, "Browse flights", 3,() => SeatMenu());
-        Button history = new(ConsoleColor.Green, "Flight history", 4, () => History());
+        Button browse = new(ConsoleColor.White, "Browse flights", 3,() => ClassReservationMenu());
+        Button history = new(ConsoleColor.White, "Flight history", 4, () => History());
         Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
+    }
+    public static void ClassReservationMenu()
+    {
+        Button.Clear();
+        Console.Clear();
+        Console.WriteLine("Select Class");
+        Button first = new(ConsoleColor.White, "First Class", 3, () => ReservationChoice = "first", () => SeatsReservationMenu());
+        Button business = new(ConsoleColor.White, "Business Class", 4, () => ReservationChoice = "business", () => SeatsReservationMenu());
+        Button economy = new(ConsoleColor.White, "Economy Class", 5, () => ReservationChoice = "economy", () => SeatsReservationMenu());
+        Renderer.ShowButtons();
+    }
+    public static void SeatsReservationMenu()
+    {
+        Button.Clear();
+        Console.Clear();
+        Console.WriteLine("How many seats? (Test Maximum: 12):");
+        bool choosing = true;
+        while (choosing)
+        {
+            AmountOfSeatsReserved = Convert.ToInt32(Console.ReadLine());
+            if (AmountOfSeatsReserved > 12)
+            {
+                Console.WriteLine("Unable to reserve more than twelve seats");
+                continue;
+            }
+            break;
+        }
+        SeatMenu();
     }
 
     public static void SeatMenu()
@@ -40,6 +70,7 @@
         Console.Clear();
         Plane plane = new("747");
         plane.ShowSeats();
+        InputChecker.JumpToButton(0);
     }
     public static void History()
     {

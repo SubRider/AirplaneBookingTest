@@ -15,54 +15,25 @@
     public void ShowSeats()
     {
         Console.Clear();
-        foreach (Seat seat in FirstClassSeats)
-        {
-
-            int cursorX = seat.RowNumber * 3;
-            if (seat.SeatNumber == 1)
-            {
-                Console.SetCursorPosition(cursorX - 1, 0);
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write(seat.RowNumber);
-            }
-            int cursorY = seat.SeatNumber + 1;
-            Console.SetCursorPosition(cursorX - 1,cursorY - 1);
-            ConsoleColor seatColor = (seat.Booked) ? ConsoleColor.Red : ConsoleColor.Green;
-            Console.ForegroundColor = seatColor;
-            Console.Write("▀");
-        }
-        foreach (Seat seat in BusinessClassSeats)
-        {
-            int cursorX = seat.RowNumber * 3 + 1;
-            if (seat.SeatNumber == 1)
-            {
-                Console.SetCursorPosition(cursorX - 1, 0);
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write(seat.RowNumber);
-            }
-            int cursorY = seat.SeatNumber + 1;
-            Console.SetCursorPosition(cursorX - 1, cursorY - 1);
-            ConsoleColor seatColor = (seat.Booked) ? ConsoleColor.Red : ConsoleColor.Green;
-            Console.ForegroundColor = seatColor;
-            Console.Write("▀");
-        }
-        foreach (Seat seat in EconomyClassSeats)
-        {
-            int cursorX = seat.RowNumber * 3 + 2;
-            if (seat.SeatNumber == 1)
-            {
-                Console.SetCursorPosition(cursorX - 1, 0);
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write(seat.RowNumber);
-            }
-            int cursorY = seat.SeatNumber + 1;
-            Console.SetCursorPosition(cursorX - 1, cursorY - 1);
-            ConsoleColor seatColor = (seat.Booked) ? ConsoleColor.Red : ConsoleColor.Green;
-            Console.ForegroundColor = seatColor;
-            Console.Write("▀");
-        }
-        Console.ResetColor();
+        foreach (Seat seat in FirstClassSeats) ShowSeat(seat, 0);
+        foreach (Seat seat in BusinessClassSeats) ShowSeat(seat, 1);
+        foreach (Seat seat in EconomyClassSeats) ShowSeat(seat, 2);
+        Renderer.ShowButtons();
     }
+
+    public static void ShowSeat(Seat seat, int offset)
+    {
+        if (seat.SeatNumber == 1)
+        {
+            Console.SetCursorPosition((seat.RowNumber - 1) * 3 + offset, 0);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write(seat.RowNumber);
+        }
+
+        ConsoleColor seatColor = (seat.Booked) ? ConsoleColor.Red : ConsoleColor.Green;
+        Button button = new(seatColor, "■", seat.SeatNumber + 1, (seat.RowNumber - 1) * 3 + offset, () => Console.ResetColor());
+    }
+
     public static List<Seat> LoadSeats(int rowSize, int amountOfRows, int prevClassRows, string _class)
     {
         //Add getSeatsFromJson

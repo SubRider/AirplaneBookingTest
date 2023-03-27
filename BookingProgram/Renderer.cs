@@ -5,11 +5,10 @@ static class Renderer
 {
     public static void ShowButton(Button button)
     {
-        Console.SetCursorPosition(0, button.YPosition);
+        Console.SetCursorPosition(button.XPosition, button.YPosition);
         Console.ForegroundColor = button.Color;
         Console.Write(button.Text);
         Console.ResetColor();
-        Console.SetCursorPosition(0, button.YPosition);
     }
     public static void ShowButtons()
     {
@@ -23,11 +22,11 @@ static class Renderer
         if (dehilight)
         {
             Console.BackgroundColor = ConsoleColor.Black;
-            Console.SetCursorPosition(0, button.YPosition);
+            Console.SetCursorPosition(button.XPosition, button.YPosition);
             Console.ForegroundColor = button.Color;
             Console.Write(button.Text);
             Console.ResetColor();
-            Console.SetCursorPosition(0, button.YPosition);
+            Console.SetCursorPosition(button.XPosition, button.YPosition);
             button.HighlightTime = DateTime.MinValue;
         }
         TimeSpan timeHighlighed = DateTime.Now - button.HighlightTime;
@@ -44,11 +43,11 @@ static class Renderer
                 button.Highlighted = true;
             }
             button.HighlightTime = DateTime.Now;
-            Console.SetCursorPosition(0, button.YPosition);
+            Console.SetCursorPosition(button.XPosition, button.YPosition);
             Console.ForegroundColor = button.Color;
             Console.Write(button.Text);
             Console.ResetColor();
-            Console.SetCursorPosition(0, button.YPosition);
+            Console.SetCursorPosition(button.XPosition, button.YPosition);
         }
     }
 }

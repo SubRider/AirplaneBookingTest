@@ -8,29 +8,40 @@
     public readonly string Text;
     public int YPosition;
     public int XPosition;
-    public Action Function;
+    public Action Function1;
+    public Action Function2;
     public bool Highlighted = false;
     public DateTime HighlightTime;
 
-    public Button(ConsoleColor color, string text, int yPosition, int xPosition, Action function)
+    public Button(ConsoleColor color, string text, int yPosition, int xPosition, Action function1, Action function2)
     {
         Color = color;
         Text = text;
         YPosition = yPosition;
         XPosition = xPosition;
-        Function = function;
+        Function1 = function1;
+        Function2 = function2;
         ButtonYLocations.Add(YPosition);
         ButtonXLocations.Add(XPosition);
         ButtonLocations.Add((XPosition, YPosition));
         Buttons.Add(this);
     }
-    public Button(ConsoleColor color, string text, int yPosition, Action function) : this(color, text, yPosition, 0, function)
+    public Button(ConsoleColor color, string text, int yPosition, Action function) : this(color, text, yPosition, 0, function,() => { })
+    {
+
+    }
+    public Button(ConsoleColor color, string text, int yPosition, int xPosition, Action function) : this(color, text, yPosition, xPosition, function, () => { })
+    {
+
+    }
+    public Button(ConsoleColor color, string text, int yPosition, Action function1, Action function2) : this(color, text, yPosition, 0, function1, function2)
     {
 
     }
     public void Activate()
     {
-        Function();
+        Function1();
+        Function2();
     }
 
     public static void RemoveButton(Button button)
