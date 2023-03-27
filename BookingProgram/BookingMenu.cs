@@ -27,6 +27,7 @@
 
     public static void MainMenu()
     {
+        Console.CursorVisible = false;
         Button.Clear();
         Console.Clear();
         Button browse = new(ConsoleColor.White, "Browse flights", 1,() => ClassReservationMenu());
@@ -36,6 +37,7 @@
     }
     public static void ClassReservationMenu()
     {
+        
         Button.Clear();
         Console.Clear();
         Console.WriteLine("Select Class");
@@ -52,6 +54,7 @@
         bool choosing = true;
         while (choosing)
         {
+            Console.CursorVisible = true;
             Console.Clear();
             Console.WriteLine("How many seats? (Test Maximum: 12):");
             

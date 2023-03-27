@@ -7,6 +7,7 @@
     {
         while (true)
         {
+            Console.CursorVisible = true;
             Console.Clear();
             Console.WriteLine("Welcome to the login page");
             Console.WriteLine("\nPlease enter your email address");
