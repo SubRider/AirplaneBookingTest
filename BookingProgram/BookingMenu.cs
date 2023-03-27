@@ -69,7 +69,10 @@
         Button.Clear();
         Console.Clear();
         Plane plane = new("747");
-        plane.ShowSeats();
+        Renderer.ShowSeats(plane.FirstClassSeats, 0);
+        Renderer.ShowSeats(plane.BusinessClassSeats, 1);
+        Renderer.ShowSeats(plane.EconomyClassSeats, 2);
+        Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
     }
     public static void History()

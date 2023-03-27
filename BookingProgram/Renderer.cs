@@ -17,6 +17,25 @@ static class Renderer
             ShowButton(button);
         }
     }
+    public static void ShowSeat(Seat seat, int offset)
+    {
+        if (seat.SeatNumber == 1)
+        {
+            Console.SetCursorPosition((seat.RowNumber - 1) * 3 + offset, 0);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write(seat.RowNumber);
+        }
+
+        ConsoleColor seatColor = (seat.Booked) ? ConsoleColor.Red : ConsoleColor.Green;
+        Button button = new(seatColor, "■", seat.SeatNumber + 1, (seat.RowNumber - 1) * 3 + offset, () => Console.ResetColor());
+    }
+    public static void ShowSeats(List<Seat> seats, int offset)
+    {
+        foreach(Seat seat in seats) 
+        {
+            ShowSeat(seat, offset);
+        }
+    }
     public static void HighlightButton(Button button, bool dehilight = false)
     {
         if (dehilight)
