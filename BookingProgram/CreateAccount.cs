@@ -6,6 +6,8 @@ class CreateAccount
 {
     public static void userInfo()
     {
+        Button.Clear();
+        Console.Clear();
         Console.Write("Enter account ID: ");
         int id = Convert.ToInt32(Console.ReadLine());
         Console.Write("Enter email address: ");
@@ -24,6 +26,7 @@ class CreateAccount
 
         // deze line zou iest anders moeten returnen 
         accountlogic.UpdateList(account);  
-        return;
+
+        BookingMenu.StartScreen();
     }
 }
