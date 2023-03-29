@@ -20,7 +20,7 @@ class CreateAccount
         string fullName = Console.ReadLine();
 
         var jsondata = AccountsAccess.LoadAll();
-        int id = 0;
+        int id = 1;
         foreach( var data in jsondata )
         {
             var Id = data.Id;
