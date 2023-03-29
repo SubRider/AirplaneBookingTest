@@ -8,8 +8,8 @@ class CreateAccount
     {
         Button.Clear();
         Console.Clear();
-        Console.Write("Enter account ID: ");
-        int id = Convert.ToInt32(Console.ReadLine());
+        Console.CursorVisible = true;
+    
         Console.Write("Enter email address: ");
         string emailAddress = Console.ReadLine();
 
@@ -19,12 +19,18 @@ class CreateAccount
         Console.Write("Enter full name: ");
         string fullName = Console.ReadLine();
 
-        
+        var jsondata = AccountsAccess.LoadAll();
+        int id = 0;
+        foreach( var data in jsondata )
+        {
+            var Id = data.Id;
+            id++;
+        }
+    
         AccountModel account = new AccountModel(id, emailAddress, password, fullName);
         
         AccountsLogic accountlogic = new AccountsLogic();
 
-        // deze line zou iest anders moeten returnen 
         accountlogic.UpdateList(account);  
 
         BookingMenu.StartScreen();
