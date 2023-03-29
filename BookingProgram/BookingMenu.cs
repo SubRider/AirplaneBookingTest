@@ -19,9 +19,9 @@
         ToASCIIArt.Write("Rotterdam");
         ToASCIIArt.Write("Airlines", 1);
         Console.ForegroundColor = ConsoleColor.Green;
+        Button SignIn = new(ConsoleColor.Blue, "Sign in", 20, ()=> CreateAccount.userInfo());
         Button login = new(ConsoleColor.Green, "Login", 21, () => UserLogin.Start());   
         Button exit = new(ConsoleColor.DarkRed, "Exit", 22, ()=> Quit = true);
-        Button SignIn = new(ConsoleColor.Blue, "Sign in", 20, ()=> CreateAccount.userInfo());
         Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
     }
