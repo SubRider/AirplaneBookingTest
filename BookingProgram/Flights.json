@@ -1,17 +1,1 @@
-[
-  {
-    "ID": 1,
-    "Date": "22-09-2023",
-    "Origin": "Amsterdam",
-    "Destination": "Dublin",
-    "AirplaneID": 0
-  },
-  {
-    "ID": 2,
-    "Date": "13-07-2023",
-    "Origin": "Amsterdam",
-    "Destination": "Chersonisos",
-    "AirplaneID": 1
-  }
-]
-
+[{"ID":0,"Origin":"Amsterdam","Destination":"Germany","Date":"10-10-2003","AirplaneID":1}]

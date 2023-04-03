@@ -31,16 +31,6 @@ class Searcher<T>
                 try { searchQuery = searchQuery.Remove(searchQuery.Length - 1); }
                 catch { }
             }
-            if (key == ConsoleKey.Enter)
-            {
-                (int x, int y) = Console.GetCursorPosition();
-                int index = Button.ButtonYLocations.IndexOf(y);
-                if (index != -1)
-                {
-                    Button.Buttons[index].Activate();
-                }
-
-            }
             else
             {
                 try

@@ -1,6 +1,4 @@
-
 [
-
   {
     "id": 1,
     "emailAddress": "n@b.c",
@@ -18,5 +16,11 @@
     "emailAddress": "hj.vdstelt@gmail.com",
     "password": "1kkanhetnietverg3t3n",
     "fullName": "Henri van der Stelt"
+  },
+  {
+    "id": 4,
+    "emailAddress": "tomzuidema@outlook.com",
+    "password": "password",
+    "fullName": "Tom Zuidema"
   }
 ]

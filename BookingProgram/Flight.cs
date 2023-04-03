@@ -5,10 +5,10 @@ using Newtonsoft.Json;
 class Flight
 {
     public static List<Flight> Flights { get; set; } = new();
-    public int ID;
+    public int ID { get; set; }
     public string Origin { get; set; }
     public string Destination { get; set; }
-    public string Date;
+    public string Date { get; set; }
     public int AirplaneID { get; set; }
 
     public Flight(string origin, string destination, string date, int airplaneID)
