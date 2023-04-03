@@ -1,47 +1,57 @@
 ﻿class Button
 {
+    private DateTime _highlightStart;
+    private bool _highlighted = false;
     public static List<int> ButtonYLocations = new();
     public static List<int> ButtonXLocations = new();
     public static List<(int, int)> ButtonLocations = new();
     public static List<Button> Buttons = new();
     public readonly ConsoleColor Color;
+    public ConsoleColor HighlightColor { get { return (_highlighted) ? ConsoleColor.DarkBlue : ConsoleColor.Black; } set { } }
     public readonly string Text;
     public int YPosition;
     public int XPosition;
-    public Action Function1;
-    public Action Function2;
-    public bool Highlighted = false;
-    public DateTime HighlightTime;
+    public Action Function;
 
-    public Button(ConsoleColor color, string text, int yPosition, int xPosition, Action function1, Action function2)
+    public TimeSpan HighlightTime { get { return DateTime.Now - _highlightStart; } }
+
+    public Button(ConsoleColor color, string text, int yPosition, int xPosition, Action function)
     {
         Color = color;
         Text = text;
         YPosition = yPosition;
         XPosition = xPosition;
-        Function1 = function1;
-        Function2 = function2;
+        Function = function;
+
         ButtonYLocations.Add(YPosition);
         ButtonXLocations.Add(XPosition);
         ButtonLocations.Add((XPosition, YPosition));
         Buttons.Add(this);
     }
-    public Button(ConsoleColor color, string text, int yPosition, Action function) : this(color, text, yPosition, 0, function,() => { })
+    public Button(string text, int yPosition, Action function) : this(ConsoleColor.White, text, yPosition, 0, function)
     {
 
     }
-    public Button(ConsoleColor color, string text, int yPosition, int xPosition, Action function) : this(color, text, yPosition, xPosition, function, () => { })
+    public Button(string text, int yPosition, int xPosition, Action function) : this(ConsoleColor.White, text, yPosition, xPosition, function) 
+    {
+    
+    }
+    public Button(ConsoleColor color, string text, int yPosition, Action function) : this(color, text, yPosition, 0, function)
     {
 
     }
-    public Button(ConsoleColor color, string text, int yPosition, Action function1, Action function2) : this(color, text, yPosition, 0, function1, function2)
-    {
 
-    }
+
     public void Activate()
     {
-        Function1();
-        Function2();
+        Function();
+        Highlight();
+    }
+    public void Highlight()
+    {
+        _highlightStart = DateTime.Now;
+        _highlighted = true;
+        Renderer.HighlightButton(this);
     }
 
     public static void RemoveButton(Button button)
@@ -61,5 +71,4 @@
             RemoveButton(button);
         }
     }
-
 }

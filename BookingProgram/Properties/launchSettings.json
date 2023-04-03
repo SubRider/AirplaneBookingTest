@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BookingProgram": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\Users\\tomzu\\source\\repos\\AirplaneBooking\\BookingProgram"
+    }
+  }
+}
