@@ -1,9 +1,16 @@
 [
-    {
-        "ID": 1,
-        "destination": "Dublin",
-        "origin": "Amsterdam",
-        "date": "22-09-2023",
-        "plane": "Boeing 737"
-    }
+  {
+    "ID": 1,
+    "Date": "22-09-2023",
+    "Origin": "Amsterdam",
+    "Destination": "Dublin",
+    "AirplaneID": 0
+  },
+  {
+    "ID": 2,
+    "Date": "13-07-2023",
+    "Origin": "Amsterdam",
+    "Destination": "Chersonisos",
+    "AirplaneID": 1
+  }
 ]

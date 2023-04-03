@@ -8,14 +8,14 @@ class Flight
     public string Origin { get; set; }
     public string Destination { get; set; }
     public string Date;
-    public Plane Airplane { get; set; }
+    public int AirplaneID { get; set; }
 
-    public Flight(string origin, string destination, string date, Plane airplane)
+    public Flight(string origin, string destination, string date, int airplaneID)
     {
         Origin = origin;
         Date = date;
         Destination = destination;
-        Airplane = airplane;
+        AirplaneID = airplaneID;
     }
 
     public void GiveID()
@@ -24,10 +24,13 @@ class Flight
 
         var JsonText = File.ReadAllText("Flights.json");
         var flights = JsonConvert.DeserializeObject<List<Flight>>(JsonText);
-        foreach (var flight in flights)
+        if (flights != null)
         {
-            id++;
-            ID = id;
+            foreach (var flight in flights)
+            {
+                id++;
+                ID = id;
+            }
         }
     }
 }

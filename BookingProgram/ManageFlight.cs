@@ -14,9 +14,13 @@ class ManageFlights
     public void AddFlight()
     {
         string path = "Flights.json";
+        List<Flight> listOfFlights = new List<Flight>() {};
 
         var JsonText = File.ReadAllText(path);
-        var listOfFlights = JsonConvert.DeserializeObject<List<Flight>>(JsonText);
+        if (JsonText != null)
+        {
+            listOfFlights = JsonConvert.DeserializeObject<List<Flight>>(JsonText);
+        }
 
         listOfFlights.Add(Flight);
         
