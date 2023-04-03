@@ -122,15 +122,20 @@
 
     public static void AdminMenu()
     {
-        Flight.Flights = JsonCommunicator.Read<Flight>("Flights.json");
-        Searcher<Flight> flightSearch = new(Flight.Flights, new() { "Origin", "Destination", "ID" });
+        
         Button.Clear();
         Console.Clear();
-        Button button1 = new("edit flights", 0, () => flightSearch.Activate());
+        Button button1 = new("edit flights", 0, () => EditFlightMenu());
         Button button2 = new("add flight", 1, () => AddFlightMenu());
         Button back = new("back", 6, () => UserLogin.Start());
         Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
+    }
+    public static void EditFlightMenu()
+    {
+        Flight.Flights = JsonCommunicator.Read<Flight>("Flights.json");
+        Searcher<Flight> flightSearch = new(Flight.Flights, new() { "Origin", "Destination", "ID" });
+        flightSearch.Activate();
     }
     public static void AddFlightMenu()
     {

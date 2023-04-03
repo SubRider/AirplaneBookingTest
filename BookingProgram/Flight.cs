@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 class Flight
 {
-
+    public static List<Flight> Flights { get; set; } = new();
     public int ID;
     public string Origin { get; set; }
     public string Destination { get; set; }
@@ -17,6 +17,7 @@ class Flight
         Date = date;
         Destination = destination;
         AirplaneID = airplaneID;
+        Flights.Add(this);
     }
 
     public void GiveID()
