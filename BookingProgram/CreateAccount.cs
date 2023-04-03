@@ -33,6 +33,6 @@ class CreateAccount
 
         accountlogic.UpdateList(account);  
 
-        BookingMenu.StartScreen();
+        BookingMenu.MainMenu();
     }
 }

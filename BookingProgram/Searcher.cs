@@ -3,7 +3,7 @@ using System.Reflection;
 
 class Searcher<T>
 {
-    public bool Searching { get; private set; } = true;
+    public bool Searching { get; set; } = true;
     public List<T> ObjectList { get; set; } = new();
     public List<string> SearchCategories { get; set; }
     public string SearchCategory { get; set; }
@@ -74,7 +74,7 @@ class Searcher<T>
                 string comparableString = result.ToLower();
                 if (comparableString.StartsWith(query))
                 {
-                    button = new(result, buttonTop, () => { Searching = false; BookingMenu.ClassReservationMenu(); });
+                    button = new(result, buttonTop, () => { Quit(); });
                     buttonTop++;
                 }
             }
@@ -83,4 +83,10 @@ class Searcher<T>
         if (Button.Buttons.Count > 0) InputChecker.JumpToButton(SearchCategories.Count);
         PrevSearchCategory = SearchCategory;
     }
+    public void Quit()
+    {
+        Searching = false;
+        return;
+    }
+
 }
