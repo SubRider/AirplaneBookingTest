@@ -53,7 +53,7 @@
         Button.Clear();
         Console.Clear();
         Console.WriteLine("Select if you want a retour flight or a single flight:\n");
-        Button Retour = new(ConsoleColor.White, "Retour", 2, () => {SingleOrRetour = "Retour"; SeatsReservationMenu(); });
+        Button Retour = new(ConsoleColor.White, "Retour", 2, () => {SingleOrRetour = "Retour"; SeatsReservationMenu(); }); 
         Button Single = new(ConsoleColor.White, "Single", 3, () => {SingleOrRetour = "Single"; SeatsReservationMenu(); });
         Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
@@ -106,8 +106,38 @@
     }
     public static void History()
     {
+        Button.Clear();
         Console.Clear();
         Console.WriteLine("Placeholder for Flight History");
+    }
+
+    public static void AdminMenu()
+    {
+        Flight.Flights = JsonCommunicator.Read<Flight>("Flights.json");
+        Searcher<Flight> flightSearch = new(Flight.Flights, new() { "Origin", "Destination", "ID" });
+        Button.Clear();
+        Console.Clear();
+        Button button1 = new("edit flights", 0, () => flightSearch.Activate());
+        Button button2 = new("add flight", 1, () => AddFlightMenu());
+        Renderer.ShowButtons();
+        InputChecker.JumpToButton(0);
+    }
+    public static void AddFlightMenu()
+    {
+        Button.Clear();
+        Console.Clear();
+        Console.Write("Origin: ");
+        string origin = Console.ReadLine();
+        Console.Clear();
+        Console.Write("Destination: ");
+        string destination = Console.ReadLine();
+        Console.Clear();
+        Console.Write("Departure Date: ");
+        DateTime date = DateTime.Parse(Console.ReadLine());
+        Flight _ = new("Boeing 747", origin, destination, date);
+        JsonCommunicator.Write("Flights.json", Flight.Flights);
+        AdminMenu();
+
     }
 }
 

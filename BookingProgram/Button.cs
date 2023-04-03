@@ -28,10 +28,19 @@
         ButtonLocations.Add((XPosition, YPosition));
         Buttons.Add(this);
     }
+    public Button(string text, int yPosition, Action function) : this(ConsoleColor.White, text, yPosition, 0, function)
+    {
+
+    }
+    public Button(string text, int yPosition, int xPosition, Action function) : this(ConsoleColor.White, text, yPosition, xPosition, function) 
+    {
+    
+    }
     public Button(ConsoleColor color, string text, int yPosition, Action function) : this(color, text, yPosition, 0, function)
     {
 
     }
+
 
     public void Activate()
     {

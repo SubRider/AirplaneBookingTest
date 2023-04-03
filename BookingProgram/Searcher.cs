@@ -21,6 +21,7 @@ class Searcher<T>
     {
         string searchQuery = "";
         string prevQuery;
+        Find("");
         while (Searching)
         {
             prevQuery = searchQuery;
@@ -67,13 +68,15 @@ class Searcher<T>
         {
             PropertyInfo propertyInfo = typeof(T).GetProperty(SearchCategory);
             object foundObject = propertyInfo.GetValue(item);
-            string result = foundObject.ToString();
-            string comparableString = result.ToLower();
-
-            if (comparableString.StartsWith(query))
+            if (foundObject != null)
             {
-                button = new(ConsoleColor.White, result, buttonTop, () => Searching = false);
-                buttonTop++;
+                string result = foundObject.ToString();
+                string comparableString = result.ToLower();
+                if (comparableString.StartsWith(query))
+                {
+                    button = new(result, buttonTop, () => Searching = false);
+                    buttonTop++;
+                }
             }
         }
         Renderer.ShowButtons();

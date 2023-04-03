@@ -12,10 +12,15 @@
             Console.WriteLine("Welcome to the login page");
             Console.WriteLine("\nPlease enter your email address");
             string email = Console.ReadLine();
+            if (email == "admin") 
+            { 
+                BookingMenu.AdminMenu();
+                return;
+            }
+
             Console.WriteLine("Please enter your password");
             string password = Console.ReadLine();
 
-            //AccountChecking not working yet
             
             AccountModel acc = accountsLogic.CheckLogin(email, password);
             if (acc != null)
