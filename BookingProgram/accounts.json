@@ -1,4 +1,6 @@
+
 [
+
   {
     "id": 1,
     "emailAddress": "n@b.c",
@@ -10,5 +12,11 @@
     "emailAddress": "123",
     "password": "abc",
     "fullName": "Thomas Edison"
+  },
+  {
+    "id": 3,
+    "emailAddress": "hj.vdstelt@gmail.com",
+    "password": "1kkanhetnietverg3t3n",
+    "fullName": "Henri van der Stelt"
   }
 ]

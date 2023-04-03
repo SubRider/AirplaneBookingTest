@@ -1,1 +1,17 @@
-[{"ID":0,"Origin":"Greece","Destination":"France","Date":"1202-12-12T00:00:00","Airplane":"Boeing 747"},{"ID":1,"Origin":"France","Destination":"Germany","Date":"2003-03-12T00:00:00","Airplane":"Boeing 747"}]
+[
+  {
+    "ID": 1,
+    "Date": "22-09-2023",
+    "Origin": "Amsterdam",
+    "Destination": "Dublin",
+    "AirplaneID": 0
+  },
+  {
+    "ID": 2,
+    "Date": "13-07-2023",
+    "Origin": "Amsterdam",
+    "Destination": "Chersonisos",
+    "AirplaneID": 1
+  }
+]
+

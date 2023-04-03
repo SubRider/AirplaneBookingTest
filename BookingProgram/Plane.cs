@@ -1,5 +1,10 @@
-﻿class Plane
+﻿using System.IO;
+using Newtonsoft;
+using Newtonsoft.Json;
+
+class Plane
 {
+    public int ID;
     public string Model { get; set; }
     public List<Seat> FirstClassSeats { get; set; }
     public List<Seat> BusinessClassSeats { get; set; }
@@ -27,5 +32,40 @@
         return seats;
     }
 
+    public void GiveID()
+    {
+        int id = 1;
 
+        var JsonText = File.ReadAllText("Planes.json");
+        var planes = JsonConvert.DeserializeObject<List<Flight>>(JsonText);
+        if (planes != null)
+        {
+            foreach (var plane in planes)
+            {
+                id++;
+                ID = id;
+            }
+        }
+        else
+        {
+            ID = 1;
+        }
+    }
+
+    public void AddPlane(Plane plane)
+    {
+        string path = "Planes.json";
+        List<Plane> listOfPlanes = new List<Plane>() {};
+
+        var jsonText = File.ReadAllText(path);
+        if (jsonText != "")
+        {
+            listOfPlanes = JsonConvert.DeserializeObject<List<Plane>>(jsonText);  
+        }
+
+        listOfPlanes.Add(plane);
+
+        var Json = JsonConvert.SerializeObject(listOfPlanes, Formatting.Indented);
+        File.WriteAllText(path, Json);
+    }
 }

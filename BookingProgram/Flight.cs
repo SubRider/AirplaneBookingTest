@@ -1,20 +1,37 @@
-﻿class Flight
+﻿using System.IO;
+using Newtonsoft;
+using Newtonsoft.Json;
+
+class Flight
 {
-    public static List<Flight> Flights { get; set; } = new();
-    public int ID { get; set; }
+
+    public int ID;
     public string Origin { get; set; }
     public string Destination { get; set; }
-    public DateTime Date { get; set; }
-    public string Airplane { get; set; }
+    public string Date;
+    public int AirplaneID { get; set; }
 
-
-    public Flight(string airplane, string origin, string destination, DateTime date)
+    public Flight(string origin, string destination, string date, int airplaneID)
     {
-        ID = Flights.Count;
-        Airplane = airplane;
         Origin = origin;
-        Destination = destination;
         Date = date;
-        Flights.Add(this);
+        Destination = destination;
+        AirplaneID = airplaneID;
+    }
+
+    public void GiveID()
+    {
+        int id = 1;
+
+        var JsonText = File.ReadAllText("Flights.json");
+        var flights = JsonConvert.DeserializeObject<List<Flight>>(JsonText);
+        if (flights != null)
+        {
+            foreach (var flight in flights)
+            {
+                id++;
+                ID = id;
+            }
+        }
     }
 }
