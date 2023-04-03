@@ -16,13 +16,16 @@
     }
     public static void StartScreen()
     {
+        Console.Clear();
+        Button.Clear();
         Console.ResetColor();
         ToASCIIArt.Write("Rotterdam");
         ToASCIIArt.Write("Airlines", 1);
         Console.ForegroundColor = ConsoleColor.Green;
         Button SignIn = new(ConsoleColor.Blue, "Sign up", 20, ()=> CreateAccount.userInfo());
         Button login = new(ConsoleColor.Green, "Login", 21, () => UserLogin.Start());   
-        Button exit = new(ConsoleColor.DarkRed, "Exit", 22, ()=> Quit = true);
+        Button info = new(ConsoleColor.Magenta, "Info", 22, () => AirlineInfo());
+        Button exit = new(ConsoleColor.DarkRed, "Exit", 23, ()=> Quit = true);
         Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
     }
@@ -158,6 +161,30 @@
         JsonCommunicator.Write("Flights.json", Flight.Flights);
         AdminMenu();
 
+    }
+
+    public static void AirlineInfo()
+    {
+        Console.Clear();
+        Button.Clear();
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine("\nAbout");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("\nWelcome to our airline!");
+        Console.WriteLine("We are a company dedicated to providing exceptional travel experiences to our passengers. " +
+                          "\nOur goal is to take you to your destination safely, comfortably, and on time. " +
+                          "\nWith a team of experienced pilots, friendly cabin crew, and state-of-the-art aircraft, " +
+                          "we strive to make your journey enjoyable from start to finish. " +
+                          "\nWhether you're traveling for business or pleasure, " +
+                          "we look forward to welcoming you on board and taking you to your next adventure.\n");
+
+        string phoneNumber = "+31 6 63726482";
+        string email = "info@rotterdamairlines.com";
+        Console.WriteLine($"Phone Number: {phoneNumber} \nE-mail: {email}");
+        Console.ResetColor();
+        Button back = new("back", 12, () => StartScreen());
+        Renderer.ShowButtons();
+        InputChecker.JumpToButton(0);
     }
 }
 
