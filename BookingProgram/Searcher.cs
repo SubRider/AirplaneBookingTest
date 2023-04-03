@@ -3,7 +3,7 @@ using System.Reflection;
 
 class Searcher<T>
 {
-    public bool Searching { get; private set; } = true;
+    public bool Searching { get; set; } = true;
     public List<T> ObjectList { get; set; } = new();
     public List<string> SearchCategories { get; set; }
     public string SearchCategory { get; set; }
@@ -30,6 +30,16 @@ class Searcher<T>
             {
                 try { searchQuery = searchQuery.Remove(searchQuery.Length - 1); }
                 catch { }
+            }
+            if (key == ConsoleKey.Enter)
+            {
+                (int x, int y) = Console.GetCursorPosition();
+                int index = Button.ButtonYLocations.IndexOf(y);
+                if (index != -1)
+                {
+                    Button.Buttons[index].Activate();
+                }
+
             }
             else
             {
@@ -74,7 +84,7 @@ class Searcher<T>
                 string comparableString = result.ToLower();
                 if (comparableString.StartsWith(query))
                 {
-                    button = new(result, buttonTop, () => { Searching = false; BookingMenu.ClassReservationMenu(); });
+                    button = new(result, buttonTop, () => { Quit(); });
                     buttonTop++;
                 }
             }
@@ -83,4 +93,10 @@ class Searcher<T>
         if (Button.Buttons.Count > 0) InputChecker.JumpToButton(SearchCategories.Count);
         PrevSearchCategory = SearchCategory;
     }
+    public void Quit()
+    {
+        Searching = false;
+        return;
+    }
+
 }

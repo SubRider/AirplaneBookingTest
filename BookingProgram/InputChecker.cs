@@ -18,7 +18,7 @@ static class InputChecker
 
             while (Console.KeyAvailable)
             {
-                Console.ReadKey(true);
+                Console.ReadKey(intercept: true);
             }
             
         }
@@ -89,7 +89,7 @@ static class InputChecker
     }
     public static ConsoleKey GetKey()
     {
-        return Console.ReadKey(true).Key;
+        return Console.ReadKey(intercept: true).Key;
     }
     public static void JumpToButton(int index)
     {
