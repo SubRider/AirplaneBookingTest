@@ -42,9 +42,9 @@
         Button.Clear();
         Console.Clear();
         Console.WriteLine("Select Class");
-        Button first = new(ConsoleColor.White, "First Class", 2, () => ReservationChoice = "first", () => RetourOrSingle());
-        Button business = new(ConsoleColor.White, "Business Class", 3, () => ReservationChoice = "business", () => RetourOrSingle());
-        Button economy = new(ConsoleColor.White, "Economy Class", 4, () => ReservationChoice = "economy", () => RetourOrSingle());
+        Button first = new(ConsoleColor.White, "First Class", 2, () => { ReservationChoice = "first";RetourOrSingle(); });
+        Button business = new(ConsoleColor.White, "Business Class", 3, () => { ReservationChoice = "business";RetourOrSingle(); });
+        Button economy = new(ConsoleColor.White, "Economy Class", 4, () => { ReservationChoice = "economy";RetourOrSingle(); });
         Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
     }
@@ -53,8 +53,8 @@
         Button.Clear();
         Console.Clear();
         Console.WriteLine("Select if you want a retour flight or a single flight:\n");
-        Button Retour = new(ConsoleColor.White, "Retour", 2, () => SingleOrRetour = "Retour", () => SeatsReservationMenu());
-        Button Single = new(ConsoleColor.White, "Single", 3, () => SingleOrRetour = "Single", () => SeatsReservationMenu());
+        Button Retour = new(ConsoleColor.White, "Retour", 2, () => {SingleOrRetour = "Retour"; SeatsReservationMenu(); });
+        Button Single = new(ConsoleColor.White, "Single", 3, () => {SingleOrRetour = "Single"; SeatsReservationMenu(); });
         Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
     }
