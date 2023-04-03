@@ -3,20 +3,26 @@ using System.Drawing;
 
 static class Renderer
 {
+    private static (int, int) _selectedButton;
     public static void ShowButton(Button button)
     {
-        Console.SetCursorPosition(button.XPosition, button.YPosition);
+        if (_selectedButton == (button.XPosition, button.YPosition)) button.Highlight();
+        else Console.SetCursorPosition(button.XPosition, button.YPosition);
         Console.ForegroundColor = button.Color;
+        Console.BackgroundColor = button.HighlightColor;
         Console.Write(button.Text);
         Console.ResetColor();
     }
+
     public static void ShowButtons()
     {
+        _selectedButton = Console.GetCursorPosition();
         foreach (Button button in Button.Buttons)
         {
             ShowButton(button);
         }
     }
+
     public static void ShowSeat(Seat seat, int offset)
     {
         if (seat.SeatNumber == 1)
@@ -29,6 +35,7 @@ static class Renderer
         ConsoleColor seatColor = (seat.Booked) ? ConsoleColor.Red : ConsoleColor.Green;
         Button button = new(seatColor, "■", seat.SeatNumber + 1, (seat.RowNumber - 1) * 3 + offset, () => Console.ResetColor());
     }
+
     public static void ShowSeats(List<Seat> seats, int offset)
     {
         foreach(Seat seat in seats) 
@@ -36,6 +43,7 @@ static class Renderer
             ShowSeat(seat, offset);
         }
     }
+
     public static void HighlightButton(Button button, bool dehilight = false)
     {
         if (dehilight)
@@ -46,22 +54,9 @@ static class Renderer
             Console.Write(button.Text);
             Console.ResetColor();
             Console.SetCursorPosition(button.XPosition, button.YPosition);
-            button.HighlightTime = DateTime.MinValue;
         }
-        TimeSpan timeHighlighed = DateTime.Now - button.HighlightTime;
-        if (timeHighlighed.TotalMilliseconds > 500)
+        if (button.HighlightTime.TotalMilliseconds > 500)
         {
-            if (button.Highlighted)
-            {
-                Console.BackgroundColor = ConsoleColor.Black;
-                button.Highlighted = false;
-            }
-            else
-            {
-                Console.BackgroundColor = ConsoleColor.DarkBlue;
-                button.Highlighted = true;
-            }
-            button.HighlightTime = DateTime.Now;
             Console.SetCursorPosition(button.XPosition, button.YPosition);
             Console.ForegroundColor = button.Color;
             Console.Write(button.Text);

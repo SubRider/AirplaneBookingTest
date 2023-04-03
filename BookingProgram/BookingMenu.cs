@@ -6,7 +6,7 @@
     static void Main()
     {
         Console.Clear();
-        Console.CursorVisible = false;
+        Console.CursorVisible = true;
         StartScreen();
         while (!Quit)
         {
@@ -27,7 +27,7 @@
 
     public static void MainMenu()
     {
-        Console.CursorVisible = false;
+        //Console.CursorVisible = false;
         Button.Clear();
         Console.Clear();
         Button browse = new(ConsoleColor.White, "Browse flights", 1,() => ClassReservationMenu());
@@ -37,13 +37,13 @@
     }
     public static void ClassReservationMenu()
     {
-        
+
         Button.Clear();
         Console.Clear();
         Console.WriteLine("Select Class");
-        Button first = new(ConsoleColor.White, "First Class", 2, () => ReservationChoice = "first", () => SeatsReservationMenu());
-        Button business = new(ConsoleColor.White, "Business Class", 3, () => ReservationChoice = "business", () => SeatsReservationMenu());
-        Button economy = new(ConsoleColor.White, "Economy Class", 4, () => ReservationChoice = "economy", () => SeatsReservationMenu());
+        Button first = new(ConsoleColor.White, "First Class", 2, () => { ReservationChoice = "first"; SeatsReservationMenu(); });
+        Button business = new(ConsoleColor.White, "Business Class", 3, () => { ReservationChoice = "business"; SeatsReservationMenu(); });
+        Button economy = new(ConsoleColor.White, "Economy Class", 4, () => { ReservationChoice = "economy"; SeatsReservationMenu(); });
         Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
     }
@@ -54,7 +54,7 @@
         bool choosing = true;
         while (choosing)
         {
-            Console.CursorVisible = true;
+            //Console.CursorVisible = true;
             Console.Clear();
             Console.WriteLine("How many seats? (Test Maximum: 12):");
             
@@ -83,7 +83,7 @@
 
     public static void SeatMenu()
     {
-        Console.CursorVisible = false;
+        //Console.CursorVisible = false;
         Button.Clear();
         Console.Clear();
         Plane plane = new("747");
