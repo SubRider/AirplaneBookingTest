@@ -74,7 +74,7 @@ class Searcher<T>
                 string comparableString = result.ToLower();
                 if (comparableString.StartsWith(query))
                 {
-                    button = new(result, buttonTop, () => Searching = false);
+                    button = new(result, buttonTop, () => { Searching = false; BookingMenu.ClassReservationMenu(); });
                     buttonTop++;
                 }
             }

@@ -6,8 +6,8 @@ static class Renderer
     private static (int, int) _selectedButton;
     public static void ShowButton(Button button)
     {
-        if (_selectedButton == (button.XPosition, button.YPosition)) button.Highlight();
-        else Console.SetCursorPosition(button.XPosition, button.YPosition);
+        //if (_selectedButton == (button.XPosition, button.YPosition)) button.Highlight();
+        Console.SetCursorPosition(button.XPosition, button.YPosition);
         Console.ForegroundColor = button.Color;
         Console.BackgroundColor = button.HighlightColor;
         Console.Write(button.Text);

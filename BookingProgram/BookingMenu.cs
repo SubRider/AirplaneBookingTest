@@ -38,13 +38,16 @@
     }
     public static void ClassReservationMenu()
     {
-
+        Flight.Flights = JsonCommunicator.Read<Flight>("Flights.json");
+        Searcher<Flight> flightSearch = new(Flight.Flights, new() { "Origin", "Destination" });
+        flightSearch.Activate();
         Button.Clear();
         Console.Clear();
         Console.WriteLine("Select Class");
         Button first = new(ConsoleColor.White, "First Class", 2, () => { ReservationChoice = "first";RetourOrSingle(); });
         Button business = new(ConsoleColor.White, "Business Class", 3, () => { ReservationChoice = "business";RetourOrSingle(); });
         Button economy = new(ConsoleColor.White, "Economy Class", 4, () => { ReservationChoice = "economy";RetourOrSingle(); });
+        Button back = new("back", 6, () => MainMenu());
         Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
     }
@@ -55,6 +58,7 @@
         Console.WriteLine("Select if you want a retour flight or a single flight:\n");
         Button Retour = new(ConsoleColor.White, "Retour", 2, () => {SingleOrRetour = "Retour"; SeatsReservationMenu(); }); 
         Button Single = new(ConsoleColor.White, "Single", 3, () => {SingleOrRetour = "Single"; SeatsReservationMenu(); });
+        Button back = new("back", 6, () => ClassReservationMenu());
         Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
     }
@@ -101,6 +105,7 @@
         Renderer.ShowSeats(plane.FirstClassSeats, 0);
         Renderer.ShowSeats(plane.BusinessClassSeats, 1);
         Renderer.ShowSeats(plane.EconomyClassSeats, 2);
+        Button back = new("back", 12, () => SeatsReservationMenu());
         Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
     }
@@ -109,6 +114,9 @@
         Button.Clear();
         Console.Clear();
         Console.WriteLine("Placeholder for Flight History");
+        Button back = new("back", 6, () => MainMenu());
+        Renderer.ShowButtons();
+        InputChecker.JumpToButton(0);
     }
 
     public static void AdminMenu()
@@ -119,6 +127,7 @@
         Console.Clear();
         Button button1 = new("edit flights", 0, () => flightSearch.Activate());
         Button button2 = new("add flight", 1, () => AddFlightMenu());
+        Button back = new("back", 6, () => UserLogin.Start());
         Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
     }
