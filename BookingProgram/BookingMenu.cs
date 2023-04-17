@@ -1,4 +1,6 @@
-﻿static class BookingMenu
+﻿using System.Reflection;
+
+static class BookingMenu
 {
     public static bool Quit = false;
     public static string ReservationChoice;
@@ -142,8 +144,18 @@
         flightSearch.Activate();
         Console.Clear();
         Button.Clear();
-        Console.Write("New value: ");
-        string value = Console.ReadLine();
+        foreach (Flight f in Flight.Flights)
+        {
+            if (f.ID == flightSearch.ID)
+            {
+                PropertyInfo propertyInfo = typeof(Flight).GetProperty(flightSearch.SearchCategory);
+                Console.WriteLine("Give the new value:");
+                var value = Console.ReadLine();
+                propertyInfo.SetValue(f, value);
+                break;
+            }
+        }
+        JsonCommunicator.Write("Flights.json", Flight.Flights);
         AdminMenu();
     }
     public static void AddFlightMenu()
