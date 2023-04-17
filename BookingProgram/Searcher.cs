@@ -1,8 +1,9 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 
-class Searcher<T>
+class Searcher<T> where T : IHasID
 {
+    public int ID { get; set; } = 0;
     public bool Searching { get; set; } = true;
     public List<T> ObjectList { get; set; } = new();
     public List<string> SearchCategories { get; set; }
@@ -74,7 +75,11 @@ class Searcher<T>
                 string comparableString = result.ToLower();
                 if (comparableString.StartsWith(query))
                 {
-                    button = new(result, buttonTop, () => { Quit(); });
+                    button = new(result, buttonTop, () =>
+                    {
+                        Quit();
+                        ID = item.ID;
+                    });
                     buttonTop++;
                 }
             }

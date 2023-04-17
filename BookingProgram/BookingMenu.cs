@@ -130,6 +130,7 @@
         Console.Clear();
         Button button1 = new("Edit flights", 0, () => EditFlightMenu());
         Button button2 = new("Add flight", 1, () => AddFlightMenu());
+        Button button3 = new("Remove Flights", 2, () => RemoveFlightMenu());
         Button back = new("back", 6, () => UserLogin.Start());
         Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
@@ -160,7 +161,24 @@
         Flight _ = new(origin, destination, date, 01);
         JsonCommunicator.Write("Flights.json", Flight.Flights);
         AdminMenu();
+    }
 
+    public static void RemoveFlightMenu()
+    {
+        Flight.Flights = JsonCommunicator.Read<Flight>("Flights.json");
+        Searcher<Flight> flightSearch = new(Flight.Flights, new() { "Origin", "Destination", "ID" });
+        flightSearch.Activate();
+        Console.Clear();
+        Button.Clear();
+        foreach (Flight f in Flight.Flights)
+        {
+            if (f.ID == flightSearch.ID)
+            {
+                Flight.Flights.Remove(f);
+            }
+        }
+        JsonCommunicator.Write("Flights.json", Flight.Flights);
+        AdminMenu();
     }
 
     public static void AirlineInfo()
