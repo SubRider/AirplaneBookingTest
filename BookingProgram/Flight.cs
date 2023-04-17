@@ -2,7 +2,7 @@
 using Newtonsoft;
 using Newtonsoft.Json;
 
-class Flight
+class Flight : IHasID
 {
     public static List<Flight> Flights { get; set; } = new();
     public int ID { get; set; }
