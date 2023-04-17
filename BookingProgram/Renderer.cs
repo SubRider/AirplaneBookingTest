@@ -21,6 +21,7 @@ static class Renderer
         {
             ShowButton(button);
         }
+        InputChecker.JumpToButton(0);
     }
 
     public static void ShowSeat(Seat seat, int offset)

@@ -17,6 +17,7 @@ class Flight : IHasID
         Date = date;
         Destination = destination;
         AirplaneID = airplaneID;
+        ID = Flights.Count;
         Flights.Add(this);
     }
 

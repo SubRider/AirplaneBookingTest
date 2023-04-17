@@ -170,15 +170,25 @@
         flightSearch.Activate();
         Console.Clear();
         Button.Clear();
-        foreach (Flight f in Flight.Flights)
+        List<Flight> tempFlights = new(Flight.Flights);
+        foreach (Flight f in tempFlights)
         {
             if (f.ID == flightSearch.ID)
             {
-                Flight.Flights.Remove(f);
+                Button.Clear();
+                Button yes = new("Yes", 2, () => {
+                    Flight.Flights.Remove(f);
+                    JsonCommunicator.Write("Flights.json", Flight.Flights);
+                    AdminMenu();
+                });
+                Button no = new("No", 3, () => { AdminMenu(); });
+                break;
             }
         }
-        JsonCommunicator.Write("Flights.json", Flight.Flights);
-        AdminMenu();
+        Console.Clear();
+        Console.WriteLine("Are you sure you want to delete this flight?:");
+        Renderer.ShowButtons();
+        
     }
 
     public static void AirlineInfo()
