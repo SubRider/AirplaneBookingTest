@@ -1,7 +1,7 @@
 ﻿static class UserLogin
 {
     static private AccountsLogic accountsLogic = new AccountsLogic();
-
+    public static AccountModel ActiveUser;
 
     public static void Start()
     {
@@ -21,7 +21,7 @@
             Console.WriteLine("Please enter your password");
             string password = Console.ReadLine();
 
-            
+            ActiveUser = new AccountModel(0, email, password,"");
             AccountModel acc = accountsLogic.CheckLogin(email, password);
             if (acc != null)
             {
