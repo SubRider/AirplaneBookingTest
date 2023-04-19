@@ -3,6 +3,7 @@ using System.Reflection;
 
 class Searcher<T> where T : IHasID
 {
+    // Properties to store the search state, ID, object list, and search categories
     public int ID { get; set; } = 0;
     public bool Searching { get; set; } = true;
     public List<T> ObjectList { get; set; } = new();
@@ -10,6 +11,7 @@ class Searcher<T> where T : IHasID
     public string SearchCategory { get; set; }
     public string PrevSearchCategory { get; set; }
 
+    // Constructor for initializing the Searcher with a list of objects and search categories
     public Searcher(List<T> listOfObjects, List<string> searchCategories)
     {
         ObjectList = listOfObjects;
@@ -18,6 +20,7 @@ class Searcher<T> where T : IHasID
         PrevSearchCategory = "";
     }
 
+    // Method to activate the search process
     public void Activate()
     {
         string searchQuery = "";
@@ -46,6 +49,8 @@ class Searcher<T> where T : IHasID
             if (searchQuery != prevQuery || SearchCategory != PrevSearchCategory) Find(searchQuery);
         }
     }
+
+    // Method to find and display matching items based on the query and current search category
     public void Find(string query)
     {
         Button.Clear();
@@ -53,6 +58,8 @@ class Searcher<T> where T : IHasID
         Button button;
         int buttonTop = 2;
         int buttonLeft = 0;
+
+        // Create buttons for each search category
         foreach (string searchCategory in SearchCategories)
         {
             string categoryCopy = searchCategory;
@@ -62,9 +69,12 @@ class Searcher<T> where T : IHasID
                     InputChecker.JumpToButton(SearchCategories.Count);
                 });
             buttonLeft += searchCategory.Length + 1;
-
         }
+
+        // Create a button to display the search query
         button = new(ConsoleColor.White, query, 1, () => { });
+
+        // Iterate through the object list and create buttons for matching items
         foreach (T item in ObjectList)
         {
             PropertyInfo propertyInfo = typeof(T).GetProperty(SearchCategory);
@@ -84,14 +94,17 @@ class Searcher<T> where T : IHasID
                 }
             }
         }
+
         Renderer.ShowButtons();
+
         if (Button.Buttons.Count > 0) InputChecker.JumpToButton(SearchCategories.Count);
         PrevSearchCategory = SearchCategory;
     }
+
+    // Method to quit searching and return the ID of the selected item
     public void Quit()
     {
         Searching = false;
         return;
     }
-
 }
