@@ -1,16 +1,16 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-class FlightToHistory
+static class FlightToHistory
 {
-    private Flight flight;
-    private UserAccount user;
-    int ID = 1;
+    static private Flight flight;
+    static private AccountModel user;
+    static int ID = 1;
 
-    public void AddToHistory(Flight flight, UserAccount user)
+    public static void AddToHistory(Flight flight, AccountModel user)
     {
         ID += 1;
         string Filepath = "FlightHistory.json";
-        string username = user.Email;
+        string username = user.EmailAddress;
         string origin = flight.Origin;
         string destination = flight.Destination;
         string date = flight.Date;
@@ -30,5 +30,22 @@ class FlightToHistory
 
         json = JsonConvert.SerializeObject(jArray, Formatting.Indented);
         File.WriteAllText(Filepath, json);
+    }
+    // Accountmodel vervangen
+    public static void ViewHistory(AccountModel user)
+    {
+        string username = user.EmailAddress;
+        string jsonString = File.ReadAllText("FlightHistory.json");
+        List<Dictionary<string, string>> list = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(jsonString);
+        foreach (Dictionary<string, string> dict in list)
+        {
+            foreach (KeyValuePair<string, string> field in dict)
+            {
+                if (user.EmailAddress == dict["User"])
+                {
+                    Console.WriteLine("{0}: {1}", field.Key, field.Value);
+                }
+            }
+        }
     }
 }

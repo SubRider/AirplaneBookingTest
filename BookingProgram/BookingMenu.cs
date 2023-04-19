@@ -119,8 +119,9 @@ static class BookingMenu
     {
         Button.Clear();
         Console.Clear();
-        Console.WriteLine("Placeholder for Flight History");
-        Button back = new("back", 6, () => MainMenu());
+        Console.WriteLine("Your previous flights:\n");
+        FlightToHistory.ViewHistory(UserLogin.ActiveUser);
+        Button back = new("back", 8, () => MainMenu());
         Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
     }
