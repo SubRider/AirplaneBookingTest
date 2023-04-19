@@ -22,5 +22,11 @@
     "emailAddress": "tomzuidema@outlook.com",
     "password": "password",
     "fullName": "Tom Zuidema"
+  },
+  {
+    "id": 5,
+    "emailAddress": "marco.speksnijder@gmail.com",
+    "password": "Marco",
+    "fullName": "Marco Speksnijder"
   }
 ]
