@@ -219,7 +219,7 @@ static class BookingMenu
                           "\nWhether you're traveling for business or pleasure, " +
                           "we look forward to welcoming you on board and taking you to your next adventure.\n");
 
-        string phoneNumber = "+31 6 63726482";
+        string phoneNumber = "010 546 7465";
         string email = "info@rotterdamairlines.com";
         Console.WriteLine($"Phone Number: {phoneNumber} \nE-mail: {email}");
         Console.ResetColor();
