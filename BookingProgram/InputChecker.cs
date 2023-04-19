@@ -42,8 +42,13 @@ static class InputChecker
                     {
                         newLocation -= 1;
                         found = Button.ButtonYLocations.Contains(newLocation);
+                        
                     }
-                    if (found) _cursorTop = newLocation;
+                    if (found) 
+                    {
+                        index = Button.ButtonLocations.IndexOf((_cursorLeft, newLocation));
+                        if (index != -1) _cursorTop = newLocation;
+                    } 
                 }
                 else if (input == ConsoleKey.S || input == ConsoleKey.DownArrow)
                 {
@@ -53,7 +58,11 @@ static class InputChecker
                         newLocation += 1;
                         found = Button.ButtonYLocations.Contains(newLocation);
                     }
-                    if (found) _cursorTop = newLocation;
+                    if (found)
+                    {
+                        index = Button.ButtonLocations.IndexOf((_cursorLeft, newLocation));
+                        if (index != -1) _cursorTop = newLocation;
+                    }
                 }
                 else if (input == ConsoleKey.A || input == ConsoleKey.LeftArrow)
                 {
@@ -63,7 +72,11 @@ static class InputChecker
                         newLocation -= 1;
                         found = Button.ButtonXLocations.Contains(newLocation);
                     }
-                    if (found) _cursorLeft = newLocation;
+                    if (found)
+                    {
+                        index = Button.ButtonLocations.IndexOf((newLocation, _cursorTop));
+                        if (index != -1) _cursorLeft = newLocation;
+                    }
                 }
                 else if (input == ConsoleKey.D || input == ConsoleKey.RightArrow)
                 {
@@ -73,14 +86,17 @@ static class InputChecker
                         newLocation += 1;
                         found = Button.ButtonXLocations.Contains(newLocation);
                     }
-                    if (found) _cursorLeft = newLocation;
+                    if (found)
+                    {
+                        index = Button.ButtonLocations.IndexOf((newLocation, _cursorTop));
+                        if (index != -1) _cursorLeft = newLocation;
+                    }
                 }
             }
             catch (ArgumentOutOfRangeException)
             {
 
             }
-            _cursorTop = _cursorTop;
             Console.SetCursorPosition(_cursorLeft, _cursorTop);
         }
         index = Button.ButtonLocations.IndexOf((_cursorLeft, _cursorTop));
