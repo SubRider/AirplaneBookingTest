@@ -36,12 +36,12 @@ static class FlightToHistory
     {
         Console.SetCursorPosition(0, 3);
         foreach (ReservationDataPacket reservation in ReservationDataPacket.Reservations)
-        {
-            Flight flight = Flight.Flights.Find(i => i.ID == reservation.FlightID);
-            Console.WriteLine($"Origin: {flight.Origin} \nDestination: {flight.Destination}" +
-                                $"\nDeparture Date: {flight.Date}");
+        {        
             if (reservation.CustomerID == user.Id)
             {
+                Flight flight = Flight.Flights.Find(i => i.ID == reservation.FlightID);
+                Console.WriteLine($"Origin: {flight.Origin} \nDestination: {flight.Destination}" +
+                                    $"\nDeparture Date: {flight.Date}");
                 Console.WriteLine("Seats:");
                 foreach (Seat seat in reservation.Seats)
                 {   
