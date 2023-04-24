@@ -38,9 +38,9 @@ static class Renderer
             Console.Write(seat.RowNumber);
         }
 
-        ConsoleColor seatColor = (seat.Booked) ? ConsoleColor.Red : ConsoleColor.Green;
-        Button button = new(seatColor, "■", seat.SeatNumber + 1, (seat.RowNumber - 1) * 3 + offset, () => 
-        { seat.Booked = true;BookingMenu.Seats.Add(seat); if (BookingMenu.Seats.Count >= BookingMenu.AmountOfSeatsReserved) { BookingMenu.Reserving(); } } ); 
+        Button button = new((seat.Booked) ? ConsoleColor.Red : ConsoleColor.Green, "■", seat.SeatNumber + 1, (seat.RowNumber - 1) * 3 + offset, () => 
+        {   seat.Booked = true;BookingMenu.Seats.Add(seat);
+            if (BookingMenu.Seats.Count >= BookingMenu.AmountOfSeatsReserved) { BookingMenu.Reserving(); } } ); 
     }
 
     public static void ShowSeats(List<Seat> seats)
