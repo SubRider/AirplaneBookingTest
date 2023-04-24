@@ -65,7 +65,7 @@ static class Renderer
             return;
         }
         Console.SetCursorPosition(button.XPosition, button.YPosition);
-        Console.BackgroundColor = ConsoleColor.Blue;
+        Console.BackgroundColor = ConsoleColor.DarkBlue;
         Console.ForegroundColor = button.Color;
         Console.Write(button.Text);
         Console.ResetColor();
