@@ -53,8 +53,7 @@ class Searcher<T> where T : IHasID
     // Method to find and display matching items based on the query and current search category
     public void Find(string query)
     {
-        Button.Clear();
-        Console.Clear();
+        Renderer.Clear();
         Button button;
         int buttonTop = 2;
         int buttonLeft = 0;
@@ -72,7 +71,8 @@ class Searcher<T> where T : IHasID
         }
 
         // Create a button to display the search query
-        button = new(ConsoleColor.White, query, 1, () => { });
+        if (query.Length == 0) button = new(ConsoleColor.White, "     ", 1, () => { });
+        else button = new(ConsoleColor.White, query, 1, () => { });
 
         // Iterate through the object list and create buttons for matching items
         foreach (T item in ObjectList)

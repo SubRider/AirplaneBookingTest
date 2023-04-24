@@ -26,6 +26,7 @@
             if (acc != null)
             {
                 Console.WriteLine("\nWelcome back " + acc.FullName);
+                ActiveUser = acc;
                 Thread.Sleep(1000);
                 BookingMenu.MainMenu();
                 break;

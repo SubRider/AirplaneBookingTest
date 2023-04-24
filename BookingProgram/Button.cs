@@ -59,7 +59,6 @@
     public void Activate()
     {
         Function();
-        Highlight();
     }
 
     // Method to highlight the button, update the _highlightStart field, and call Renderer.HighlightButton()
@@ -68,6 +67,11 @@
         _highlightStart = DateTime.Now;
         _highlighted = true;
         Renderer.HighlightButton(this);
+    }
+
+    public bool IsHighLighted()
+    {
+        return _highlighted;
     }
 
     // Static method to remove a button from the static lists and set its reference to null

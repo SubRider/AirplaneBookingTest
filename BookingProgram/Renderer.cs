@@ -3,7 +3,7 @@ using System.Drawing;
 
 static class Renderer
 {
-    private static (int, int) _selectedButton;
+    private static Button? _selectedButton;
     public static void ShowButton(Button button)
     {
         //if (_selectedButton == (button.XPosition, button.YPosition)) button.Highlight();
@@ -16,7 +16,6 @@ static class Renderer
 
     public static void ShowButtons()
     {
-        _selectedButton = Console.GetCursorPosition();
         foreach (Button button in Button.Buttons)
         {
             ShowButton(button);
@@ -24,8 +23,14 @@ static class Renderer
         InputChecker.JumpToButton(0);
     }
 
-    public static void ShowSeat(Seat seat, int offset)
+    public static void ShowSeat(Seat seat)
     {
+        int offset = seat.SeatClass switch
+        {
+            "First" => 0,
+            "Business" => 1,
+            "Economy" => 2
+        } ;
         if (seat.SeatNumber == 1)
         {
             Console.SetCursorPosition((seat.RowNumber - 1) * 3 + offset, 0);
@@ -34,14 +39,15 @@ static class Renderer
         }
 
         ConsoleColor seatColor = (seat.Booked) ? ConsoleColor.Red : ConsoleColor.Green;
-        Button button = new(seatColor, "■", seat.SeatNumber + 1, (seat.RowNumber - 1) * 3 + offset, () => Console.ResetColor());
+        Button button = new(seatColor, "■", seat.SeatNumber + 1, (seat.RowNumber - 1) * 3 + offset, () => 
+        { seat.Booked = true;BookingMenu.Seats.Add(seat); if (BookingMenu.Seats.Count >= BookingMenu.AmountOfSeatsReserved) { BookingMenu.Reserving(); } } ); 
     }
 
-    public static void ShowSeats(List<Seat> seats, int offset)
+    public static void ShowSeats(List<Seat> seats)
     {
         foreach(Seat seat in seats) 
         {
-            ShowSeat(seat, offset);
+            ShowSeat(seat);
         }
     }
 
@@ -55,14 +61,22 @@ static class Renderer
             Console.Write(button.Text);
             Console.ResetColor();
             Console.SetCursorPosition(button.XPosition, button.YPosition);
+            _selectedButton = null;
+            return;
         }
-        if (button.HighlightTime.TotalMilliseconds > 500)
-        {
-            Console.SetCursorPosition(button.XPosition, button.YPosition);
-            Console.ForegroundColor = button.Color;
-            Console.Write(button.Text);
-            Console.ResetColor();
-            Console.SetCursorPosition(button.XPosition, button.YPosition);
-        }
+        Console.SetCursorPosition(button.XPosition, button.YPosition);
+        Console.BackgroundColor = ConsoleColor.Blue;
+        Console.ForegroundColor = button.Color;
+        Console.Write(button.Text);
+        Console.ResetColor();
+        Console.SetCursorPosition(button.XPosition, button.YPosition);
+        _selectedButton = button;
+    }
+    public static void Clear()
+    {
+        _selectedButton = null;
+        Button.Clear();
+        Console.ResetColor(); 
+        Console.Clear();
     }
 }

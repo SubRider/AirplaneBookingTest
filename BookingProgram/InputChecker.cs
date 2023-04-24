@@ -5,13 +5,15 @@ static class InputChecker
 {
     private static int _cursorLeft;
     private static int _cursorTop;
+    private static int _lastLeft;
+    private static int _lastTop;
 
     // Method to check and process keyboard input
     public static void CheckInput(ConsoleKey? input = null)
     {
         int index;
-        _cursorTop = Console.GetCursorPosition().Top;
-        _cursorLeft = Console.GetCursorPosition().Left;
+        _cursorTop = _lastTop = Console.GetCursorPosition().Top;
+        _cursorLeft = _lastLeft = Console.GetCursorPosition().Left;
 
         if (input == null)
         {
@@ -110,8 +112,16 @@ static class InputChecker
         }
 
         // Highlight the button at the current cursor position
-        index = Button.ButtonLocations.IndexOf((_cursorLeft, _cursorTop));
-        if (index != -1) Renderer.HighlightButton(Button.Buttons[index]);
+        if (_lastLeft != _cursorLeft || _lastTop != _cursorTop)
+        {
+            index = Button.ButtonLocations.IndexOf((_lastLeft, _lastTop));
+            if (index != -1) Renderer.HighlightButton(Button.Buttons[index], true);
+            index = Button.ButtonLocations.IndexOf((_cursorLeft, _cursorTop));
+            if (index != -1) Renderer.HighlightButton(Button.Buttons[index]);
+        }
+        
+
+
 
         return;
     }

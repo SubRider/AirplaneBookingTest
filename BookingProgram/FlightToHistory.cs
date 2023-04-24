@@ -34,18 +34,21 @@ static class FlightToHistory
     // Accountmodel vervangen
     public static void ViewHistory(AccountModel user)
     {
-        string username = user.EmailAddress;
-        string jsonString = File.ReadAllText("FlightHistory.json");
-        List<Dictionary<string, string>> list = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(jsonString);
-        foreach (Dictionary<string, string> dict in list)
+        Console.SetCursorPosition(0, 3);
+        foreach (ReservationDataPacket reservation in ReservationDataPacket.Reservations)
         {
-            foreach (KeyValuePair<string, string> field in dict)
+            Flight flight = Flight.Flights.Find(i => i.ID == reservation.FlightID);
+            Console.WriteLine($"Origin: {flight.Origin} \nDestination: {flight.Destination}" +
+                                $"\nDeparture Date: {flight.Date}");
+            if (reservation.CustomerID == user.Id)
             {
-                if (user.EmailAddress == dict["User"])
-                {
-                    Console.WriteLine("{0}: {1}", field.Key, field.Value);
+                Console.WriteLine("Seats:");
+                foreach (Seat seat in reservation.Seats)
+                {   
+                    Console.WriteLine($"Row: {seat.RowNumber} Seat: {seat.SeatLetter}");
                 }
             }
+            Console.WriteLine();
         }
     }
 }
