@@ -53,7 +53,9 @@ class Searcher<T> where T : IHasID
     // Method to find and display matching items based on the query and current search category
     public void Find(string query)
     {
+        
         Renderer.Clear();
+        Window w1 = new();
         Button button;
         int buttonTop = 2;
         int buttonLeft = 0;
@@ -62,17 +64,17 @@ class Searcher<T> where T : IHasID
         foreach (string searchCategory in SearchCategories)
         {
             string categoryCopy = searchCategory;
-            button = new(searchCategory, 0, buttonLeft, new Window(),
+            button = new(searchCategory, 0, buttonLeft, w1, "left",
                 () => {
                     PrevSearchCategory = SearchCategory; SearchCategory = categoryCopy;
                     InputChecker.JumpToButton(SearchCategories.Count);
                 });
-            buttonLeft += searchCategory.Length + 1;
+            buttonLeft++;
         }
 
         // Create a button to display the search query
-        if (query.Length == 0) button = new("     ", 1, new Window(), () => { });
-        else button = new(query, 1, new Window(), () => { });
+        if (query.Length == 0) button = new("     ", 1, w1, () => { });
+        else button = new(query, 1, w1, () => { });
 
         // Iterate through the object list and create buttons for matching items
         foreach (T item in ObjectList)
@@ -85,7 +87,7 @@ class Searcher<T> where T : IHasID
                 string comparableString = result.ToLower();
                 if (comparableString.StartsWith(query))
                 {
-                    button = new(result, buttonTop, new Window(), () =>
+                    button = new(result, buttonTop, w1, () =>
                     {
                         Quit();
                         ID = item.ID;
@@ -95,7 +97,7 @@ class Searcher<T> where T : IHasID
             }
         }
 
-        //Renderer.ShowButtons();
+        Renderer.ShowWindows();
 
         if (Button.Buttons.Count > 0) InputChecker.JumpToButton(SearchCategories.Count);
         PrevSearchCategory = SearchCategory;

@@ -5,14 +5,6 @@
 
     public static void ShowWindow(Window window)
     {
-        /*int totalReferenceHeight = 0;
-        Window previousReference = window.Reference ?? new(0, 0, false);
-        while (previousReference.Height != 0)
-        {
-            totalReferenceHeight += previousReference.Height;
-            Window nextReference = previousReference.Reference ?? new(0, 0, false);
-            previousReference = nextReference;
-        }*/
         int totalReferenceHeight = window.ReferenceHeight;
 
         Console.SetCursorPosition(0, 0 + totalReferenceHeight);
@@ -35,6 +27,7 @@
         {
             _selectedButton ??= Button.Buttons[0];
             ShowButtons(window);
+            ShowText(window);
             InputChecker.JumpToButton(_selectedButton);
         } 
         window.Updated = false;
@@ -65,6 +58,7 @@
 
     public static void ShowButton(Button button)
     {
+        if (button.TrueYPosition >= button.Reference.ReferenceHeight + button.Reference.Height - 1) return;
         Console.SetCursorPosition(button.TrueXPosition, button.TrueYPosition);
         Console.ForegroundColor = button.Color;
         Console.BackgroundColor = (button == _selectedButton) ? ConsoleColor.DarkBlue : ConsoleColor.Black;
@@ -77,6 +71,18 @@
         foreach (Button button in Button.Buttons.Where(b => b.Reference == window))
         {
             ShowButton(button);
+        }
+    }
+    public static void ShowText(Window window)
+    {
+        if (window.Text == null) return;
+        Console.SetCursorPosition(1, 1);
+        string[] words = window.Text.Split(' ');
+        foreach (string word in words)
+        {
+
+            if (Console.CursorLeft + word.Length >= window.Width - 1) Console.Write("\n║");
+            Console.Write(word + ' ');
         }
     }
 

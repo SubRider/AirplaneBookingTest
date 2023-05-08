@@ -28,7 +28,9 @@ class Button
     public int TrueXPosition { get { switch (_referenceSide) 
             {
                 case "left":
-                    return _reference.Width/_reference.Buttons.Count * RelativeXPosition + 1;
+                    int leftButtons = 0;
+                    foreach (Button button in _reference.Buttons.Where(b => b.ReferenceSide == "left")) leftButtons++;
+                    return (_reference.Width/leftButtons) * RelativeXPosition + 1;
                 default:
                     return RelativeXPosition + 1;
         } } }

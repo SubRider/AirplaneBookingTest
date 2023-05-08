@@ -18,7 +18,7 @@ static class InputChecker
         _cursorLeft = _lastLeft = Console.GetCursorPosition().Left;
 
 
-        if (Console.KeyAvailable)
+        if (Console.KeyAvailable && input == null)
         {
             input = Console.ReadKey(intercept: true).Key;
             while (Console.KeyAvailable)
@@ -53,6 +53,7 @@ static class InputChecker
                             newLocation -= 1;
                             if (newLocation < 0)
                             {
+                                Renderer.HighlightButton(button, true);
                                 JumpToButton(button.Reference.Reference.Buttons[^1]);
                                 break;
                             }
@@ -60,7 +61,12 @@ static class InputChecker
                         else if (button.ReferenceSide == "bottom")
                         {
                             newLocation += 1;
-                            if (newLocation > Button.ButtonLocations.Select(t => t.y).Max()) break;
+                            if (newLocation > Button.ButtonLocations.Select(t => t.y).Max())
+                            {
+                                Renderer.HighlightButton(button, true);
+                                if (button.Reference.Reference != null) JumpToButton(button.Reference.Reference.Buttons[^1]);
+                                break;
+                            }
                             index = Button.ButtonLocations.IndexOf((button.RelativeXPosition, newLocation));
                         }
                          
@@ -82,7 +88,11 @@ static class InputChecker
                             newLocation += 1;
                             if (newLocation > Button.ButtonLocations.Select(t => t.y).Max())
                             {
-                                JumpToButton(button.Reference.Reference.Buttons[0]);
+                                if (button.Reference.ReferencedBy != null) 
+                                {
+                                    Renderer.HighlightButton(button, true);
+                                    JumpToButton(button.Reference.ReferencedBy.Buttons[0]);
+                                }
                                 break;
                             };
                             index = Button.ButtonLocations.IndexOf((button.RelativeXPosition, newLocation));
@@ -91,7 +101,8 @@ static class InputChecker
                         {
                             newLocation -= 1;
                             if (newLocation < 0) 
-                            { 
+                            {
+                                Renderer.HighlightButton(button, true);
                                 JumpToButton(button.Reference.ReferencedBy.Buttons[0]);
                                 break;
                             }
@@ -124,13 +135,13 @@ static class InputChecker
                 }
                 else if (input == ConsoleKey.D || input == ConsoleKey.RightArrow)
                 {
-                    newLocation = button.TrueXPosition;
+                    newLocation = button.RelativeXPosition;
                     index = -1;
                     while (index == -1)
                     {
                         newLocation += 1;
                         if (newLocation > Button.ButtonLocations.Select(t => t.x).Max()) break;
-                        index = Button.ButtonLocations.IndexOf((newLocation, button.TrueYPosition));
+                        index = Button.ButtonLocations.IndexOf((newLocation, button.RelativeYPosition));
                     }
                     if (index != -1)
                     {

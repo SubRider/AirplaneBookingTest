@@ -19,7 +19,20 @@
             }
 
             Console.WriteLine("Please enter your password");
-            string password = Console.ReadLine();
+            string password = "";
+            string hiddenString = "";
+            while (true)
+            {
+                ConsoleKeyInfo input = Console.ReadKey(true);
+                if (input.Key == ConsoleKey.Enter) break;
+                if (input.Key == ConsoleKey.Backspace) password = password.Remove(password.Length - 1);
+                else password += input.KeyChar;
+                hiddenString = new('*', password.Length);
+                Console.SetCursorPosition(0, 6);
+                Console.Write(new string(' ', password.Length + 1));
+                Console.SetCursorPosition(0, 6);
+                Console.Write(hiddenString);
+            } 
 
             ActiveUser = new AccountModel(0, email, password,"");
             AccountModel acc = accountsLogic.CheckLogin(email, password);
@@ -28,7 +41,8 @@
                 Console.WriteLine("\nWelcome back " + acc.FullName);
                 ActiveUser = acc;
                 Thread.Sleep(1000);
-                BookingMenu.MainMenu();
+                Console.CursorVisible = false;
+                BookingMenu.StartScreen();
                 break;
             }
             else
