@@ -1,26 +1,83 @@
-﻿using static System.Net.Mime.MediaTypeNames;
-using System.Drawing;
-
-static class Renderer
+﻿static class Renderer
 {
     private static Button? _selectedButton;
+    public static Button? SelectedButton { get { return _selectedButton; } }
+
+    public static void ShowWindow(Window window)
+    {
+        /*int totalReferenceHeight = 0;
+        Window previousReference = window.Reference ?? new(0, 0, false);
+        while (previousReference.Height != 0)
+        {
+            totalReferenceHeight += previousReference.Height;
+            Window nextReference = previousReference.Reference ?? new(0, 0, false);
+            previousReference = nextReference;
+        }*/
+        int totalReferenceHeight = window.ReferenceHeight;
+
+        Console.SetCursorPosition(0, 0 + totalReferenceHeight);
+        string border = "";
+        border += "╔";
+        for (int w = 1; w < window.Width - 1; w++) border += "═";
+        border += "╗\n";
+
+        for (int h = 1; h < window.Height - 1; h++)
+        {
+            string spaces = new(' ', (window.Width - 2));
+            border += "║" + spaces + "║";
+        }
+
+        border += "╚";
+        for (int w = 1; w < window.Width - 1; w++) border += "═";
+        border += "╝";
+        Console.Write(border);
+        if (Button.Buttons.Count > 0)
+        {
+            _selectedButton ??= Button.Buttons[0];
+            ShowButtons(window);
+            InputChecker.JumpToButton(_selectedButton);
+        } 
+        window.Updated = false;
+    }
+    public static void ShowWindows()
+    { 
+        if (Window.Windows.Count > 0) 
+        {
+            Window.Windows[0].Update();
+            if (Window.Windows[0].Updated)
+            {
+                bool cleared = false;
+                foreach (Window window in Window.Windows)
+                {
+                    window.Update();
+                    if (!cleared) Console.Clear();
+                    ShowWindow(window);
+                    cleared = true;
+                }
+                try
+                {
+                    Console.SetBufferSize(Console.WindowWidth, Console.WindowHeight);
+                }
+                catch { }
+            }
+        }
+    }
+
     public static void ShowButton(Button button)
     {
-        //if (_selectedButton == (button.XPosition, button.YPosition)) button.Highlight();
-        Console.SetCursorPosition(button.XPosition, button.YPosition);
+        Console.SetCursorPosition(button.TrueXPosition, button.TrueYPosition);
         Console.ForegroundColor = button.Color;
-        Console.BackgroundColor = button.HighlightColor;
+        Console.BackgroundColor = (button == _selectedButton) ? ConsoleColor.DarkBlue : ConsoleColor.Black;
         Console.Write(button.Text);
         Console.ResetColor();
     }
 
-    public static void ShowButtons()
+    public static void ShowButtons(Window window)
     {
-        foreach (Button button in Button.Buttons)
+        foreach (Button button in Button.Buttons.Where(b => b.Reference == window))
         {
             ShowButton(button);
         }
-        InputChecker.JumpToButton(0);
     }
 
     public static void ShowSeat(Seat seat)
@@ -38,7 +95,7 @@ static class Renderer
             Console.Write(seat.RowNumber);
         }
 
-        Button button = new((seat.Booked) ? ConsoleColor.Red : ConsoleColor.Green, "■", seat.SeatNumber + 1, (seat.RowNumber - 1) * 3 + offset, () => 
+        Button button = new((seat.Booked) ? ConsoleColor.Red : ConsoleColor.Green, "■", seat.SeatNumber + 1, (seat.RowNumber - 1) * 3 + offset, new Window(), () => 
         {   seat.Booked = true;BookingMenu.Seats.Add(seat);
             if (BookingMenu.Seats.Count >= BookingMenu.AmountOfSeatsReserved) { BookingMenu.Reserving(); } } ); 
     }
@@ -56,25 +113,27 @@ static class Renderer
         if (dehilight)
         {
             Console.BackgroundColor = ConsoleColor.Black;
-            Console.SetCursorPosition(button.XPosition, button.YPosition);
+            Console.SetCursorPosition(button.TrueXPosition, button.TrueYPosition);
             Console.ForegroundColor = button.Color;
             Console.Write(button.Text);
             Console.ResetColor();
-            Console.SetCursorPosition(button.XPosition, button.YPosition);
+            Console.SetCursorPosition(button.TrueXPosition, button.TrueYPosition);
             _selectedButton = null;
             return;
         }
-        Console.SetCursorPosition(button.XPosition, button.YPosition);
-        Console.BackgroundColor = ConsoleColor.DarkBlue;
+        Console.SetCursorPosition(button.TrueXPosition, button.TrueYPosition);
         Console.ForegroundColor = button.Color;
+        Console.BackgroundColor = ConsoleColor.DarkBlue;
         Console.Write(button.Text);
         Console.ResetColor();
-        Console.SetCursorPosition(button.XPosition, button.YPosition);
-        _selectedButton = button;
+        Console.SetCursorPosition(button.TrueXPosition, button.TrueYPosition);
+        _selectedButton = button;     
     }
+
     public static void Clear()
     {
         _selectedButton = null;
+        Window.Clear();
         Button.Clear();
         Console.ResetColor(); 
         Console.Clear();

@@ -62,7 +62,7 @@ class Searcher<T> where T : IHasID
         foreach (string searchCategory in SearchCategories)
         {
             string categoryCopy = searchCategory;
-            button = new(ConsoleColor.White, searchCategory, 0, buttonLeft,
+            button = new(searchCategory, 0, buttonLeft, new Window(),
                 () => {
                     PrevSearchCategory = SearchCategory; SearchCategory = categoryCopy;
                     InputChecker.JumpToButton(SearchCategories.Count);
@@ -71,8 +71,8 @@ class Searcher<T> where T : IHasID
         }
 
         // Create a button to display the search query
-        if (query.Length == 0) button = new(ConsoleColor.White, "     ", 1, () => { });
-        else button = new(ConsoleColor.White, query, 1, () => { });
+        if (query.Length == 0) button = new("     ", 1, new Window(), () => { });
+        else button = new(query, 1, new Window(), () => { });
 
         // Iterate through the object list and create buttons for matching items
         foreach (T item in ObjectList)
@@ -85,7 +85,7 @@ class Searcher<T> where T : IHasID
                 string comparableString = result.ToLower();
                 if (comparableString.StartsWith(query))
                 {
-                    button = new(result, buttonTop, () =>
+                    button = new(result, buttonTop, new Window(), () =>
                     {
                         Quit();
                         ID = item.ID;
@@ -95,7 +95,7 @@ class Searcher<T> where T : IHasID
             }
         }
 
-        Renderer.ShowButtons();
+        //Renderer.ShowButtons();
 
         if (Button.Buttons.Count > 0) InputChecker.JumpToButton(SearchCategories.Count);
         PrevSearchCategory = SearchCategory;

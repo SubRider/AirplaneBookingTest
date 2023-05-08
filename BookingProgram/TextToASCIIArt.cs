@@ -22,7 +22,11 @@
                 }   
             }
         }
-        Console.SetCursorPosition(0, linesAbove * 10 + 11);
+        try 
+        {
+            Console.SetCursorPosition(0, linesAbove * 10 + 11);
+        }
+        catch { }
     }
 
     private static string CharToRoman(char character)

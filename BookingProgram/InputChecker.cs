@@ -7,6 +7,8 @@ static class InputChecker
     private static int _cursorTop;
     private static int _lastLeft;
     private static int _lastTop;
+    private static Button button = Renderer.SelectedButton;
+    private static Button newButton = button;
 
     // Method to check and process keyboard input
     public static void CheckInput(ConsoleKey? input = null)
@@ -15,12 +17,10 @@ static class InputChecker
         _cursorTop = _lastTop = Console.GetCursorPosition().Top;
         _cursorLeft = _lastLeft = Console.GetCursorPosition().Left;
 
-        if (input == null)
+
+        if (Console.KeyAvailable)
         {
-            input = GetKey();
-        }
-        else if (Console.KeyAvailable)
-        {
+            input = Console.ReadKey(intercept: true).Key;
             while (Console.KeyAvailable)
             {
                 Console.ReadKey(intercept: true);
@@ -31,76 +31,80 @@ static class InputChecker
         if (input == ConsoleKey.Escape) BookingMenu.Quit = true;
         else if (input == ConsoleKey.Enter)
         {
-            index = Button.ButtonLocations.IndexOf((_cursorLeft, _cursorTop));
-            if (index != -1) Button.Buttons[index].Activate();
+            Renderer.SelectedButton?.Activate();
         }
         else
         {
+            button = Renderer.SelectedButton;
             try
             {
-                index = Button.ButtonLocations.IndexOf((_cursorLeft, _cursorTop));
-                int newLocation = 10;
-                bool found = false;
+                int newLocation;
 
                 // Process arrow keys or WASD keys to navigate through buttons
                 if (input == ConsoleKey.W || input == ConsoleKey.UpArrow)
                 {
                     // Find the nearest button above the current button
-                    newLocation = Button.ButtonYLocations[index];
-                    while (!found && newLocation >= 0)
+                    newLocation = button.RelativeYPosition;
+                    index = -1;
+                    while (index == -1)
                     {
                         newLocation -= 1;
-                        found = Button.ButtonYLocations.Contains(newLocation);
+                        if (newLocation < 0) break;
+                        index = Button.ButtonLocations.IndexOf((button.RelativeXPosition, newLocation));    
                     }
-                    if (found)
-                    {
-                        index = Button.ButtonLocations.IndexOf((_cursorLeft, newLocation));
-                        if (index != -1) _cursorTop = newLocation;
+                    if (index != -1) 
+                    { 
+                        _cursorTop = Button.Buttons[index].TrueYPosition;
+                        newButton = Button.Buttons[index];
                     }
                 }
                 else if (input == ConsoleKey.S || input == ConsoleKey.DownArrow)
                 {
-                    // Find the nearest button below the current button
-                    newLocation = Button.ButtonYLocations[index];
-                    while (!found && newLocation <= Button.ButtonYLocations.Max())
+                    newLocation = button.RelativeYPosition;
+                    index = -1;
+                    while (index == -1)
                     {
                         newLocation += 1;
-                        found = Button.ButtonYLocations.Contains(newLocation);
+                        if (newLocation > Button.ButtonLocations.Select(t => t.y).Max()) break;
+                        index = Button.ButtonLocations.IndexOf((button.RelativeXPosition, newLocation));
                     }
-                    if (found)
+                    if (index != -1)
                     {
-                        index = Button.ButtonLocations.IndexOf((_cursorLeft, newLocation));
-                        if (index != -1) _cursorTop = newLocation;
+                        _cursorTop = Button.Buttons[index].TrueYPosition;
+                        newButton = Button.Buttons[index];
                     }
                 }
                 else if (input == ConsoleKey.A || input == ConsoleKey.LeftArrow)
                 {
                     // Find the nearest button to the left of the current button
-                    newLocation = Button.ButtonXLocations[index];
-                    while (!found && newLocation >= 0)
+                    newLocation = button.RelativeXPosition;
+                    index = -1;
+                    while (index == -1)
                     {
                         newLocation -= 1;
-                        found = Button.ButtonXLocations.Contains(newLocation);
+                        if (newLocation < 0) break;
+                        index = Button.ButtonLocations.IndexOf((newLocation, button.RelativeYPosition));
                     }
-                    if (found)
+                    if (index != -1) 
                     {
-                        index = Button.ButtonLocations.IndexOf((newLocation, _cursorTop));
-                        if (index != -1) _cursorLeft = newLocation;
+                        _cursorLeft = Button.Buttons[index].TrueXPosition;
+                        newButton = Button.Buttons[index];
                     }
                 }
                 else if (input == ConsoleKey.D || input == ConsoleKey.RightArrow)
                 {
-                    // Find the nearest button to the right of the current button
-                    newLocation = Button.ButtonXLocations[index];
-                    while (!found && newLocation <= Button.ButtonXLocations.Max())
+                    newLocation = button.TrueXPosition;
+                    index = -1;
+                    while (index == -1)
                     {
                         newLocation += 1;
-                        found = Button.ButtonXLocations.Contains(newLocation);
+                        if (newLocation > Button.ButtonLocations.Select(t => t.x).Max()) break;
+                        index = Button.ButtonLocations.IndexOf((newLocation, button.TrueYPosition));
                     }
-                    if (found)
+                    if (index != -1)
                     {
-                        index = Button.ButtonLocations.IndexOf((newLocation, _cursorTop));
-                        if (index != -1) _cursorLeft = newLocation;
+                        _cursorLeft = Button.Buttons[index].TrueXPosition;
+                        newButton = Button.Buttons[index];
                     }
                 }
             }
@@ -114,29 +118,18 @@ static class InputChecker
         // Highlight the button at the current cursor position
         if (_lastLeft != _cursorLeft || _lastTop != _cursorTop)
         {
-            index = Button.ButtonLocations.IndexOf((_lastLeft, _lastTop));
-            if (index != -1) Renderer.HighlightButton(Button.Buttons[index], true);
-            index = Button.ButtonLocations.IndexOf((_cursorLeft, _cursorTop));
-            if (index != -1) Renderer.HighlightButton(Button.Buttons[index]);
+            Renderer.HighlightButton(button, true);
+            Renderer.HighlightButton(newButton);
         }
-        
-
-
-
         return;
     }
 
-    // Method to get a single key press
-    public static ConsoleKey GetKey()
-    {
-        return Console.ReadKey(intercept: true).Key;
-    }
-
     // Method to move the cursor to a specified button by index
-    public static void JumpToButton(int index)
+    public static void JumpToButton(int index) => Console.SetCursorPosition(Button.Buttons[index].TrueXPosition, Button.Buttons[index].TrueYPosition);
+
+    public static void JumpToButton(Button? button)
     {
-        _cursorLeft = Button.ButtonXLocations[index];
-        _cursorTop = Button.ButtonYLocations[index];
-        Console.SetCursorPosition(_cursorLeft, _cursorTop);
+        if (button == null) return;
+        Console.SetCursorPosition(button.TrueXPosition, button.TrueYPosition);
     }
 }

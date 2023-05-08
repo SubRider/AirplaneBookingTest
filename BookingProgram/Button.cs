@@ -1,88 +1,83 @@
-﻿class Button
-{
-    // Fields to store the highlight start time and whether the button is highlighted
-    private DateTime _highlightStart;
-    private bool _highlighted = false;
+﻿using System.Reflection.Metadata.Ecma335;
 
+class Button
+{
     // Static lists to store positions and instances of all created buttons
-    public static List<int> ButtonYLocations = new();
-    public static List<int> ButtonXLocations = new();
-    public static List<(int, int)> ButtonLocations = new();
+    public static List<(int x, int y)> ButtonLocations = new();
     public static List<Button> Buttons = new();
 
+    private readonly Action _function;
+    private readonly string _referenceSide;
+    private readonly Window _reference;
     // Readonly properties for button text color and button text
-    public readonly ConsoleColor Color;
-    public readonly string Text;
-
-    // Property to get the background color based on the button's highlighted state
-    public ConsoleColor HighlightColor { get { return (_highlighted) ? ConsoleColor.DarkBlue : ConsoleColor.Black; } set { } }
+    public ConsoleColor Color { get; }
+    public string Text { get; }
+    public string ReferenceSide { get { return _referenceSide; } }
+    public Window Reference { get { return _reference; } }
+    public int TrueYPosition { get { switch (_referenceSide)
+                                        {
+                                            case "top":
+                                                return _reference.ReferenceHeight + 1 + RelativeYPosition;
+                                            case "bottom":
+                                                return _reference.ReferenceHeight + _reference.Height - 2 - RelativeYPosition;
+                                            default:
+                                                return 0;
+                                        }
+                                    }
+                                }
+    public int TrueXPosition { get { return RelativeXPosition + 1; } }
 
     // Properties to store button position and associated function
-    public int YPosition;
-    public int XPosition;
-    public Action Function;
-
-    // Property to get the time elapsed since the button was highlighted
-    public TimeSpan HighlightTime { get { return DateTime.Now - _highlightStart; } }
-
+    public int RelativeYPosition { get; set; }
+    public int RelativeXPosition { get; set; }
+    
     // Main constructor for creating a button with all properties
-    public Button(ConsoleColor color, string text, int yPosition, int xPosition, Action function)
+    public Button(ConsoleColor color, string text, int yPosition, int xPosition, Window reference, string referenceSide, Action function)
     {
         Color = color;
         Text = text;
-        YPosition = yPosition;
-        XPosition = xPosition;
-        Function = function;
+        RelativeYPosition = yPosition;
+        RelativeXPosition = xPosition;
+        _function = function;
+        _reference = reference;
+        _referenceSide = referenceSide;
 
         // Add button positions and instance to the static lists
-        ButtonYLocations.Add(YPosition);
-        ButtonXLocations.Add(XPosition);
-        ButtonLocations.Add((XPosition, YPosition));
+        int tempRelativeY = 0;
+        if (_referenceSide == "bottom") tempRelativeY = reference.Height - RelativeYPosition;
+        ButtonLocations.Add((RelativeXPosition, tempRelativeY));
         Buttons.Add(this);
     }
 
     // Overloaded constructors with different sets of parameters
-    public Button(string text, int yPosition, Action function) : this(ConsoleColor.White, text, yPosition, 0, function)
-    {
 
-    }
-    public Button(string text, int yPosition, int xPosition, Action function) : this(ConsoleColor.White, text, yPosition, xPosition, function)
-    {
+    public Button(string text, int yPosition, Window reference, string referenceSide, Action function) : 
+        this(ConsoleColor.White, text, yPosition, 0, reference, referenceSide, function) { }
+    public Button(string text, int yPosition, Window reference, Action function) :
+        this(ConsoleColor.White, text, yPosition, 0, reference, "top", function) { }
+    public Button(string text, int yPosition, int xPosition, Window reference, Action function) : 
+        this(ConsoleColor.White, text, yPosition, xPosition, reference, "top", function) { }
+    public Button(string text, int yPosition, int xPosition, Window reference, string referenceSide, Action function) :
+        this(ConsoleColor.White, text, yPosition, xPosition, reference, referenceSide, function) { }
+    public Button(ConsoleColor color, string text, int yPosition, int xPosition, Window reference, Action function) :
+        this(color, text, yPosition, xPosition, reference, "top", function) { }
+    public Button(ConsoleColor color, string text, int yPosition, Window reference, string referenceSide, Action function) :
+        this(color, text, yPosition, 0, reference, referenceSide, function) { }
+    public Button(ConsoleColor color, string text, int yPosition, Window reference, Action function) : 
+        this(color, text, yPosition, 0, reference, "top", function) { }
 
-    }
-    public Button(ConsoleColor color, string text, int yPosition, Action function) : this(color, text, yPosition, 0, function)
-    {
-
-    }
-
-    // Method to activate the button by calling its associated function and highlighting it
+    // Method to activate the button by calling its associated function
     public void Activate()
     {
-        Function();
-    }
-
-    // Method to highlight the button, update the _highlightStart field, and call Renderer.HighlightButton()
-    public void Highlight()
-    {
-        _highlightStart = DateTime.Now;
-        _highlighted = true;
-        Renderer.HighlightButton(this);
-    }
-
-    public bool IsHighLighted()
-    {
-        return _highlighted;
+        _function();
     }
 
     // Static method to remove a button from the static lists and set its reference to null
-    public static void RemoveButton(Button button)
+    private void Remove()
     {
-        int index = Buttons.IndexOf(button);
-        ButtonXLocations.RemoveAt(index);
-        ButtonYLocations.RemoveAt(index);
+        int index = Buttons.IndexOf(this);
         ButtonLocations.RemoveAt(index);
-        Buttons.Remove(button);
-        button = null;
+        Buttons.Remove(this);
     }
 
     // Static method to clear all buttons by removing them from the static lists and setting their references to null
@@ -91,7 +86,7 @@
         List<Button> tempButtons = new(Buttons);
         foreach (Button button in tempButtons)
         {
-            RemoveButton(button);
+            button.Remove();
         }
     }
 }

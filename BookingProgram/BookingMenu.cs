@@ -9,19 +9,28 @@ static class BookingMenu
     public static Plane CurrentPlane;
     public static int AmountOfSeatsReserved;
     public static string SingleOrRetour;
+    public static bool MenuUpdated;
     public static List<Seat> Seats = new();
     static void Main()
     {
-        Flight.Flights = JsonCommunicator.Read<Flight>("Flights.json");
-        Plane.Planes = JsonCommunicator.Read<Plane>("Planes.json");
-        ReservationDataPacket.Reservations = JsonCommunicator.Read<ReservationDataPacket>("reservations.json");
+        //Flight.Flights = JsonCommunicator.Read<Flight>("Flights.json");
+        //Plane.Planes = JsonCommunicator.Read<Plane>("Planes.json");
+        //ReservationDataPacket.Reservations = JsonCommunicator.Read<ReservationDataPacket>("reservations.json");
 
-        Console.Clear();
-        Console.CursorVisible = true;
+        //Console.Clear();
+        Console.CursorVisible = false;
+
         StartScreen();
         while (!Quit)
         {
             InputChecker.CheckInput();
+            Renderer.ShowWindows();
+            if (MenuUpdated)
+            {
+                InputChecker.JumpToButton(0);
+                MenuUpdated = false;
+            }
+            
         }
     }
     public static void StartScreen()
@@ -30,22 +39,27 @@ static class BookingMenu
         Renderer.Clear();
         ToASCIIArt.Write("Rotterdam");
         ToASCIIArt.Write("Airlines", 1);
-        Console.ForegroundColor = ConsoleColor.Green;
-        Button SignIn = new(ConsoleColor.Blue, "Sign up", 20, ()=> CreateAccount.userInfo());
-        Button login = new(ConsoleColor.Green, "Login", 21, () => UserLogin.Start());   
-        Button info = new(ConsoleColor.Magenta, "Info", 22, () => AirlineInfo());
-        Button exit = new(ConsoleColor.DarkRed, "Exit", 23, ()=> Quit = true);
-        Renderer.ShowButtons();
-        InputChecker.JumpToButton(0);
+        //Thread.Sleep(4000);
+        Console.Clear();
+        Window w1 = new(1, 0.6);
+        Button b5 = new("text", 0, w1, () => { });
+        Button b6 = new("test2", 0, 6, w1, () => { });
+        Button b1 = new(ConsoleColor.Blue, "Sign up", 3, w1, "bottom", ()=> CreateAccount.userInfo());
+        Button b2 = new(ConsoleColor.Green, "Login", 2, w1, "bottom", () => UserLogin.Start());   
+        Button b3 = new(ConsoleColor.Magenta, "Info", 1, w1, "bottom", () => AirlineInfo());
+        Button b4 = new(ConsoleColor.DarkRed, "Exit", 0, w1, "bottom", ()=> Quit = true);
+        Window w2 = new(1, 0.3, w1);
+        Window w3 = new(1, 0.1, w2);
+        MenuUpdated = true;    
     }
 
     public static void MainMenu()
     {
         Console.CursorVisible = false;
         Renderer.Clear();
-        Button browse = new(ConsoleColor.White, "Browse flights", 1,() => ClassReservationMenu());
-        Button history = new(ConsoleColor.White, "Flight history", 2, () => History());
-        Renderer.ShowButtons();
+        Button browse = new("Browse flights", 1, new Window(), () => ClassReservationMenu());
+        Button history = new("Flight history", 2, new Window(), () => History());
+        //Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
     }
     public static void ClassReservationMenu()
@@ -58,21 +72,21 @@ static class BookingMenu
 
         Renderer.Clear();
         Console.WriteLine("Select Class");
-        Button first = new(ConsoleColor.White, "First Class", 2, () => { ReservationChoice = "First";RetourOrSingle(); });
-        Button business = new(ConsoleColor.White, "Business Class", 3, () => { ReservationChoice = "Business";RetourOrSingle(); });
-        Button economy = new(ConsoleColor.White, "Economy Class", 4, () => { ReservationChoice = "Economy";RetourOrSingle(); });
-        Button back = new("back", 6, () => MainMenu());
-        Renderer.ShowButtons();
+        Button first = new("First Class", 2, new Window(), () => { ReservationChoice = "First";RetourOrSingle(); });
+        Button business = new("Business Class", 3, new Window(), () => { ReservationChoice = "Business";RetourOrSingle(); });
+        Button economy = new("Economy Class", 4, new Window(), () => { ReservationChoice = "Economy";RetourOrSingle(); });
+        Button back = new("back", 6, new Window(), () => MainMenu());
+        //Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
     }
     public static void RetourOrSingle()
     {
         Renderer.Clear();
         Console.WriteLine("Select if you want a retour flight or a single flight:\n");
-        Button Retour = new(ConsoleColor.White, "Retour", 2, () => {SingleOrRetour = "Retour"; SeatsReservationMenu(); }); 
-        Button Single = new(ConsoleColor.White, "Single", 3, () => {SingleOrRetour = "Single"; SeatsReservationMenu(); });
-        Button back = new("back", 6, () => ClassReservationMenu());
-        Renderer.ShowButtons();
+        Button Retour = new("Retour", 2, new Window(), () => {SingleOrRetour = "Retour"; SeatsReservationMenu(); }); 
+        Button Single = new("Single", 3, new Window(), () => {SingleOrRetour = "Single"; SeatsReservationMenu(); });
+        Button back = new("back", 6, new Window(), () => ClassReservationMenu());
+        //Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
     }
     public static void SeatsReservationMenu()
@@ -116,8 +130,8 @@ static class BookingMenu
         Renderer.ShowSeats(CurrentPlane.FirstClassSeats);
         Renderer.ShowSeats(CurrentPlane.BusinessClassSeats);
         Renderer.ShowSeats(CurrentPlane.EconomyClassSeats);
-        Button back = new("back", 12, () => SeatsReservationMenu());
-        Renderer.ShowButtons();
+        Button back = new("back", 12, new Window(), () => SeatsReservationMenu());
+        //Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
     }
 
@@ -139,8 +153,8 @@ static class BookingMenu
         Console.WriteLine("Your previous flights:\n");
         FlightToHistory.ViewHistory(UserLogin.ActiveUser);
         (int x, int y) = Console.GetCursorPosition();
-        Button back = new("back", y, 20, () => MainMenu());
-        Renderer.ShowButtons();
+        Button back = new("back", y, 20, new Window(), () => MainMenu());
+        //Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
     }
 
@@ -149,12 +163,12 @@ static class BookingMenu
         
         Button.Clear();
         Console.Clear();
-        Button button0 = new("Show Flights", 0, () => FlightListMenu());
-        Button button1 = new("Add flight", 1, () => AddFlightMenu());
-        Button button2 = new("Edit flights", 2, () => EditFlightMenu());
-        Button button3 = new("Remove Flights", 3, () => RemoveFlightMenu());
-        Button back = new("back", 6, () => UserLogin.Start());
-        Renderer.ShowButtons();
+        Button button0 = new("Show Flights", 0, new Window(), () => FlightListMenu());
+        Button button1 = new("Add flight", 1, new Window(), () => AddFlightMenu());
+        Button button2 = new("Edit flights", 2, new Window(), () => EditFlightMenu());
+        Button button3 = new("Remove Flights", 3, new Window(), () => RemoveFlightMenu());
+        Button back = new("back", 6, new Window(), () => UserLogin.Start());
+        //Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
     }
 
@@ -168,8 +182,8 @@ static class BookingMenu
             Console.WriteLine();
         }
         (int x, int y) = Console.GetCursorPosition();
-        Button back = new("back", y, () => AdminMenu());
-        Renderer.ShowButtons();
+        Button back = new("back", y, new Window(), () => AdminMenu());
+        //Renderer.ShowButtons();
     }
     public static void EditFlightMenu()
     {
@@ -222,18 +236,18 @@ static class BookingMenu
             if (f.ID == flightSearch.ID)
             {
                 Button.Clear();
-                Button yes = new("Yes", 2, () => {
+                Button yes = new("Yes", 2, new Window(), () => {
                     Flight.Flights.Remove(f);
                     JsonCommunicator.Write("Flights.json", Flight.Flights);
                     AdminMenu();
                 });
-                Button no = new("No", 3, () => { AdminMenu(); });
+                Button no = new("No", 3, new Window(), () => { AdminMenu(); });
                 break;
             }
         }
         Console.Clear();
         Console.WriteLine("Are you sure you want to delete this flight?:");
-        Renderer.ShowButtons();
+        //Renderer.ShowButtons();
         
     }
 
@@ -255,9 +269,8 @@ static class BookingMenu
         string email = "info@rotterdamairlines.com";
         Console.WriteLine($"Phone Number: {phoneNumber} \nE-mail: {email}");
         Console.ResetColor();
-        Button back = new("back", 12, () => StartScreen());
-        Renderer.ShowButtons();
+        Button back = new("back", 12, new Window(), () => StartScreen());
+        //Renderer.ShowButtons();
         InputChecker.JumpToButton(0);
     }
 }
-
