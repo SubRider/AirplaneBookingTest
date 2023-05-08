@@ -21,11 +21,17 @@ class Button
                                             case "bottom":
                                                 return _reference.ReferenceHeight + _reference.Height - 2 - RelativeYPosition;
                                             default:
-                                                return 0;
+                                                return _reference.ReferenceHeight + 1 + RelativeYPosition;
                                         }
                                     }
                                 }
-    public int TrueXPosition { get { return RelativeXPosition + 1; } }
+    public int TrueXPosition { get { switch (_referenceSide) 
+            {
+                case "left":
+                    return _reference.Width/_reference.Buttons.Count * RelativeXPosition + 1;
+                default:
+                    return RelativeXPosition + 1;
+        } } }
 
     // Properties to store button position and associated function
     public int RelativeYPosition { get; set; }
@@ -43,9 +49,8 @@ class Button
         _referenceSide = referenceSide;
 
         // Add button positions and instance to the static lists
-        int tempRelativeY = 0;
-        if (_referenceSide == "bottom") tempRelativeY = reference.Height - RelativeYPosition;
-        ButtonLocations.Add((RelativeXPosition, tempRelativeY));
+        ButtonLocations.Add((RelativeXPosition, RelativeYPosition));
+        _reference.Buttons.Add(this);
         Buttons.Add(this);
     }
 

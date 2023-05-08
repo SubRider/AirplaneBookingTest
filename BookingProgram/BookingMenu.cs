@@ -13,11 +13,10 @@ static class BookingMenu
     public static List<Seat> Seats = new();
     static void Main()
     {
-        //Flight.Flights = JsonCommunicator.Read<Flight>("Flights.json");
-        //Plane.Planes = JsonCommunicator.Read<Plane>("Planes.json");
-        //ReservationDataPacket.Reservations = JsonCommunicator.Read<ReservationDataPacket>("reservations.json");
+        Flight.Flights = JsonCommunicator.Read<Flight>("Flights.json");
+        Plane.Planes = JsonCommunicator.Read<Plane>("Planes.json");
+        ReservationDataPacket.Reservations = JsonCommunicator.Read<ReservationDataPacket>("reservations.json");
 
-        //Console.Clear();
         Console.CursorVisible = false;
 
         StartScreen();
@@ -27,11 +26,21 @@ static class BookingMenu
             Renderer.ShowWindows();
             if (MenuUpdated)
             {
+                
                 InputChecker.JumpToButton(0);
                 MenuUpdated = false;
             }
             
         }
+    }
+    public static void AddMenuBar(Window reference)
+    {
+        Window menuBar = new(1, 0.1, reference);
+        _ = new Button("Home", 0, 0, menuBar, "left", () => StartScreen());
+        _ = new Button("Book Flight", 0, 1, menuBar, "left", () => ClassReservationMenu());
+        _ = new Button("My Flights", 0, 2, menuBar, "left", () => History());
+        _ = new Button("Account", 0, 3, menuBar, "left", () => { });
+        _ = new Button("Info", 0, 4, menuBar, "left", () => AirlineInfo());
     }
     public static void StartScreen()
     {
@@ -41,15 +50,11 @@ static class BookingMenu
         ToASCIIArt.Write("Airlines", 1);
         //Thread.Sleep(4000);
         Console.Clear();
-        Window w1 = new(1, 0.6);
-        Button b5 = new("text", 0, w1, () => { });
-        Button b6 = new("test2", 0, 6, w1, () => { });
-        Button b1 = new(ConsoleColor.Blue, "Sign up", 3, w1, "bottom", ()=> CreateAccount.userInfo());
-        Button b2 = new(ConsoleColor.Green, "Login", 2, w1, "bottom", () => UserLogin.Start());   
-        Button b3 = new(ConsoleColor.Magenta, "Info", 1, w1, "bottom", () => AirlineInfo());
-        Button b4 = new(ConsoleColor.DarkRed, "Exit", 0, w1, "bottom", ()=> Quit = true);
-        Window w2 = new(1, 0.3, w1);
-        Window w3 = new(1, 0.1, w2);
+        Window w1 = new(1, 0.9);
+        _ = new Button(ConsoleColor.Blue, "Sign up", 2, w1, "bottom", ()=> CreateAccount.userInfo());
+        _ = new Button(ConsoleColor.Green, "Login", 1, w1, "bottom", () => UserLogin.Start());   
+        _ = new Button(ConsoleColor.DarkRed, "Exit", 0, w1, "bottom", ()=> Quit = true);
+        AddMenuBar(w1);
         MenuUpdated = true;    
     }
 
@@ -274,3 +279,5 @@ static class BookingMenu
         InputChecker.JumpToButton(0);
     }
 }
+
+

@@ -8,11 +8,13 @@
     private readonly double _xScale;
     private readonly double _yScale;
     private readonly Window? _reference;
+    private Window? _referencedBy;
     private readonly List<Button> _buttons = new();
     public int Width { get { return _width; } }
     public int Height { get { return _height; } }
     public Window? Reference { get { return _reference; } }
-    public int ReferenceHeight { get; set; }
+    public Window? ReferencedBy { get { return _referencedBy; } set { _referencedBy = value; } }
+    public int ReferenceHeight { get { return (_reference != null) ? _reference.Height + _reference.ReferenceHeight : 0; } private set { } }
     public List<Button> Buttons { get { return _buttons; } }
     public bool Updated { get; set; }
     
@@ -23,7 +25,7 @@
         _width = (int)(Console.WindowWidth * _xScale);
         _height = (int)(Console.WindowHeight * _yScale);
         _reference = reference;
-        ReferenceHeight = (_reference != null) ? _reference.Height + _reference.ReferenceHeight : 0;
+        if (_reference != null) _reference.ReferencedBy = this;
         Updated = true;
         if (keepObject) Windows.Add(this);
     }
