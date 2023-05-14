@@ -83,11 +83,13 @@ static class Renderer
         {
 
             if (Console.CursorLeft + word.Length >= window.Width - 1) Console.Write("\n║");
-            Console.Write(word + ' ');
+            if (word.Contains('^')) Console.Write("\n║");
+            else Console.Write(word + ' ');
+            
         }
     }
 
-    public static void ShowSeat(Seat seat)
+    public static void ShowSeat(Seat seat, Window window)
     {
         int offset = seat.SeatClass switch
         {
@@ -102,16 +104,16 @@ static class Renderer
             Console.Write(seat.RowNumber);
         }
 
-        Button button = new((seat.Booked) ? ConsoleColor.Red : ConsoleColor.Green, "■", seat.SeatNumber + 1, (seat.RowNumber - 1) * 3 + offset, new Window(), () => 
+        Button button = new((seat.Booked) ? ConsoleColor.Red : ConsoleColor.Green, "■", seat.SeatNumber + 1, (seat.RowNumber - 1) * 3 + offset, window, () => 
         {   seat.Booked = true;BookingMenu.Seats.Add(seat);
             if (BookingMenu.Seats.Count >= BookingMenu.AmountOfSeatsReserved) { BookingMenu.Reserving(); } } ); 
     }
 
-    public static void ShowSeats(List<Seat> seats)
+    public static void ShowSeats(List<Seat> seats, Window window)
     {
         foreach(Seat seat in seats) 
         {
-            ShowSeat(seat);
+            ShowSeat(seat, window);
         }
     }
 
@@ -156,15 +158,10 @@ static class Renderer
     {
         InputChecker.Clear();
         Window.Clear();
+        InputButton.Clear();
         Button.Clear();
         Console.ResetColor(); 
         Console.Clear();
     }
 
-    public static void Refresh()
-    {
-        InputChecker.Clear();
-        foreach (Button button in Button.Buttons.Where(b => b.KeepAfterRefresh = false)) button.Remove();
-        ClearLines();
-    }
 }

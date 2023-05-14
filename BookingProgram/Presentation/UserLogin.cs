@@ -1,13 +1,9 @@
 ﻿static class UserLogin
 {
-    static private AccountsLogic accountsLogic = new AccountsLogic();
-    public static AccountModel ActiveUser;
-
     public static void Start()
     {
         while (true)
         {
-            Console.CursorVisible = true;
             Console.Clear();
             Console.WriteLine("Welcome to the login page");
             Console.WriteLine("\nPlease enter your email address");
@@ -34,15 +30,14 @@
                 Console.Write(hiddenString);
             } 
 
-            ActiveUser = new AccountModel(0, email, password,"");
-            AccountModel acc = accountsLogic.CheckLogin(email, password);
-            if (acc != null)
+
+            AccountModel account = AccountLogic.CheckLogin(email, password);
+            if (account != null)
             {
-                Console.WriteLine("\nWelcome back " + acc.FullName);
-                ActiveUser = acc;
+                Console.WriteLine("\nWelcome back " + account.FullName);
                 Thread.Sleep(1000);
                 Console.CursorVisible = false;
-                BookingMenu.StartScreen();
+                BookingMenu.CurrentMenu();
                 break;
             }
             else

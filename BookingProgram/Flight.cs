@@ -21,24 +21,18 @@ class Flight : IHasID
         Flights.Add(this);
     }
 
-    public void GiveID()
+    public static Flight FindByID(int id)
     {
-        int id = 1;
+        return Flights.Find(f => f.ID == id);
+    }
 
-        var JsonText = File.ReadAllText("Flights.json");
-        var flights = JsonConvert.DeserializeObject<List<Flight>>(JsonText);
-        if (flights != null)
-        {
-            foreach (var flight in flights)
-            {
-                id++;
-                ID = id;
-            }
-        }
+    public int FindIndex()
+    {
+        return Flights.IndexOf(this);
     }
 
     public override string ToString()
     {
-        return $"Origin: {Origin} Destination: {Destination} ID: {ID}";
+        return $"ID: {ID} Origin: {Origin} Destination: {Destination} Departure date: {Date} Airplane ID: {AirplaneID} ";
     }
 }

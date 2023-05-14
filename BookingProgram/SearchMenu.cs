@@ -16,14 +16,15 @@ class SearchMenu<T> where T : IHasID
 
     public void Activate(List<(string searchCategory, string criterium)> criteria)
     {
-        Renderer.ClearLines();
         List<T> results = Find(criteria);
         Window w1 = Window.Windows[0];
         List<Button> tempButtons = new(Button.Buttons);
-        foreach (Button button in tempButtons.Where(b => b is not InputButton)) button.Remove();
+        foreach (Button button in tempButtons.Where(b => b is not InputButton && b.ReferenceSide != "bottom" && b.ReferenceSide != "left")) button.Remove();
+        int n = InputButton.InputButtons.Count + 1;
         foreach (T item in results)
         {
-            _ = new Button(item.ToString(), Button.Buttons.Count, w1, () => { BookingMenu.ResultID = item.ID; BookingMenu.NextMenu(); });
+            _ = new Button(item.ToString(), n, w1, () => { BookingMenu.ResultID = item.ID; BookingMenu.NextMenu(); });
+            n++;
         }
         Renderer.ShowButtons(w1);
     }

@@ -39,7 +39,7 @@ class Window
     public Window(double xScale, double yScale, bool keepObject) : this(xScale, yScale, null, "", keepObject) { }
     public Window(double xScale, double yScale) : this(xScale, yScale, null, "", true) { }
     public Window(Window reference, string text) : this(1, 1, reference, text, true) { }
-    public Window(): this(1, 1, null, "", true) { }
+    public Window(): this(1, 0.85, null, "", true) { }
 
     public void Update()
     {

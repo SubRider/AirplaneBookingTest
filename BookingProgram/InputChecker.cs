@@ -50,7 +50,7 @@ static class InputChecker
                     button.Input = button.Input.Remove(button.Input.Length - 1);
                     Renderer.ClearLine();
                     Renderer.ShowButton(button);
-                    BookingMenu.CurrentMenu();
+                    if (BookingMenu.CurrentMenu != null) BookingMenu.CurrentMenu();
                 }
 
             }
@@ -59,7 +59,7 @@ static class InputChecker
                 button.Input += input.KeyChar;
                 Console.SetCursorPosition(button.TrueXPosition, button.TrueYPosition);
                 Renderer.ShowButton(button);
-                BookingMenu.CurrentMenu();
+                if (BookingMenu.CurrentMenu != null) BookingMenu.CurrentMenu();
                 return;
             }
         }

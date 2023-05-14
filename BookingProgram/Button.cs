@@ -79,7 +79,7 @@
     }
 
     // Static method to remove a button from the static lists and set its reference to null
-    public void Remove()
+    public virtual void Remove()
     {
         int index = Buttons.IndexOf(this);
         ButtonLocations.RemoveAt(index);
