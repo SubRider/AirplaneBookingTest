@@ -11,9 +11,10 @@
     private readonly Window _reference;
     // Readonly properties for button text color and button text
     public ConsoleColor Color { get; }
-    public string Text { get; protected set; }
+    public virtual string Text { get; set; }
     public string ReferenceSide { get { return _referenceSide; } }
     public Window Reference { get { return _reference; } }
+    public bool KeepAfterRefresh { get; set; }
     public int TrueYPosition { get { switch (_referenceSide)
                                         {
                                             case "top":
@@ -78,7 +79,7 @@
     }
 
     // Static method to remove a button from the static lists and set its reference to null
-    private void Remove()
+    public void Remove()
     {
         int index = Buttons.IndexOf(this);
         ButtonLocations.RemoveAt(index);

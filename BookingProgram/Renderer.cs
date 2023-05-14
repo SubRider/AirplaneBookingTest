@@ -137,6 +137,21 @@ static class Renderer
         _selectedButton = button;     
     }
 
+    public static void ClearLine()
+    {
+        Console.SetCursorPosition(1, Console.CursorTop);
+        string wipeLine = new(' ', Console.WindowWidth - 2);
+        Console.Write(wipeLine);
+    }
+
+    public static void ClearLines()
+    {
+        for (int h = 1; h <= Console.WindowHeight * 0.85 - 2; h++)
+        {
+            Console.SetCursorPosition(1, h);
+            ClearLine();
+        }
+    }
     public static void Clear()
     {
         InputChecker.Clear();
@@ -144,5 +159,12 @@ static class Renderer
         Button.Clear();
         Console.ResetColor(); 
         Console.Clear();
+    }
+
+    public static void Refresh()
+    {
+        InputChecker.Clear();
+        foreach (Button button in Button.Buttons.Where(b => b.KeepAfterRefresh = false)) button.Remove();
+        ClearLines();
     }
 }

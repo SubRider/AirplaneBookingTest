@@ -36,4 +36,9 @@ class Flight : IHasID
             }
         }
     }
+
+    public override string ToString()
+    {
+        return $"Origin: {Origin} Destination: {Destination} ID: {ID}";
+    }
 }
