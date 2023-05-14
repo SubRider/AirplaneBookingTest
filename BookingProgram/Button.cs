@@ -78,6 +78,11 @@
         _function();
     }
 
+    public int FindIndex()
+    {
+        return Buttons.IndexOf(this);
+    }
+
     // Static method to remove a button from the static lists and set its reference to null
     public virtual void Remove()
     {

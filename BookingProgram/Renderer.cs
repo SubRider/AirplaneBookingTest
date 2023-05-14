@@ -57,36 +57,62 @@ static class Renderer
         }
     }
 
-    public static void ShowButton(Button button)
+    public static int ShowButton(Button button)
     {
-        if (button.TrueYPosition >= button.Reference.ReferenceHeight + button.Reference.Height - 1) return;
+        if (button.TrueYPosition >= button.Reference.ReferenceHeight + button.Reference.Height - 1) return button.FindIndex();
         Console.SetCursorPosition(button.TrueXPosition, button.TrueYPosition);
         Console.ForegroundColor = button.Color;
         Console.BackgroundColor = (button == _selectedButton) ? ConsoleColor.DarkBlue : ConsoleColor.Black;
         Console.Write(button.Text);
         Console.ResetColor();
+        return -1;
     }
 
-    public static void ShowButtons(Window window)
+    public static int ShowButtons(Window window)
     {
+        int finalIndex = -1;
         foreach (Button button in Button.Buttons.Where(b => b.Reference == window))
         {
-            ShowButton(button);
+            int index = ShowButton(button);
+            if (index != -1) finalIndex = index;
         }
+        return finalIndex;
     }
-    public static void ShowText(Window window)
+    public static void ShowText(Window window, string? text = null)
     {
-        if (window.Text == null) return;
+        text ??= window.Text;
+        if (text == null) return;
         Console.SetCursorPosition(1, 1);
-        string[] words = window.Text.Split(' ');
+        string[] words = text.Split(' ');
+        string writtenWords = "";
+        string wordOverflow = "";
         foreach (string word in words)
         {
-
+            if (Console.CursorTop >= window.Height - 5) { wordOverflow += word + " "; continue; }
             if (Console.CursorLeft + word.Length >= window.Width - 1) Console.Write("\n║");
-            if (word.Contains('^')) Console.Write("\n║");
-            else Console.Write(word + ' ');
+            else if (word.Contains('^')) Console.Write("\n║");
+            else { Console.Write(word + ' '); writtenWords += word + ' '; }
+        }
+        wordOverflow.Replace(writtenWords, "");
+        if (wordOverflow.Length > 0)
+        {
+            _ = new Button("Previous page", 1, window, "bottom", () =>
+            {
+                ClearLines();
+                window.PreviousText.Replace(writtenWords, "");
+                window.NextText += writtenWords;
+                ShowText(window, window.PreviousText);
+            });
+            _ = new Button("Next page", 0, window, "bottom", () => 
+            {
+                ClearLines();
+                window.PreviousText += writtenWords;
+                window.NextText = wordOverflow;
+                ShowText(window, window.NextText);
+            });
             
         }
+        ShowButtons(window);
     }
 
     public static void ShowSeat(Seat seat, Window window)

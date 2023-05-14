@@ -18,6 +18,8 @@ class Window
     public Window? Reference { get { return _reference; } }
     public Window? ReferencedBy { get { return _referencedBy; } set { _referencedBy = value; } }
     public string Text { get { return _text; } set { _text = value; } }
+    public string PreviousText { get; set; } = "";
+    public string NextText { get; set; } = "";
     public int ReferenceHeight { get { return (_reference != null) ? _reference.Height + _reference.ReferenceHeight : 0; } private set { } }
     public List<Button> Buttons { get { return _buttons; } }
     public bool Updated { get; set; }
