@@ -1,4 +1,6 @@
-﻿static class Renderer
+﻿using System.Collections.Generic;
+
+static class Renderer
 {
     private static Button? _selectedButton;
     public static Button? SelectedButton { get { return _selectedButton; } }
@@ -25,15 +27,14 @@
         Console.Write(border);
         if (Button.Buttons.Count > 0)
         {
-            _selectedButton ??= Button.Buttons[0];
+            
             ShowButtons(window);
             ShowText(window);
-            InputChecker.JumpToButton(_selectedButton);
         } 
         window.Updated = false;
     }
     public static void ShowWindows()
-    { 
+    {
         if (Window.Windows.Count > 0) 
         {
             Window.Windows[0].Update();
@@ -138,7 +139,7 @@
 
     public static void Clear()
     {
-        _selectedButton = null;
+        InputChecker.Clear();
         Window.Clear();
         Button.Clear();
         Console.ResetColor(); 

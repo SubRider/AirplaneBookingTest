@@ -17,23 +17,22 @@ static class BookingMenu
         Plane.Planes = JsonCommunicator.Read<Plane>("Planes.json");
         ReservationDataPacket.Reservations = JsonCommunicator.Read<ReservationDataPacket>("reservations.json");
 
-        Console.CursorVisible = false;
+        Console.CursorVisible = true;
         Renderer.Clear();
         ToASCIIArt.Write("Rotterdam");
         ToASCIIArt.Write("Airlines", 1);
-        Thread.Sleep(4000);
+        //Thread.Sleep(4000);
         StartScreen();
         while (!Quit)
         {
-            InputChecker.CheckInput();
             Renderer.ShowWindows();
+            InputChecker.CheckInput();
+            
             if (MenuUpdated)
-            {
-                
+            {   
                 InputChecker.JumpToButton(0);
                 MenuUpdated = false;
-            }
-            
+            } 
         }
     }
     public static void AddMenuBar(Window reference)
@@ -286,6 +285,7 @@ static class BookingMenu
         string email = "info@rotterdamairlines.com";
         w1.Text += $"║Phone Number: {phoneNumber} \n║E-mail: {email}";
         AddMenuBar(w1);
+        MenuUpdated = true;
     }
 }
 

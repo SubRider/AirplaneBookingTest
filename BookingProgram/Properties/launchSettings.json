@@ -2,7 +2,7 @@
   "profiles": {
     "BookingProgram": {
       "commandName": "Project",
-      "workingDirectory": "C:\\Users\\tomzu\\source\\repos\\AirplaneBooking\\BookingProgram"
+      "workingDirectory": "C:\\Users\\Tom\\source\\repos\\AirplaneBookingTest\\BookingProgram"
     }
   }
 }

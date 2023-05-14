@@ -1,27 +1,27 @@
-﻿using System.Reflection.Metadata.Ecma335;
-
-class Button
+﻿class Button
 {
     // Static lists to store positions and instances of all created buttons
-    public static List<(int x, int y)> ButtonLocations = new();
+    public static List<Func<(int x, int y)>> ButtonLocations = new();
     public static List<Button> Buttons = new();
 
+    private readonly int _relativeYPosition;
+    private readonly int _relativeXPosition;
     private readonly Action _function;
     private readonly string _referenceSide;
     private readonly Window _reference;
     // Readonly properties for button text color and button text
     public ConsoleColor Color { get; }
-    public string Text { get; }
+    public string Text { get; protected set; }
     public string ReferenceSide { get { return _referenceSide; } }
     public Window Reference { get { return _reference; } }
     public int TrueYPosition { get { switch (_referenceSide)
                                         {
                                             case "top":
-                                                return _reference.ReferenceHeight + 1 + RelativeYPosition;
+                                                return _reference.ReferenceHeight + 1 + _relativeYPosition;
                                             case "bottom":
-                                                return _reference.ReferenceHeight + _reference.Height - 2 - RelativeYPosition;
+                                                return _reference.ReferenceHeight + _reference.Height - 2 - _relativeYPosition;
                                             default:
-                                                return _reference.ReferenceHeight + 1 + RelativeYPosition;
+                                                return _reference.ReferenceHeight + 1 + _relativeYPosition;
                                         }
                                     }
                                 }
@@ -30,28 +30,26 @@ class Button
                 case "left":
                     int leftButtons = 0;
                     foreach (Button button in _reference.Buttons.Where(b => b.ReferenceSide == "left")) leftButtons++;
-                    return (_reference.Width/leftButtons) * RelativeXPosition + 1;
+                    if (leftButtons > 0) return (_reference.Width / leftButtons) * _relativeXPosition + 1;
+                    else return (_reference.Width * _relativeXPosition + 1);
                 default:
-                    return RelativeXPosition + 1;
+                    return _relativeXPosition + 1;
         } } }
-
-    // Properties to store button position and associated function
-    public int RelativeYPosition { get; set; }
-    public int RelativeXPosition { get; set; }
     
     // Main constructor for creating a button with all properties
     public Button(ConsoleColor color, string text, int yPosition, int xPosition, Window reference, string referenceSide, Action function)
     {
         Color = color;
         Text = text;
-        RelativeYPosition = yPosition;
-        RelativeXPosition = xPosition;
+        _relativeYPosition = yPosition;
+        _relativeXPosition = xPosition;
         _function = function;
         _reference = reference;
         _referenceSide = referenceSide;
 
         // Add button positions and instance to the static lists
-        ButtonLocations.Add((RelativeXPosition, RelativeYPosition));
+        Func<(int x, int y)> positionDelegate = () => (TrueXPosition, TrueYPosition);
+        ButtonLocations.Add(positionDelegate);
         _reference.Buttons.Add(this);
         Buttons.Add(this);
     }
