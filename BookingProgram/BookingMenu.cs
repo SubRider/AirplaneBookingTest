@@ -1,4 +1,6 @@
-﻿static class BookingMenu
+﻿using System;
+using System.Globalization;
+static class BookingMenu
 {
     public static bool Quit = false;
     public static string ReservationChoice;
@@ -315,19 +317,26 @@
             {
                 try 
                 { 
+                    DateTime DepartureDate = DateTime.Parse(departureDate.Input);
+                    DateTime ArrivalDate = DateTime.Parse(departureDate.Input);
                     Convert.ToInt32(airplaneID.Input);
                     _ = new Flight(origin.Input, destination.Input, departureDate.Input, Convert.ToInt32(airplaneID.Input));
                     JsonCommunicator.Write("Flights.json", Flight.Flights);
-                    AdminMenu();
+                    AdminMenu(); 
                 }
                 catch 
                 {
                     Console.SetCursorPosition(1, 6);
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("Invalid input of airplaneID (only numbers)");
+                    Console.Write("Invalid input");
                     Thread.Sleep(1200);
                     Console.ResetColor();
+                    origin.Input = "";
+                    destination.Input = "";
+                    departureDate.Input = "";
+                    arrivalDate.Input = "";
                     airplaneID.Input = "";
+
                     Renderer.ClearLines();
                     Renderer.ShowButtons(w1);
                 }
