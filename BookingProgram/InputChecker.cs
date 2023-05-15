@@ -32,7 +32,11 @@ static class InputChecker
         {
             if (_selectedButton == null)
             {
-                _selectedButton = Button.Buttons[0];
+                foreach (Button button in Button.Buttons.Where(b => b.Selectable == true)) 
+                { 
+                    _selectedButton = button;
+                    break;
+                }
                 JumpToButton(_selectedButton);
             }
         }

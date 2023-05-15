@@ -90,7 +90,7 @@ static class Renderer
         {
             if (Console.CursorTop >= window.Height - 5) { wordOverflow += word + " "; continue; }
             if (Console.CursorLeft + word.Length >= window.Width - 1) Console.Write("\n║");
-            else if (word.Contains('^')) Console.Write("\n║");
+            else if (word.Contains('^')) { Console.Write("\n║"); writtenWords += "^ "; }
             else { Console.Write(word + ' '); writtenWords += word + ' '; }
         }
         wordOverflow.Replace(writtenWords, "");

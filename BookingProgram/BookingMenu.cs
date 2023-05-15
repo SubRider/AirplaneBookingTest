@@ -19,7 +19,7 @@
         AccountLogic.Accounts = JsonCommunicator.Read<AccountModel>("Accounts.json");
         ReservationModel.Reservations = JsonCommunicator.Read<ReservationModel>("reservations.json");
 
-        Console.CursorVisible = true;
+        Console.CursorVisible = false;
         Renderer.Clear();
         ToASCIIArt.Write("Rotterdam");
         ToASCIIArt.Write("Airlines", 1);
@@ -68,7 +68,7 @@
         {
             
             _ = new Button(ConsoleColor.Blue, "Sign up", 2, w1, "bottom", () => AccountLogic.CreateAccount(false));
-            _ = new Button(ConsoleColor.Green, "Login", 1, w1, "bottom", () => UserLogin.Start());
+            _ = new Button(ConsoleColor.Green, "Sign in", 1, w1, "bottom", () => UserLogin.Start());
             _ = new Button(ConsoleColor.DarkRed, "Exit", 0, w1, "bottom", () => Quit = true);
         }
         else
@@ -76,7 +76,7 @@
             w1.Text +=  $"Info:\n║Name: {AccountLogic.CurrentAccount.FullName}\n" +
                         $"║Email Adress: {AccountLogic.CurrentAccount.EmailAddress}\n" +
                         $"║Phone Number:";
-            _ = new Button("Delete Account", 3, w1, "bottom", () => { });
+            //_ = new Button("Delete Account", 3, w1, "bottom", () => { });
         }
         
         AddMenuBar(w1);
@@ -191,8 +191,9 @@
         if (AccountLogic.CurrentAccount == null)
         {
             w1.Text += "You are not logged in. Please log in or fill in your email below.";
-            _ = new Button("Login", 1, w1, () => UserLogin.Start());
-            InputButton email = new("Email", 2, w1, () => Reserving());
+            _ = new Button("Sign up", 1, w1, () => AccountLogic.CreateAccount(false));
+            _ = new Button("Sign in", 2, w1, () => UserLogin.Start());
+            //InputButton email = new("Email", 2, w1, () => Reserving());
         }
         else
         {
@@ -330,9 +331,9 @@
                     Renderer.ClearLines();
                     Renderer.ShowButtons(w1);
                 }
-
-
             });
+            AddAdminMenuBar(w1);
+            MenuUpdated = true;
         }
     }
 
