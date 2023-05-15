@@ -97,7 +97,7 @@ static class InputChecker
                 {
                     _cursorTop = newLocation;
                     _cursorLeft = _selectedButton.TrueXPosition;
-                    newButton = Button.Buttons[index];
+                    newButton = Button.Buttons.Find(b => b.TrueXPosition == _cursorLeft && b.TrueYPosition == _cursorTop);
                 }
             }
             else if (input.Key == ConsoleKey.S || input.Key == ConsoleKey.DownArrow)
@@ -125,9 +125,10 @@ static class InputChecker
                 }
                 if (index != -1)
                 {
+
                     _cursorTop = newLocation;
                     _cursorLeft = _selectedButton.TrueXPosition;
-                    newButton = Button.Buttons[index];
+                    newButton = Button.Buttons.Find(b => b.TrueXPosition == _cursorLeft && b.TrueYPosition == _cursorTop);
                 }
             }
             else if (input.Key == ConsoleKey.A || input.Key == ConsoleKey.LeftArrow)
@@ -149,7 +150,7 @@ static class InputChecker
                 {
                     _cursorTop = _selectedButton.TrueYPosition;
                     _cursorLeft = newLocation;
-                    newButton = Button.Buttons[index];
+                    newButton = Button.Buttons.Find(b => b.TrueXPosition == _cursorLeft && b.TrueYPosition == _cursorTop);
                 }
             }
             else if (input.Key == ConsoleKey.D || input.Key == ConsoleKey.RightArrow)
@@ -170,7 +171,7 @@ static class InputChecker
                 {
                     _cursorTop = _selectedButton.TrueYPosition;
                     _cursorLeft = newLocation;
-                    newButton = Button.Buttons[index];
+                    newButton = Button.Buttons.Find(b => b.TrueXPosition == _cursorLeft && b.TrueYPosition == _cursorTop);
                 }
             }
         }
@@ -197,12 +198,31 @@ static class InputChecker
     {
         _selectedButton = null;
     }
-    public static void JumpToButton(int index) => Console.SetCursorPosition(Button.Buttons[index].TrueXPosition, Button.Buttons[index].TrueYPosition);
+    public static void JumpToButton(int index) 
+    { 
+        JumpToButton(Button.Buttons[index]);
+    }
 
     public static void JumpToButton(Button? button)
     {
         if (button == null) return;
-        Console.SetCursorPosition(button.TrueXPosition, button.TrueYPosition);
-        Renderer.HighlightButton(button);
+        if (button.Selectable)
+        {
+            Console.SetCursorPosition(button.TrueXPosition, button.TrueYPosition);
+            Renderer.HighlightButton(button);
+            return;
+        }
+        else 
+        {
+            foreach (Button b in Button.Buttons) 
+            {
+                if (b.Selectable) 
+                {
+                    Console.SetCursorPosition(b.TrueXPosition, b.TrueYPosition);
+                    Renderer.HighlightButton(b);
+                    return;
+                }
+            } 
+        }  
     }
 }

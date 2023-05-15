@@ -24,6 +24,8 @@
                 JsonCommunicator.Write("Accounts.json", Accounts);
                 BookingMenu.NextMenu();
             });
+            BookingMenu.AddMenuBar(w1);
+
         }
         else { }
     }

@@ -10,11 +10,12 @@
     private readonly string _referenceSide;
     private readonly Window _reference;
     // Readonly properties for button text color and button text
-    public ConsoleColor Color { get; }
+    public ConsoleColor Color { get; set; }
     public virtual string Text { get; set; }
     public string ReferenceSide { get { return _referenceSide; } }
     public Window Reference { get { return _reference; } }
     public bool KeepAfterRefresh { get; set; }
+    public bool Selectable { get; set; }
     public int TrueYPosition { get { switch (_referenceSide)
                                         {
                                             case "top":
@@ -36,9 +37,9 @@
                 default:
                     return _relativeXPosition + 1;
         } } }
-    
+
     // Main constructor for creating a button with all properties
-    public Button(ConsoleColor color, string text, int yPosition, int xPosition, Window reference, string referenceSide, Action function)
+    public Button(ConsoleColor color, string text, int yPosition, int xPosition, Window reference, string referenceSide, Action function, bool selectable = true)
     {
         Color = color;
         Text = text;
@@ -47,10 +48,11 @@
         _function = function;
         _reference = reference;
         _referenceSide = referenceSide;
+        Selectable = selectable;
 
         // Add button positions and instance to the static lists
         Func<(int x, int y)> positionDelegate = () => (TrueXPosition, TrueYPosition);
-        ButtonLocations.Add(positionDelegate);
+        if (Selectable) ButtonLocations.Add(positionDelegate);
         _reference.Buttons.Add(this);
         Buttons.Add(this);
     }
@@ -61,8 +63,14 @@
         this(ConsoleColor.White, text, yPosition, 0, reference, referenceSide, function) { }
     public Button(string text, int yPosition, Window reference, Action function) :
         this(ConsoleColor.White, text, yPosition, 0, reference, "top", function) { }
+    public Button(string text, int yPosition, Window reference, Action function, bool selectable) :
+        this(ConsoleColor.White, text, yPosition, 0, reference, "top", function, selectable)
+    { }
     public Button(string text, int yPosition, int xPosition, Window reference, Action function) : 
         this(ConsoleColor.White, text, yPosition, xPosition, reference, "top", function) { }
+    public Button(string text, int yPosition, int xPosition, Window reference, Action function, bool selectable) :
+    this(ConsoleColor.White, text, yPosition, xPosition, reference, "top", function, selectable)
+    { }
     public Button(string text, int yPosition, int xPosition, Window reference, string referenceSide, Action function) :
         this(ConsoleColor.White, text, yPosition, xPosition, reference, referenceSide, function) { }
     public Button(ConsoleColor color, string text, int yPosition, int xPosition, Window reference, Action function) :
@@ -82,12 +90,20 @@
     {
         return Buttons.IndexOf(this);
     }
+    public int FindLocationIndex()
+    {
+        return ButtonLocations.FindIndex(positionDelegate =>
+        {
+            (int x, int y) position = positionDelegate.Invoke();
+            return position.x == TrueXPosition && position.y == TrueYPosition;
+        });
+    }
 
     // Static method to remove a button from the static lists and set its reference to null
     public virtual void Remove()
     {
         int index = Buttons.IndexOf(this);
-        ButtonLocations.RemoveAt(index);
+        if (Selectable) ButtonLocations.RemoveAt(FindLocationIndex());
         Buttons.Remove(this);
     }
 

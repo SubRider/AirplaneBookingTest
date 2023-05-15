@@ -24,4 +24,8 @@ class Seat
         Booked = false;
     }
 
+    public override string ToString()
+    {
+        return $"Row: {RowNumber} Seat: {SeatLetter}";
+    }
 }

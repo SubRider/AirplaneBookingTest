@@ -117,22 +117,31 @@ static class Renderer
 
     public static void ShowSeat(Seat seat, Window window)
     {
-        int offset = seat.SeatClass switch
-        {
-            "First" => 0,
-            "Business" => 1,
-            "Economy" => 2
-        } ;
+        
         if (seat.SeatNumber == 1)
         {
-            Console.SetCursorPosition((seat.RowNumber - 1) * 3 + offset, 0);
+            Console.SetCursorPosition((seat.RowNumber - 1) * 3 + 2, 0);
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write(seat.RowNumber);
+            _ = new Button($"{seat.RowNumber}",seat.SeatNumber, (seat.RowNumber - 1) * 3 + 2, window, () => { }, false);
         }
-
-        Button button = new((seat.Booked) ? ConsoleColor.Red : ConsoleColor.Green, "■", seat.SeatNumber + 1, (seat.RowNumber - 1) * 3 + offset, window, () => 
-        {   seat.Booked = true;BookingMenu.Seats.Add(seat);
-            if (BookingMenu.Seats.Count >= BookingMenu.AmountOfSeatsReserved) { BookingMenu.Reserving(); } } ); 
+        Button button = default;
+        button = new((seat.Booked) ? ConsoleColor.Red : ConsoleColor.Green, "■", seat.SeatNumber + 1, (seat.RowNumber - 1) * 3 + 2, window, () =>
+        { 
+            if (!seat.Booked)
+            {
+                seat.Booked = true; BookingMenu.Seats.Add(seat);
+                button.Color = ConsoleColor.Blue;
+                ShowButton(button);
+                if (BookingMenu.Seats.Count >= BookingMenu.AmountOfSeatsReserved) { BookingMenu.Reserving(); }
+            }
+            else if (BookingMenu.Seats.Contains(seat))
+            {
+                seat.Booked = false; BookingMenu.Seats.Remove(seat);
+                button.Color = ConsoleColor.Green;
+                ShowButton(button);
+            }
+            
+        });
     }
 
     public static void ShowSeats(List<Seat> seats, Window window)
