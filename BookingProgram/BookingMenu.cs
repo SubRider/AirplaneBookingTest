@@ -36,6 +36,7 @@
                 MenuUpdated = false;
             }
         }
+        Console.Clear();
     }
     public static void AddMenuBar(Window reference)
     {
@@ -445,19 +446,24 @@
     {
         Renderer.Clear();
         Window w1 = new(1, 0.85);
-        //Console.ForegroundColor = ConsoleColor.Magenta;
-        w1.Text += "About ^";
-        //Console.ForegroundColor = ConsoleColor.Yellow;
-        w1.Text += "Welcome to our airline!" +
-                    "We are a company dedicated to providing exceptional travel experiences to our passengers. " +
-                    "Our goal is to take you to your destination safely, comfortably, and on time. " +
-                    "With a team of experienced pilots, friendly cabin crew, and state-of-the-art aircraft, " +
-                    "we strive to make your journey enjoyable from start to finish. " +
-                    "Whether you're traveling for business or pleasure, " +
-                    "we look forward to welcoming you on board and taking you to your next adventure. ^";
+        // Console.ForegroundColor = ConsoleColor.Magenta;
+        w1.Text += " About ^" +
+                    " -------- ^" +
+                    " ^";
+        // Console.ForegroundColor = ConsoleColor.Yellow;
+        w1.Text +=  " Welcome to our airline! ^" +
+                    " ^" +
+                    " We are a company dedicated to providing exceptional travel experiences to our passengers." +
+                    " Our goal is to take you to your destination safely, comfortably, and on time. ^" +
+                    " With a team of experienced pilots, friendly cabin crew, and state-of-the-art aircraft," +
+                    " we strive to make your journey enjoyable from start to finish. ^" +
+                    " Whether you're traveling for business or pleasure," +
+                    " we look forward to welcoming you on board and taking you to your next adventure. ^" +
+                    " ^" +
+                    " ^";
         string phoneNumber = "010 546 7465";
         string email = "info@rotterdamairlines.com";
-        w1.Text += $" Phone Number: {phoneNumber} ^ E-mail: {email}";
+        w1.Text += $" Phone Number:  {phoneNumber} ^ E-mail:        {email}";
         AddMenuBar(w1);
         MenuUpdated = true;
     }
