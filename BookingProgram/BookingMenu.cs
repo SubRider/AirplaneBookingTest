@@ -1,4 +1,6 @@
-﻿static class BookingMenu
+﻿using System;
+using System.Globalization;
+static class BookingMenu
 {
     public static bool Quit = false;
     public static string ReservationChoice;
@@ -36,6 +38,7 @@
                 MenuUpdated = false;
             }
         }
+        Console.Clear();
     }
     public static void AddMenuBar(Window reference)
     {
@@ -45,6 +48,7 @@
         _ = new Button("My Flights", 0, 2, menuBar, "left", () => History());
         _ = new Button("Account", 0, 3, menuBar, "left", () => AccountMenu());
         _ = new Button("Info", 0, 4, menuBar, "left", () => AirlineInfo());
+        _ = new Button("Cal", 0, 5, menuBar, "left", () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year));
     }
     public static void StartScreen()
     {
@@ -315,19 +319,26 @@
             {
                 try 
                 { 
+                    DateTime DepartureDate = DateTime.Parse(departureDate.Input);
+                    DateTime ArrivalDate = DateTime.Parse(departureDate.Input);
                     Convert.ToInt32(airplaneID.Input);
                     _ = new Flight(origin.Input, destination.Input, departureDate.Input, Convert.ToInt32(airplaneID.Input));
                     JsonCommunicator.Write("Flights.json", Flight.Flights);
-                    AdminMenu();
+                    AdminMenu(); 
                 }
                 catch 
                 {
                     Console.SetCursorPosition(1, 6);
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("Invalid input of airplaneID (only numbers)");
+                    Console.Write("Invalid input");
                     Thread.Sleep(1200);
                     Console.ResetColor();
+                    origin.Input = "";
+                    destination.Input = "";
+                    departureDate.Input = "";
+                    arrivalDate.Input = "";
                     airplaneID.Input = "";
+
                     Renderer.ClearLines();
                     Renderer.ShowButtons(w1);
                 }
@@ -445,22 +456,56 @@
     {
         Renderer.Clear();
         Window w1 = new(1, 0.85);
-        //Console.ForegroundColor = ConsoleColor.Magenta;
-        w1.Text += "About ^";
-        //Console.ForegroundColor = ConsoleColor.Yellow;
-        w1.Text += "Welcome to our airline!" +
-                    "We are a company dedicated to providing exceptional travel experiences to our passengers. " +
-                    "Our goal is to take you to your destination safely, comfortably, and on time. " +
-                    "With a team of experienced pilots, friendly cabin crew, and state-of-the-art aircraft, " +
-                    "we strive to make your journey enjoyable from start to finish. " +
-                    "Whether you're traveling for business or pleasure, " +
-                    "we look forward to welcoming you on board and taking you to your next adventure. ^";
+        // Console.ForegroundColor = ConsoleColor.Magenta;
+        w1.Text += " \u001b[96mAbout\u001b[0m ^" +
+                    " \u001b[96m--------\u001b[0m ^" +
+                    " ^";
+        // Console.ForegroundColor = ConsoleColor.Yellow;
+        w1.Text +=  " Welcome to our airline! ^" +
+                    " ^" +
+                    " We are a company dedicated to providing exceptional travel experiences to our passengers." +
+                    " Our goal is to take you to your destination safely, comfortably, and on time. ^" +
+                    " With a team of experienced pilots, friendly cabin crew, and state-of-the-art aircraft," +
+                    " we strive to make your journey enjoyable from start to finish. ^" +
+                    " Whether you're traveling for business or pleasure," +
+                    " we look forward to welcoming you on board and taking you to your next adventure. ^" +
+                    " ^" +
+                    " ^";
         string phoneNumber = "010 546 7465";
         string email = "info@rotterdamairlines.com";
-        w1.Text += $" Phone Number: {phoneNumber} ^ E-mail: {email}";
+        w1.Text += $" Phone Number:  {phoneNumber} ^ E-mail:        {email}";
+
+        AddMenuBar(w1);
+        MenuUpdated = true;
+    }
+
+    public static void CalendarMenu(int month, int year)
+    {
+        int minYear = 1;
+        int maxYear = 9999;
+
+        Renderer.Clear();
+        Window w1 = new(1, 0.85);
+        w1.Text += $" {Calendar.PrintCal(year, month, minYear, maxYear)}";
+        
+        if (month == 12)
+        {
+            _ = new Button("Previous", 1, 1, w1, "bottom", () => CalendarMenu(month - 1, year));
+            _ = new Button("Next", 1, 40, w1, "bottom", () => CalendarMenu(1, year + 1));
+        }
+        else if (month == 1)
+        {
+            _ = new Button("Previous", 1, 1, w1, "bottom", () => CalendarMenu(12, year - 1));
+            _ = new Button("Next", 1, 40, w1, "bottom", () => CalendarMenu(month + 1, year));
+        }
+        else 
+        {
+            _ = new Button("Previous", 1, 1, w1, "bottom", () => CalendarMenu(month - 1, year));
+            _ = new Button("Next", 1, 40, w1, "bottom", () => CalendarMenu(month + 1, year));
+        }
+
+        // Menubar does not work?
         AddMenuBar(w1);
         MenuUpdated = true;
     }
 }
-
-
