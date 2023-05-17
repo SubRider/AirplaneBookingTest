@@ -457,8 +457,8 @@ static class BookingMenu
         Renderer.Clear();
         Window w1 = new(1, 0.85);
         // Console.ForegroundColor = ConsoleColor.Magenta;
-        w1.Text += " About ^" +
-                    " -------- ^" +
+        w1.Text += " \u001b[96mAbout\u001b[0m ^" +
+                    " \u001b[96m--------\u001b[0m ^" +
                     " ^";
         // Console.ForegroundColor = ConsoleColor.Yellow;
         w1.Text +=  " Welcome to our airline! ^" +
@@ -474,6 +474,7 @@ static class BookingMenu
         string phoneNumber = "010 546 7465";
         string email = "info@rotterdamairlines.com";
         w1.Text += $" Phone Number:  {phoneNumber} ^ E-mail:        {email}";
+
         AddMenuBar(w1);
         MenuUpdated = true;
     }
@@ -502,6 +503,8 @@ static class BookingMenu
             _ = new Button("Previous", 1, 1, w1, "bottom", () => CalendarMenu(month - 1, year));
             _ = new Button("Next", 1, 40, w1, "bottom", () => CalendarMenu(month + 1, year));
         }
+
+        // Menubar does not work?
         AddMenuBar(w1);
         MenuUpdated = true;
     }

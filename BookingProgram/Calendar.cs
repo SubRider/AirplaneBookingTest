@@ -29,12 +29,12 @@ static class Calendar
 
         // print calendar
         string calendar = "\n";
-        calendar += $"    {(new DateTime(DateTime.Now.Year, month, 1).ToString("MMMM")).ToUpper()}, {year}\n\n" +
-                    "   |   Mo   Tu   We   Th   Fr   Sa   Su\n" +
-                    "   |-------------------------------------\n";
+        calendar += $"║   {(new DateTime(DateTime.Now.Year, month, 1).ToString("MMMM")).ToUpper()}, {year}\n\n" +
+                    "║  |   Mo   Tu   We   Th   Fr   Sa   Su\n" +
+                    "║  |-------------------------------------\n";
         for (int i = 0; i < 6; i++)
         {
-            calendar += "   |";
+            calendar += "║  |";
             for (int j = 1 - firstDay; j < 8 - firstDay; j++)
             {
                 // check for current day
@@ -80,41 +80,8 @@ static class Calendar
                     calendar += $"   {j + (7 * i)}";
                 }
             }
-            calendar += "\n   |\n";
+            calendar += "\n║  |\n";
         }
-        return $" {calendar}";
+        return $" {calendar}║";
     }
-
-    // public static string PageControl(string nextOrPrev, int month, int year, int minYear, int maxYear)
-    // {
-    //     if (nextOrPrev == "Current")
-    //     {
-    //         return PrintCal(year, month, minYear, maxYear);
-    //     }
-    //     else if (nextOrPrev == "Next" && month < 12)
-    //     {
-    //         return PrintCal(year, month + 1, minYear, maxYear);
-    //     }
-    //     else if (nextOrPrev == "Prev" && month > 1)
-    //     {
-    //         return PrintCal(year, month - 1, minYear, maxYear);
-    //     }
-    //     else if (nextOrPrev == "Next" && month == 12)
-    //     {
-    //         return PrintCal(year + 1, 1, minYear, maxYear);
-    //     }
-    //     else if (nextOrPrev == "Prev" && month == 1)
-    //     {
-    //         return PrintCal(year - 1, 12, minYear, maxYear);
-    //     }
-    //     return "Invalid choice";
-        // else if (key == ConsoleKey.UpArrow && year < maxYear)
-        // {
-        //     PrintCal(year + 1, month, minYear, maxYear);
-        // }
-        // else if (key == ConsoleKey.DownArrow && year > minYear)
-        // {
-        //     PrintCal(year - 1, month, minYear, maxYear);
-        // }
-    // }
 }
