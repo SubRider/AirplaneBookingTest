@@ -183,7 +183,7 @@ static class BookingMenu
         }
 
         _ = new Button("Yes", AmountOfSeatsReserved + 2, w1, () => Reserving());
-        _ = new Button ("No", AmountOfSeatsReserved + 3, w1, () => SeatsReservationMenu());
+        _ = new Button ("No", AmountOfSeatsReserved + 3, w1, () => SeatMenu());
         AddMenuBar(w1);
         MenuUpdated = true;
     }
