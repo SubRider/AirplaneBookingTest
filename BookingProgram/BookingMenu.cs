@@ -172,6 +172,22 @@ static class BookingMenu
         MenuUpdated = true;
     }
 
+    public static void ConfirmationMenu()
+    {
+        Renderer.Clear();
+        Window w1 = new();
+        w1.Text += "Are you sure you want to book the following seats?";
+        foreach (Seat seat in Seats)
+        {
+            w1.Text += $" ^ {seat}";
+        }
+
+        _ = new Button("Yes", AmountOfSeatsReserved + 2, w1, () => Reserving());
+        _ = new Button ("No", AmountOfSeatsReserved + 3, w1, () => SeatsReservationMenu());
+        AddMenuBar(w1);
+        MenuUpdated = true;
+    }
+
     public static void SeatMenu()
     {
         

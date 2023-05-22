@@ -56,6 +56,6 @@ class Airplane
 
     public override string ToString()
     {
-        return $"Model: {Model} ID: {ID}";
+        return $"ID: {ID} Model: {Model}";
     }
 }

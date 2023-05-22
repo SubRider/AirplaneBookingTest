@@ -129,10 +129,11 @@ static class Renderer
         { 
             if (!seat.Booked)
             {
+                if (BookingMenu.Seats.Count >= BookingMenu.AmountOfSeatsReserved) { BookingMenu.ConfirmationMenu(); return;}
                 seat.Booked = true; BookingMenu.Seats.Add(seat);
                 button.Color = ConsoleColor.Blue;
                 ShowButton(button);
-                if (BookingMenu.Seats.Count >= BookingMenu.AmountOfSeatsReserved) { BookingMenu.Reserving(); }
+                if (BookingMenu.Seats.Count >= BookingMenu.AmountOfSeatsReserved) { BookingMenu.ConfirmationMenu(); }
             }
             else if (BookingMenu.Seats.Contains(seat))
             {
