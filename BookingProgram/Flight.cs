@@ -8,13 +8,15 @@ class Flight : IHasID
     public int ID { get; set; }
     public string Origin { get; set; }
     public string Destination { get; set; }
-    public string Date { get; set; }
+    public string DepartureDate { get; set; }
+    public string ArrivalDate { get; set; }
     public int AirplaneID { get; set; }
 
-    public Flight(string origin, string destination, string date, int airplaneID)
+    public Flight(string origin, string destination, string departureDate, string arrivalDate, int airplaneID)
     {
         Origin = origin;
-        Date = date;
+        DepartureDate = departureDate;
+        ArrivalDate = arrivalDate;
         Destination = destination;
         AirplaneID = airplaneID;
         ID = Flights.Count;
@@ -33,6 +35,7 @@ class Flight : IHasID
 
     public override string ToString()
     {
-        return $"ID: {ID} Origin: {Origin} Destination: {Destination} Departure date: {Date} Airplane ID: {AirplaneID} ";
+        return $"ID: {ID} Origin: {Origin} Destination: {Destination} Departure date: {DepartureDate} " +
+               $"Arrival date: {ArrivalDate} Airplane ID: {AirplaneID} ";
     }
 }

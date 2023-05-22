@@ -312,8 +312,8 @@ static class BookingMenu
             Window w1 = new();
             InputButton origin = new("Origin", 0, w1);
             InputButton destination = new("Destination", 1, w1);
-            InputButton departureDate = new("Departure", 2, w1);
-            InputButton arrivalDate = new("Arrival", 3, w1);
+            InputButton departureDate = new("Departure date", 2, w1);
+            InputButton arrivalDate = new("Arrival date", 3, w1);
             InputButton airplaneID = new("Airplane ID", 4, w1);
             _ = new Button("Confirm edit", 6, w1, () =>
             {
@@ -322,7 +322,7 @@ static class BookingMenu
                     DateTime DepartureDate = DateTime.Parse(departureDate.Input);
                     DateTime ArrivalDate = DateTime.Parse(departureDate.Input);
                     Convert.ToInt32(airplaneID.Input);
-                    _ = new Flight(origin.Input, destination.Input, departureDate.Input, Convert.ToInt32(airplaneID.Input));
+                    _ = new Flight(origin.Input, destination.Input, departureDate.Input, arrivalDate.Input, Convert.ToInt32(airplaneID.Input));
                     JsonCommunicator.Write("Flights.json", Flight.Flights);
                     AdminMenu(); 
                 }
