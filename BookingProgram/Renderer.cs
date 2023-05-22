@@ -125,23 +125,24 @@ static class Renderer
             _ = new Button($"{seat.RowNumber}",seat.SeatNumber, (seat.RowNumber - 1) * 3 + 2, window, () => { }, false);
         }
         Button button = default;
-        button = new((seat.Booked) ? ConsoleColor.Red : ConsoleColor.Green, "■", seat.SeatNumber + 1, (seat.RowNumber - 1) * 3 + 2, window, () =>
-        { 
-            if (!seat.Booked)
+        button = new((seat.Booked) ? ConsoleColor.Red : (seat.Selected) ? ConsoleColor.Blue : ConsoleColor.Green, "■", seat.SeatNumber + 1, (seat.RowNumber - 1) * 3 + 2, window, () =>
+        {
+            if (!seat.Booked && !seat.Selected)
             {
-                if (BookingMenu.Seats.Count >= BookingMenu.AmountOfSeatsReserved) { BookingMenu.ConfirmationMenu(); return;}
-                seat.Booked = true; BookingMenu.Seats.Add(seat);
+                if (BookingMenu.Seats.Count >= BookingMenu.AmountOfSeatsReserved) { BookingMenu.ConfirmationMenu(); return; }
+                BookingMenu.Seats.Add(seat);
+                seat.Selected = true;
                 button.Color = ConsoleColor.Blue;
                 ShowButton(button);
                 if (BookingMenu.Seats.Count >= BookingMenu.AmountOfSeatsReserved) { BookingMenu.ConfirmationMenu(); }
             }
             else if (BookingMenu.Seats.Contains(seat))
             {
-                seat.Booked = false; BookingMenu.Seats.Remove(seat);
+                BookingMenu.Seats.Remove(seat);
+                seat.Selected = false;
                 button.Color = ConsoleColor.Green;
                 ShowButton(button);
             }
-            
         });
     }
 

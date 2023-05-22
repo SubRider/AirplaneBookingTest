@@ -8,6 +8,7 @@ class Seat
     public char SeatLetter { get; set; }
     public int SeatNumber { get; set; }
     public bool Booked { get; set; }
+    public bool Selected { get; set; }
 
     public Seat()
     {
@@ -22,6 +23,7 @@ class Seat
         SeatNumber = seatNumber;
         SeatLetter = seatLetters[seatNumber-1];
         Booked = false;
+        Selected = false;
     }
 
     public override string ToString()

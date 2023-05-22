@@ -193,7 +193,6 @@ static class BookingMenu
         
         Renderer.Clear();
         Window w1 = new(1, 0.85);
-        Seats = new();
         if (ReservationChoice == "First") Renderer.ShowSeats(CurrentPlane.FirstClassSeats, w1);
         else if (ReservationChoice == "Business") Renderer.ShowSeats(CurrentPlane.BusinessClassSeats, w1);
         else Renderer.ShowSeats(CurrentPlane.EconomyClassSeats, w1);
@@ -217,10 +216,15 @@ static class BookingMenu
         }
         else
         {
+            foreach (Seat seat in Seats) seat.Booked = true;
             _ = new ReservationModel(Seats, FlightID, AccountLogic.CurrentAccount.Id);
             JsonCommunicator.Write("Reservations.json", ReservationModel.Reservations);
             Console.WriteLine("Successfully Reserved.");
             JsonCommunicator.Write("Airplanes.json", Airplane.Planes);
+
+            Seats = new();
+            AmountOfSeatsReserved = 0;
+
             Thread.Sleep(700);
             StartScreen();
         }
