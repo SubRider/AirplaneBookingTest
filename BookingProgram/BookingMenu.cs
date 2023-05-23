@@ -281,7 +281,24 @@ static class BookingMenu
         Window w1 = new();
         foreach (Flight flight in Flight.Flights) w1.Text += $"{flight} ^ ";
         AddAdminMenuBar(w1);
-        MenuUpdated = true;
+        _ = new Button("Search", 32, 0, w1, "left", () => FlightListMenuSearch(false));
+    }
+
+    public static void FlightListMenuSearch(bool loop)
+    {
+        if (!loop)
+        {
+            Renderer.Clear();
+            CurrentMenu = () => FlightSearchMenu(true);
+            Window w1 = new(1, 0.85);
+            InputButton origin = new("Origin", 0, w1);
+            InputButton destination = new("Destination", 1, w1);
+            AddMenuBar(w1);
+            MenuUpdated = true;
+        }
+        if (loop) Renderer.ClearLines();
+        SearchMenu<Flight> flightSearch = new(Flight.Flights);
+        flightSearch.Activate(new() { ("Origin", InputButton.InputButtons[0].Input), ("Destination", InputButton.InputButtons[1].Input) });
     }
     public static void AirplaneListMenu()
     {
