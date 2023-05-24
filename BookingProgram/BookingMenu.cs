@@ -285,7 +285,7 @@ static class BookingMenu
             Window w1 = new(1, 0.85);
             InputButton origin = new("Origin", 0, w1);
             InputButton destination = new("Destination", 1, w1);
-            AddMenuBar(w1);
+            AddAdminMenuBar(w1);
             MenuUpdated = true;
         }
         if (loop) Renderer.ClearLines();
