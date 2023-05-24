@@ -30,11 +30,12 @@ static class Calendar
         // print calendar
         string calendar = "\n";
         calendar += $"║   {(new DateTime(DateTime.Now.Year, month, 1).ToString("MMMM")).ToUpper()}, {year}\n\n" +
-                    "║  |   Mo   Tu   We   Th   Fr   Sa   Su\n" +
-                    "║  |-------------------------------------\n";
+                    "║  ┌──────────────────────────────────────┐\n" +
+                    "║  │   Mo   Tu   We   Th   Fr   Sa   Su   │\n" +
+                    "║  ├──────────────────────────────────────┤\n";
         for (int i = 0; i < 6; i++)
         {
-            calendar += "║  |";
+            calendar += "║  │";
             for (int j = 1 - firstDay; j < 8 - firstDay; j++)
             {
                 // check for current day
@@ -80,8 +81,9 @@ static class Calendar
                     calendar += $"   {j + (7 * i)}";
                 }
             }
-            calendar += "\n║  |\n";
+            calendar += "\n║  │\n";
         }
-        return $" {calendar}║";
+        calendar += "║  └──────────────────────────────────────";
+        return $" {calendar}";
     }
 }

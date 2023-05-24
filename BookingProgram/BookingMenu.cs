@@ -527,20 +527,20 @@ static class BookingMenu
         
         if (month == 12)
         {
-            _ = new Button("Previous", 1, 1, w1, "bottom", () => CalendarMenu(month - 1, year));
-            _ = new Button("Next", 1, 40, w1, "bottom", () => CalendarMenu(1, year + 1));
+            Button previous = new("Previous", 0, w1, "bottom", () => CalendarMenu(month - 1, year));
+            Button next = new("Next", 1, w1, "bottom", () => CalendarMenu(1, year + 1));
         }
         else if (month == 1)
         {
-            _ = new Button("Previous", 1, 1, w1, "bottom", () => CalendarMenu(12, year - 1));
-            _ = new Button("Next", 1, 40, w1, "bottom", () => CalendarMenu(month + 1, year));
+            Button previous = new("Previous", 0, w1, "bottom", () => CalendarMenu(12, year - 1));
+            Button next = new("Next", 1, w1, "bottom", () => CalendarMenu(month + 1, year));
+
         }
         else 
         {
-            _ = new Button("Previous", 1, 1, w1, "bottom", () => CalendarMenu(month - 1, year));
-            _ = new Button("Next", 1, 40, w1, "bottom", () => CalendarMenu(month + 1, year));
+            Button previous = new("Previous", 0, w1, "bottom", () => CalendarMenu(month - 1, year));
+            Button next = new("Next", 1, w1, "bottom", () => CalendarMenu(month + 1, year));
         }
-
         // Menubar does not work?
         AddMenuBar(w1);
         MenuUpdated = true;
