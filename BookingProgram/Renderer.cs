@@ -96,14 +96,14 @@ static class Renderer
         wordOverflow.Replace(writtenWords, "");
         if (wordOverflow.Length > 0)
         {
-            _ = new Button("Previous page", 1, window, "bottom", () =>
+            _ = new Button("Previous page", 2, window, "bottom", () =>
             {
                 ClearLines();
                 window.PreviousText.Replace(writtenWords, "");
                 window.NextText += writtenWords;
                 ShowText(window, window.PreviousText);
             });
-            _ = new Button("Next page", 0, window, "bottom", () => 
+            _ = new Button("Next page", 1, window, "bottom", () => 
             {
                 ClearLines();
                 window.PreviousText += writtenWords;

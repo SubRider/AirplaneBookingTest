@@ -259,7 +259,7 @@ static class BookingMenu
     public static void AddAdminMenuBar(Window reference)
     {
         Window menuBar = new(1, 0.15, reference);
-        _ = new Button("Show flights", 0, 0, menuBar, "left", () => FlightListMenu());
+        _ = new Button("Show flights", 0, 0, menuBar, "left", () => DisplayFlights(false));
         _ = new Button("Show Airplanes", 0, 1, menuBar, "left", () => AirplaneListMenu());
         _ = new Button("Add flights", 0, 2, menuBar, "left", () => AddFlightMenu(false));
         _ = new Button("Add Airplanes", 0, 3, menuBar, "left", () => AddAirplaneMenu());
@@ -275,21 +275,13 @@ static class BookingMenu
         MenuUpdated = true;
     }
 
-    public static void FlightListMenu()
-    {
-        Renderer.Clear();
-        Window w1 = new();
-        foreach (Flight flight in Flight.Flights) w1.Text += $"{flight} ^ ";
-        AddAdminMenuBar(w1);
-        _ = new Button("Search", 32, 0, w1, "left", () => FlightListMenuSearch(false));
-    }
 
-    public static void FlightListMenuSearch(bool loop)
+    public static void DisplayFlights(bool loop)
     {
         if (!loop)
         {
             Renderer.Clear();
-            CurrentMenu = () => FlightSearchMenu(true);
+            CurrentMenu = () => DisplayFlights(true);
             Window w1 = new(1, 0.85);
             InputButton origin = new("Origin", 0, w1);
             InputButton destination = new("Destination", 1, w1);
