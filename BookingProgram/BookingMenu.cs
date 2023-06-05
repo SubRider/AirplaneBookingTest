@@ -139,13 +139,16 @@ static class BookingMenu
             Window w1 = new(1, 0.85);
             InputButton origin = new("Origin", 0, w1);
             InputButton destination = new("Destination", 1, w1);
+            Button departure = new("Departure", 2, w1, () => CalendarMenu(Convert.ToInt32(DateTime.Now.Date), Convert.ToInt32(DateTime.Now.Year)));
+            Button arival = new("Arrival", 3, w1, () => CalendarMenu(Convert.ToInt32(DateTime.Now.Date), Convert.ToInt32(DateTime.Now.Year)));
+
             AddMenuBar(w1);
             MenuUpdated = true;
         }
         if (loop) Renderer.ClearLines();
         SearchMenu<Flight> flightSearch = new(Flight.Flights);
         flightSearch.Activate(new() { ("Origin", InputButton.InputButtons[0].Input), ("Destination", InputButton.InputButtons[1].Input) });
-    
+
     }
 
     public static void ClassReservationMenu()
@@ -331,6 +334,7 @@ static class BookingMenu
         _ = new Button("Add Airplanes", 0, 3, menuBar, "left", () => AddAirplaneMenu());
         _ = new Button("Edit flights", 0, 4, menuBar, "left", () => EditFlightMenu(false));
         _ = new Button("Remove flights", 0, 5, menuBar, "left", () => RemoveFlightMenu(false));
+        _ = new Button("Dashboard", 0, 6, menuBar, "left", () => Dashboard());
     }
     public static void AdminMenu()
     {
@@ -529,6 +533,24 @@ static class BookingMenu
         flightSearch.Activate(new() { ("Origin", InputButton.InputButtons[0].Input), ("Destination", InputButton.InputButtons[1].Input), ("ID", InputButton.InputButtons[2].Input) });
     }
 
+    public static void Dashboard()
+    {
+        Renderer.Clear();
+        Window w1 = new();
+        int AmountofFlightsReserved = 0;
+        int AmountofAirplanes = 0;
+        foreach (ReservationModel reservation in ReservationModel.Reservations)
+        {
+            AmountofFlightsReserved += 1;
+        }
+        foreach (Airplane airplane in Airplane.Planes)
+        {
+            AmountofAirplanes += 1;
+        }
+        w1.Text = $"Amount of flights booked: {AmountofFlightsReserved}\n║Amount of seats booked: {AmountOfSeatsReserved}\n║Amount of airplanes: {AmountofAirplanes}\n║Amount of revenue: $";
+
+        AddAdminMenuBar(w1);
+    }
     public static void ConfirmDeletionMenu()
     {
         Renderer.Clear();
@@ -585,21 +607,21 @@ static class BookingMenu
         
         if (month == 12)
         {
-            Button previous = new("Previous", 0, w1, "bottom", () => CalendarMenu(month - 1, year));
-            Button next = new("Next", 1, w1, "bottom", () => CalendarMenu(1, year + 1));
+            Button previous = new("Previous", 2, w1, "bottom", () => CalendarMenu(month - 1, year));
+            Button next = new("Next", 2, 40, w1, "bottom", () => CalendarMenu(1, year + 1));
         }
         else if (month == 1)
         {
-            Button previous = new("Previous", 0, w1, "bottom", () => CalendarMenu(12, year - 1));
-            Button next = new("Next", 1, w1, "bottom", () => CalendarMenu(month + 1, year));
+            Button previous = new("Previous", 2, w1, "bottom", () => CalendarMenu(12, year - 1));
+            Button next = new("Next", 2, 40, w1, "bottom", () => CalendarMenu(month + 1, year));
 
         }
         else 
         {
-            Button previous = new("Previous", 0, w1, "bottom", () => CalendarMenu(month - 1, year));
-            Button next = new("Next", 1, w1, "bottom", () => CalendarMenu(month + 1, year));
+            Button previous = new("Previous", 2, w1, "bottom", () => CalendarMenu(month - 1, year));
+            Button next = new("Next", 2, 40, w1, "bottom", () => CalendarMenu(month + 1, year));
         }
-        // Menubar does not work?
+        _ = new Button("back", 0, w1, "bottom", () => FlightSearchMenu(false));
         AddMenuBar(w1);
         MenuUpdated = true;
     }
