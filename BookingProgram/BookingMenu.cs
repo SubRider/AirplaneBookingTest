@@ -334,6 +334,7 @@ static class BookingMenu
         _ = new Button("Add Airplanes", 0, 3, menuBar, "left", () => AddAirplaneMenu());
         _ = new Button("Edit flights", 0, 4, menuBar, "left", () => EditFlightMenu(false));
         _ = new Button("Remove flights", 0, 5, menuBar, "left", () => RemoveFlightMenu(false));
+        _ = new Button("Dashboard", 0, 6, menuBar, "left", () => Dashboard());
     }
     public static void AdminMenu()
     {
@@ -532,6 +533,24 @@ static class BookingMenu
         flightSearch.Activate(new() { ("Origin", InputButton.InputButtons[0].Input), ("Destination", InputButton.InputButtons[1].Input), ("ID", InputButton.InputButtons[2].Input) });
     }
 
+    public static void Dashboard()
+    {
+        Renderer.Clear();
+        Window w1 = new();
+        int AmountofFlightsReserved = 0;
+        int AmountofAirplanes = 0;
+        foreach (ReservationModel reservation in ReservationModel.Reservations)
+        {
+            AmountofFlightsReserved += 1;
+        }
+        foreach (Airplane airplane in Airplane.Planes)
+        {
+            AmountofAirplanes += 1;
+        }
+        w1.Text = $"Amount of flights booked: {AmountofFlightsReserved}\n║Amount of seats booked: {AmountOfSeatsReserved}\n║Amount of airplanes: {AmountofAirplanes}\n║Amount of revenue: $";
+
+        AddAdminMenuBar(w1);
+    }
     public static void ConfirmDeletionMenu()
     {
         Renderer.Clear();
