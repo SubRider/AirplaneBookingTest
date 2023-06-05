@@ -97,13 +97,16 @@ static class BookingMenu
             Window w1 = new(1, 0.85);
             InputButton origin = new("Origin", 0, w1);
             InputButton destination = new("Destination", 1, w1);
+            Button departure = new("Departure", 2, w1, () => CalendarMenu(Convert.ToInt32(DateTime.Now.Date), Convert.ToInt32(DateTime.Now.Year)));
+            Button arival = new("Arrival", 3, w1, () => CalendarMenu(Convert.ToInt32(DateTime.Now.Date), Convert.ToInt32(DateTime.Now.Year)));
+
             AddMenuBar(w1);
             MenuUpdated = true;
         }
         if (loop) Renderer.ClearLines();
         SearchMenu<Flight> flightSearch = new(Flight.Flights);
         flightSearch.Activate(new() { ("Origin", InputButton.InputButtons[0].Input), ("Destination", InputButton.InputButtons[1].Input) });
-    
+
     }
 
     public static void ClassReservationMenu()
@@ -543,21 +546,21 @@ static class BookingMenu
         
         if (month == 12)
         {
-            Button previous = new("Previous", 0, w1, "bottom", () => CalendarMenu(month - 1, year));
-            Button next = new("Next", 1, w1, "bottom", () => CalendarMenu(1, year + 1));
+            Button previous = new("Previous", 2, w1, "bottom", () => CalendarMenu(month - 1, year));
+            Button next = new("Next", 2, 40, w1, "bottom", () => CalendarMenu(1, year + 1));
         }
         else if (month == 1)
         {
-            Button previous = new("Previous", 0, w1, "bottom", () => CalendarMenu(12, year - 1));
-            Button next = new("Next", 1, w1, "bottom", () => CalendarMenu(month + 1, year));
+            Button previous = new("Previous", 2, w1, "bottom", () => CalendarMenu(12, year - 1));
+            Button next = new("Next", 2, 40, w1, "bottom", () => CalendarMenu(month + 1, year));
 
         }
         else 
         {
-            Button previous = new("Previous", 0, w1, "bottom", () => CalendarMenu(month - 1, year));
-            Button next = new("Next", 1, w1, "bottom", () => CalendarMenu(month + 1, year));
+            Button previous = new("Previous", 2, w1, "bottom", () => CalendarMenu(month - 1, year));
+            Button next = new("Next", 2, 40, w1, "bottom", () => CalendarMenu(month + 1, year));
         }
-        // Menubar does not work?
+        _ = new Button("back", 0, w1, "bottom", () => FlightSearchMenu(false));
         AddMenuBar(w1);
         MenuUpdated = true;
     }
