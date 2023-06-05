@@ -16,6 +16,7 @@
     public Window Reference { get { return _reference; } }
     public bool KeepAfterRefresh { get; set; }
     public bool Selectable { get; set; }
+    public bool Visible { get; set; }
     public int TrueYPosition { get { switch (_referenceSide)
                                         {
                                             case "top":
@@ -49,6 +50,7 @@
         _reference = reference;
         _referenceSide = referenceSide;
         Selectable = selectable;
+        Visible = true;
 
         // Add button positions and instance to the static lists
         Func<(int x, int y)> positionDelegate = () => (TrueXPosition, TrueYPosition);

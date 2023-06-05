@@ -59,13 +59,22 @@ static class Renderer
 
     public static int ShowButton(Button button)
     {
-        if (button.TrueYPosition >= button.Reference.ReferenceHeight + button.Reference.Height - 1) return button.FindIndex();
-        Console.SetCursorPosition(button.TrueXPosition, button.TrueYPosition);
-        Console.ForegroundColor = button.Color;
-        Console.BackgroundColor = (button == _selectedButton) ? ConsoleColor.DarkBlue : ConsoleColor.Black;
-        Console.Write(button.Text);
-        Console.ResetColor();
-        return -1;
+        bool inWindow = button.TrueYPosition < button.Reference.ReferenceHeight + button.Reference.Height - 1;
+        if (inWindow)
+        {
+            Console.SetCursorPosition(button.TrueXPosition, button.TrueYPosition);
+            Console.ForegroundColor = button.Color;
+            Console.BackgroundColor = (button == _selectedButton) ? ConsoleColor.DarkBlue : ConsoleColor.Black;
+            Console.Write(button.Text);
+            Console.ResetColor();
+            return -1;
+        }
+        else 
+        {
+            button.Visible = false;
+            return button.FindIndex();
+        }
+        
     }
 
     public static int ShowButtons(Window window)
@@ -156,6 +165,7 @@ static class Renderer
 
     public static void HighlightButton(Button button, bool dehilight = false)
     {
+        if (!button.Visible) return;
         if (dehilight)
         {
             Console.BackgroundColor = ConsoleColor.Black;

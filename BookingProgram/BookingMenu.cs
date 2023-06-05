@@ -23,7 +23,7 @@ static class BookingMenu
         AccountLogic.Accounts = JsonCommunicator.Read<AccountModel>("Accounts.json");
         ReservationModel.Reservations = JsonCommunicator.Read<ReservationModel>("reservations.json");
 
-        Console.CursorVisible = false;
+        Console.CursorVisible = true;
         Renderer.Clear();
         ToASCIIArt.Write("Rotterdam");
         ToASCIIArt.Write("Airlines", 1);

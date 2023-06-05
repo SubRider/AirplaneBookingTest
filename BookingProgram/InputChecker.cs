@@ -1,7 +1,4 @@
-﻿using System;
-
-
-static class InputChecker
+﻿static class InputChecker
 {
     private static int _cursorLeft;
     private static int _cursorTop;
@@ -93,6 +90,7 @@ static class InputChecker
                     }
                     index = Button.ButtonLocations.FindIndex(positionDelegate =>
                     {
+                        
                         (int x, int y) position = positionDelegate.Invoke();
                         return position.x == _selectedButton.TrueXPosition && position.y == newLocation;
                     });
@@ -102,6 +100,16 @@ static class InputChecker
                     _cursorTop = newLocation;
                     _cursorLeft = _selectedButton.TrueXPosition;
                     newButton = Button.Buttons.Find(b => b.TrueXPosition == _cursorLeft && b.TrueYPosition == _cursorTop);
+                    if (!newButton.Visible)
+                    {
+                        Window reference = _selectedButton.Reference.Reference;
+                        if (reference != null && reference.Buttons.Count > 0)
+                        {
+                            newButton = reference.Buttons.Where(b => b.Visible).ToList()[^1];
+                            Renderer.HighlightButton(_selectedButton, true);
+                            JumpToButton(newButton);
+                        }
+                    }
                 }
             }
             else if (input.Key == ConsoleKey.S || input.Key == ConsoleKey.DownArrow)
@@ -117,7 +125,7 @@ static class InputChecker
                         if (reference != null && reference.Buttons.Count > 0)
                         {
                             Renderer.HighlightButton(_selectedButton, true);
-                            JumpToButton(_selectedButton.Reference.ReferencedBy.Buttons[0]);
+                            JumpToButton(reference.Buttons[0]);
                         }
                         break;
                     }
@@ -129,10 +137,19 @@ static class InputChecker
                 }
                 if (index != -1)
                 {
-
                     _cursorTop = newLocation;
                     _cursorLeft = _selectedButton.TrueXPosition;
                     newButton = Button.Buttons.Find(b => b.TrueXPosition == _cursorLeft && b.TrueYPosition == _cursorTop);
+                    if (!newButton.Visible)
+                    {
+                        Window reference = _selectedButton.Reference.ReferencedBy;
+                        if (reference != null && reference.Buttons.Count > 0)
+                        {
+                            newButton = reference.Buttons[0];
+                            Renderer.HighlightButton(_selectedButton, true);
+                            JumpToButton(newButton);
+                        }
+                    }
                 }
             }
             else if (input.Key == ConsoleKey.A || input.Key == ConsoleKey.LeftArrow)
@@ -183,7 +200,7 @@ static class InputChecker
         {
 
         }
-        Console.SetCursorPosition(_cursorLeft, _cursorTop);
+        //Console.SetCursorPosition(_cursorLeft, _cursorTop);
         
 
         // Highlight the button at the current cursor position
@@ -212,7 +229,6 @@ static class InputChecker
         if (button == null) return;
         if (button.Selectable)
         {
-            Console.SetCursorPosition(button.TrueXPosition, button.TrueYPosition);
             Renderer.HighlightButton(button);
             return;
         }
