@@ -49,6 +49,7 @@ static class BookingMenu
         _ = new Button("Account", 0, 3, menuBar, "left", () => AccountMenu());
         _ = new Button("Info", 0, 4, menuBar, "left", () => AirlineInfo());
         _ = new Button("Cal", 0, 5, menuBar, "left", () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year));
+        _ = new Button("Cancel", 0, 6, menuBar, "left", () => CancelFlight());
     }
     public static void StartScreen()
     {
@@ -250,6 +251,29 @@ static class BookingMenu
                     {
                         w1.Text += ($"{seat} ^ ");
                     }
+                }
+            }
+        }
+        AddMenuBar(w1);
+        MenuUpdated = true;
+    }
+
+    public static void CancelFlight()
+    {
+        Renderer.Clear();
+        CurrentMenu = () => CancelFlight();
+        Window w1 = new(1, 0.85);
+        int count = 2;
+        if (AccountLogic.CurrentAccount == null) w1.Text += "You are not logged in";
+        else
+        {
+            foreach (ReservationModel reservation in ReservationModel.Reservations)
+            {
+                if (reservation.CustomerID == AccountLogic.CurrentAccount.Id)
+                {
+                    Flight flight = Flight.FindByID(reservation.FlightID);
+                    Button FlightButton = new Button($"{flight}", count, w1, "left", () => reservation.RemoveFlight(ReservationModel.Reservations, reservation.FlightID));
+                    count =+ 1;
                 }
             }
         }
