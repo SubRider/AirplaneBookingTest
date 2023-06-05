@@ -1,7 +1,7 @@
 ﻿class InputButton: Button
 {
     public static List<InputButton> InputButtons = new();
-    private string _inputName;
+    private readonly string _inputName;
     private string _input;
     public override string Text { get { return _inputName + ": " + _input; } set { _input = value; } }
     public string Input { get { return _input; } set { _input = value; } }

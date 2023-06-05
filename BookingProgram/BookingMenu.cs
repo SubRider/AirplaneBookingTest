@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Globalization;
+using System.Xml.Linq;
+
 static class BookingMenu
 {
     public static bool Quit = false;
@@ -73,7 +75,7 @@ static class BookingMenu
         {
             
             _ = new Button(ConsoleColor.Blue, "Sign up", 2, w1, "bottom", () => AccountLogic.CreateAccount(false));
-            _ = new Button(ConsoleColor.Green, "Sign in", 1, w1, "bottom", () => UserLogin.Start());
+            _ = new Button(ConsoleColor.Green, "Sign in", 1, w1, "bottom", () => LoginMenu(false));
             _ = new Button(ConsoleColor.DarkRed, "Exit", 0, w1, "bottom", () => Quit = true);
         }
         else
@@ -86,6 +88,46 @@ static class BookingMenu
         
         AddMenuBar(w1);
         MenuUpdated = true;
+    }
+
+    public static void LoginMenu(bool loop)
+    {
+        if (!loop)
+        {
+            Renderer.Clear();
+            Window w1 = new();
+            CurrentMenu = () => LoginMenu(true);
+            NextMenu = () => StartScreen();
+            InputButton email = new("Email", 0, w1);
+            InputButton password = new("Password", 1, w1);
+            _ = new Button("Continue", 3, w1, () =>
+            {
+                if (email.Input == "admin") { AdminMenu(); return; }
+                AccountModel account = AccountLogic.CheckLogin(email.Input, password.Input);
+                if (account != null)
+                {
+                    Console.SetCursorPosition(1, 5);
+                    Console.WriteLine("Welcome back " + account.FullName);
+                    Thread.Sleep(1000);
+                    NextMenu();
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.SetCursorPosition(1, 5);
+                    Console.WriteLine("Incorrect email or password");
+                    Thread.Sleep(700);
+                    Console.SetCursorPosition(1, 5);
+                    Console.WriteLine("                                  ");
+                }
+                
+            });
+            AddMenuBar(w1);
+        }
+        
+
+
+
     }
     public static void FlightSearchMenu(bool loop)
     {      
@@ -212,7 +254,7 @@ static class BookingMenu
         {
             w1.Text += "You are not logged in. Please log in or fill in your email below.";
             _ = new Button("Sign up", 1, w1, () => AccountLogic.CreateAccount(false));
-            _ = new Button("Sign in", 2, w1, () => UserLogin.Start());
+            _ = new Button("Sign in", 2, w1, () => LoginMenu(false));
             //InputButton email = new("Email", 2, w1, () => Reserving());
         }
         else
