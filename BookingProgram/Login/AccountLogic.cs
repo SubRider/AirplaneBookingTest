@@ -1,4 +1,6 @@
-﻿static class AccountLogic
+﻿using Newtonsoft.Json.Linq;
+
+static class AccountLogic
 {
     public static List<AccountModel> Accounts { get; set; } = new();
     static public AccountModel? CurrentAccount { get; private set; }
@@ -15,19 +17,43 @@
             InputButton name = new("Full name", 1, w1);
             InputButton password = new("Password", 2, w1);
             InputButton confirmPassword = new("Confirm password", 3, w1);
+            
             int ID = Accounts.Count;
             _ = new Button("Continue", 5, w1, () =>
             {
-                AccountModel account = new(ID, email.Input, password.Input, name.Input);
-                Accounts.Add(account);
-                CurrentAccount = account;
-                JsonCommunicator.Write("Accounts.json", Accounts);
-                BookingMenu.NextMenu();
+                if (email.Input.Length <= 0 || name.Input.Length <= 0 || password.Input.Length <= 0 ||
+                    confirmPassword.Input.Length <= 0)
+                {
+                    Console.SetCursorPosition(1, 8);
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Please fill ensure all fields are filled");
+                    Thread.Sleep(700);
+                    Console.SetCursorPosition(1, 8);
+                    Console.WriteLine("                                            ");
+                }
+                else
+                {
+                    if (password.Input != confirmPassword.Input)
+                    {
+                        Console.SetCursorPosition(1, 8);
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Make sure the passwords are the same");
+                        Thread.Sleep(700);
+                        Console.SetCursorPosition(1, 8);
+                        Console.WriteLine("                                            ");
+                    }
+                    else
+                    {
+                        AccountModel account = new(ID, email.Input, password.Input, name.Input);
+                        Accounts.Add(account);
+                        CurrentAccount = account;
+                        JsonCommunicator.Write("Accounts.json", Accounts);
+                        BookingMenu.NextMenu();
+                    }
+                }
             });
-            BookingMenu.AddMenuBar(w1);
-
+                BookingMenu.AddMenuBar(w1);
         }
-        else { }
     }
 
     public static AccountModel GetById(int id)
