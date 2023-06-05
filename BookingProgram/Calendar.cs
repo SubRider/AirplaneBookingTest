@@ -41,12 +41,12 @@ static class Calendar
                 // check for current day
                 if (month == currentMonth && year == currentYear && j + (7 * i) == currentDay && j + (7 * i) < 10)
                 {
-                    calendar += $"   [{j + (7 * i)}]";
+                    calendar += $"  [{j + (7 * i)}]";
                     continue;
                 } 
                 else if (month == currentMonth && year == currentYear && j + (7 * i) == currentDay && j + (7 * i) >= 10 && j + (7 * i) <= lastDayOfMonth)
                 {
-                    calendar += $"  [{j + (7 * i)}]";
+                    calendar += $" [{j + (7 * i)}]";
                     continue;
                 }
 
@@ -81,9 +81,9 @@ static class Calendar
                     calendar += $"   {j + (7 * i)}";
                 }
             }
-            calendar += "\n║  │\n";
+            calendar += "   │\n║  │                                      │\n";
         }
-        calendar += "║  └──────────────────────────────────────";
+        calendar += "║  └──────────────────────────────────────┘";
         return $" {calendar}";
     }
 }
