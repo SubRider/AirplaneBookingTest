@@ -139,7 +139,7 @@ static class BookingMenu
             InputButton origin = new("Origin", 0, w1);
             InputButton destination = new("Destination", 1, w1);
             InputButton departureInput = new("Departure (press enter to see calendar)", 2, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year));
-            InputButton arivalInput = new("Arival (press enter to see calendar)", 3, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year));
+            InputButton arivalInput = new("Arrival (press enter to see calendar)", 3, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year));
             // Button departure = new("Departure", 2, w1, () => CalendarMenu(Convert.ToInt32(DateTime.Now.Date), Convert.ToInt32(DateTime.Now.Year)));
             // Button arival = new("Arrival", 3, w1, () => CalendarMenu(Convert.ToInt32(DateTime.Now.Date), Convert.ToInt32(DateTime.Now.Year)));
 
@@ -148,7 +148,7 @@ static class BookingMenu
         }
         if (loop) Renderer.ClearLines();
         SearchMenu<Flight> flightSearch = new(Flight.Flights);
-        flightSearch.Activate(new() { ("Origin", InputButton.InputButtons[0].Input), ("Destination", InputButton.InputButtons[1].Input), ("Departure (press enter to see calendar)", InputButton.InputButtons[2].Input), ("Arival (press enter to see calendar)", InputButton.InputButtons[3].Input) });
+        flightSearch.Activate(new() { ("Origin", InputButton.InputButtons[0].Input), ("Destination", InputButton.InputButtons[1].Input), ("DepartureDate", InputButton.InputButtons[2].Input), ("ArrivalDate", InputButton.InputButtons[3].Input) });
 
     }
 
@@ -597,7 +597,7 @@ static class BookingMenu
         MenuUpdated = true;
     }
 
-    public static void CalendarMenu(int month, int year)
+    public static string CalendarMenu(int month, int year)
     {
         int minYear = 1;
         int maxYear = 9999;
@@ -625,5 +625,7 @@ static class BookingMenu
         _ = new Button("back", 0, w1, "bottom", () => FlightSearchMenu(false));
         AddMenuBar(w1);
         MenuUpdated = true;
+
+        return "25-06-2023";
     }
 }
