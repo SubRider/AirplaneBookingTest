@@ -51,6 +51,8 @@ static class BookingMenu
         _ = new Button("Account", 0, 3, menuBar, "left", () => AccountMenu());
         _ = new Button("Info", 0, 4, menuBar, "left", () => AirlineInfo());
         _ = new Button("Cancel", 0, 5, menuBar, "left", () => CancelFlight());
+        _ = new Button("Log out", 0, 6, menuBar, "left", () => LogOut());
+        _ = new Button("Cancel", 0, 7, menuBar, "left", () => CancelFlight());
     }
     public static void StartScreen()
     {
@@ -123,10 +125,22 @@ static class BookingMenu
             });
             AddMenuBar(w1);
         }
-        
+    }
 
-
-
+    public static void LogOut()
+    {
+        if (AccountLogic.CurrentAccount == null)
+        {
+            StartScreen();
+        }
+        else
+        {
+            Renderer.Clear();
+            Console.WriteLine("Logged out");
+            Thread.Sleep(2000);
+            AccountLogic.CurrentAccount = null;
+            StartScreen();
+        }
     }
     public static void FlightSearchMenu(bool loop)
     {      
@@ -336,6 +350,7 @@ static class BookingMenu
         _ = new Button("Edit flights", 0, 4, menuBar, "left", () => EditFlightMenu(false));
         _ = new Button("Remove flights", 0, 5, menuBar, "left", () => RemoveFlightMenu(false));
         _ = new Button("Dashboard", 0, 6, menuBar, "left", () => Dashboard());
+        _ = new Button("Log out", 0, 7, menuBar, "left", () => LogOut());
     }
     public static void AdminMenu()
     {
