@@ -52,7 +52,6 @@ static class BookingMenu
         _ = new Button("Info", 0, 4, menuBar, "left", () => AirlineInfo());
         _ = new Button("Cancel", 0, 5, menuBar, "left", () => CancelFlight());
         _ = new Button("Log out", 0, 6, menuBar, "left", () => LogOut());
-        _ = new Button("Cancel", 0, 7, menuBar, "left", () => CancelFlight());
     }
     public static void StartScreen()
     {
