@@ -50,8 +50,7 @@ static class BookingMenu
         _ = new Button("My Flights", 0, 2, menuBar, "left", () => History());
         _ = new Button("Account", 0, 3, menuBar, "left", () => AccountMenu());
         _ = new Button("Info", 0, 4, menuBar, "left", () => AirlineInfo());
-        _ = new Button("Cal", 0, 5, menuBar, "left", () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year));
-        _ = new Button("Cancel", 0, 6, menuBar, "left", () => CancelFlight());
+        _ = new Button("Cancel", 0, 5, menuBar, "left", () => CancelFlight());
     }
     public static void StartScreen()
     {
@@ -139,15 +138,17 @@ static class BookingMenu
             Window w1 = new(1, 0.85);
             InputButton origin = new("Origin", 0, w1);
             InputButton destination = new("Destination", 1, w1);
-            Button departure = new("Departure", 2, w1, () => CalendarMenu(Convert.ToInt32(DateTime.Now.Date), Convert.ToInt32(DateTime.Now.Year)));
-            Button arival = new("Arrival", 3, w1, () => CalendarMenu(Convert.ToInt32(DateTime.Now.Date), Convert.ToInt32(DateTime.Now.Year)));
+            InputButton departureInput = new("Departure (press enter to see calendar)", 2, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year));
+            InputButton arivalInput = new("Arival (press enter to see calendar)", 3, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year));
+            // Button departure = new("Departure", 2, w1, () => CalendarMenu(Convert.ToInt32(DateTime.Now.Date), Convert.ToInt32(DateTime.Now.Year)));
+            // Button arival = new("Arrival", 3, w1, () => CalendarMenu(Convert.ToInt32(DateTime.Now.Date), Convert.ToInt32(DateTime.Now.Year)));
 
             AddMenuBar(w1);
             MenuUpdated = true;
         }
         if (loop) Renderer.ClearLines();
         SearchMenu<Flight> flightSearch = new(Flight.Flights);
-        flightSearch.Activate(new() { ("Origin", InputButton.InputButtons[0].Input), ("Destination", InputButton.InputButtons[1].Input) });
+        flightSearch.Activate(new() { ("Origin", InputButton.InputButtons[0].Input), ("Destination", InputButton.InputButtons[1].Input), ("Departure (press enter to see calendar)", InputButton.InputButtons[2].Input), ("Arival (press enter to see calendar)", InputButton.InputButtons[3].Input) });
 
     }
 
