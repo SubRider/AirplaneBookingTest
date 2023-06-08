@@ -3,7 +3,7 @@
 static class AccountLogic
 {
     public static List<AccountModel> Accounts { get; set; } = new();
-    static public AccountModel? CurrentAccount { get; private set; }
+    static public AccountModel? CurrentAccount { get; set; }
 
 
     public static void CreateAccount(bool loop)
@@ -26,7 +26,7 @@ static class AccountLogic
                 {
                     Console.SetCursorPosition(1, 8);
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Please fill ensure all fields are filled");
+                    Console.WriteLine("Please ensure all fields are filled");
                     Thread.Sleep(700);
                     Console.SetCursorPosition(1, 8);
                     Console.WriteLine("                                            ");
@@ -44,10 +44,10 @@ static class AccountLogic
                     }
                     else
                     {
-                        AccountModel account = new(ID, email.Input, password.Input, name.Input);
+                        AccountModel account = new(ID, email.Input, password.Input, name.Input, null);
                         Accounts.Add(account);
                         CurrentAccount = account;
-                        JsonCommunicator.Write("Accounts.json", Accounts);
+                        JsonCommunicator.Write("accounts.json", Accounts);
                         BookingMenu.NextMenu();
                     }
                 }
