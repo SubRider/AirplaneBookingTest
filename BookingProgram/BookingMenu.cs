@@ -144,6 +144,9 @@ static class BookingMenu
                     }
                 }  
                 AccountsAccess.WriteAll(accountList); 
+                Renderer.Clear();
+                Console.WriteLine("Changed Details");
+                Thread.Sleep(1000);
                 AccountMenu();             
             });
             _ = new Button("Back", 2, w1, "bottom", () => AccountMenu());
@@ -216,7 +219,7 @@ static class BookingMenu
         {
             Renderer.Clear();
             Console.WriteLine("Logged out");
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
             AccountLogic.CurrentAccount = null;
             StartScreen();
         }
