@@ -3,7 +3,7 @@
 static class AccountLogic
 {
     public static List<AccountModel> Accounts { get; set; } = new();
-    static public AccountModel? CurrentAccount { get; set; }
+    public static AccountModel? CurrentAccount { get; set; }
 
 
     public static void CreateAccount(bool loop)
