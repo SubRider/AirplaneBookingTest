@@ -80,14 +80,94 @@ static class BookingMenu
         }
         else
         {
-            w1.Text +=  $"Info:\n║Name: {AccountLogic.CurrentAccount.FullName}\n" +
-                        $"║Email Adress: {AccountLogic.CurrentAccount.EmailAddress}\n" +
-                        $"║Phone Number:";
+            w1.Text +=  $"\u001b[96m Account\u001b[0m\n║\u001b[96m----------\u001b[0m\n║\n║Name: {AccountLogic.CurrentAccount.FullName}\n" +
+                        $"║Email address: {AccountLogic.CurrentAccount.EmailAddress}\n" +
+                        $"║Phone number: " + (AccountLogic.CurrentAccount.PhoneNumber != null ? AccountLogic.CurrentAccount.PhoneNumber : "");
+            _ = new Button("Edit", 2, w1, "bottom", () => EditAccount(false));
             //_ = new Button("Delete Account", 3, w1, "bottom", () => { });
         }
         
         AddMenuBar(w1);
         MenuUpdated = true;
+    }
+
+    public static void EditAccount(bool loop)
+    {
+        if (!loop)
+        {
+            Renderer.Clear();
+            Window w1 = new();
+            CurrentMenu = () => EditAccount(true);
+            NextMenu = () => StartScreen();
+            w1.Text +=  $"\u001b[96m Edit Account\u001b[0m\n║\u001b[96m---------------\u001b[0m\n║* All empty fields will not change\n║\n║";
+            InputButton name = new("Name", 4, w1);
+            InputButton email = new("Email address", 5, w1);
+            InputButton phone = new("Phone number", 6, w1);
+            _ = new Button("Save", 3, w1, "bottom", () =>
+            {
+                List<AccountModel> accountList = AccountsAccess.LoadAll();
+                // change account details if not empty
+                if (name.Input.Count() > 0) 
+                { 
+                    AccountLogic.CurrentAccount.FullName = name.Input; 
+
+                    foreach (AccountModel item in accountList)
+                    {
+                        if (item.Id == AccountLogic.CurrentAccount.Id)
+                        {
+                            item.FullName = name.Input;
+                        }
+                    }
+                }
+                if (email.Input.Count() > 0) 
+                { 
+                    AccountLogic.CurrentAccount.EmailAddress = email.Input; 
+
+                    foreach (AccountModel item in accountList)
+                    {
+                        if (item.Id == AccountLogic.CurrentAccount.Id)
+                        {
+                            item.EmailAddress = email.Input;
+                        }
+                    }
+                }
+                if (phone.Input.Count() > 0) 
+                { 
+                    AccountLogic.CurrentAccount.PhoneNumber = phone.Input; 
+
+                    foreach (AccountModel item in accountList)
+                    {
+                        if (item.Id == AccountLogic.CurrentAccount.Id)
+                        {
+                            item.PhoneNumber = phone.Input;
+                        }
+                    }
+                }  
+                AccountsAccess.WriteAll(accountList); 
+                AccountMenu();             
+            });
+            _ = new Button("Back", 2, w1, "bottom", () => AccountMenu());
+            
+            AddMenuBar(w1);
+            // Renderer.Clear();
+            // Window w1 = new(1, 0.85);
+
+            // w1.Text +=  $"\u001b[96m Edit Account\u001b[0m\n║\u001b[96m---------------\u001b[0m\n║* All empty fields will not change\n║\n║";
+            // InputButton name = new("Name", 4, w1);
+            // InputButton email = new("Email address", 5, w1);
+            // InputButton phoneNumber = new("Phone number", 6, w1);
+            // // _ = new Button("Save", 3, w1, "bottom", () => 
+            // // {
+            // //     if (name.Input != "")
+            // //     {
+            // //         AccountLogic.CurrentAccount.FullName = name.Input;
+            // //     }
+            // //     // change accounts and write to json
+            // // });
+            // // _ = new Button("Back", 2, w1, "bottom", () => AccountMenu());
+
+            // AddMenuBar(w1);
+        }
     }
 
     public static void LoginMenu(bool loop)
@@ -141,6 +221,7 @@ static class BookingMenu
             StartScreen();
         }
     }
+  
     public static void FlightSearchMenu(bool loop)
     {      
         if (!loop)
@@ -152,7 +233,7 @@ static class BookingMenu
             InputButton origin = new("Origin", 0, w1);
             InputButton destination = new("Destination", 1, w1);
             InputButton departureInput = new("Departure (press enter to see calendar)", 2, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year));
-            InputButton arivalInput = new("Arival (press enter to see calendar)", 3, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year));
+            InputButton arivalInput = new("Arrival (press enter to see calendar)", 3, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year));
             // Button departure = new("Departure", 2, w1, () => CalendarMenu(Convert.ToInt32(DateTime.Now.Date), Convert.ToInt32(DateTime.Now.Year)));
             // Button arival = new("Arrival", 3, w1, () => CalendarMenu(Convert.ToInt32(DateTime.Now.Date), Convert.ToInt32(DateTime.Now.Year)));
 
@@ -161,7 +242,7 @@ static class BookingMenu
         }
         if (loop) Renderer.ClearLines();
         SearchMenu<Flight> flightSearch = new(Flight.Flights);
-        flightSearch.Activate(new() { ("Origin", InputButton.InputButtons[0].Input), ("Destination", InputButton.InputButtons[1].Input), ("Departure (press enter to see calendar)", InputButton.InputButtons[2].Input), ("Arival (press enter to see calendar)", InputButton.InputButtons[3].Input) });
+        flightSearch.Activate(new() { ("Origin", InputButton.InputButtons[0].Input), ("Destination", InputButton.InputButtons[1].Input), ("DepartureDate", InputButton.InputButtons[2].Input), ("ArrivalDate", InputButton.InputButtons[3].Input) });
 
     }
 
@@ -611,7 +692,7 @@ static class BookingMenu
         MenuUpdated = true;
     }
 
-    public static void CalendarMenu(int month, int year)
+    public static string CalendarMenu(int month, int year)
     {
         int minYear = 1;
         int maxYear = 9999;
@@ -639,5 +720,7 @@ static class BookingMenu
         _ = new Button("back", 0, w1, "bottom", () => FlightSearchMenu(false));
         AddMenuBar(w1);
         MenuUpdated = true;
+
+        return "25-06-2023";
     }
 }

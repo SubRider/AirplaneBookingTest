@@ -15,12 +15,16 @@ class AccountModel
     [JsonPropertyName("fullName")]
     public string FullName { get; set; }
 
-    public AccountModel(int id, string emailAddress, string password, string fullName)
+    [JsonPropertyName("phoneNumber")]
+    public string PhoneNumber { get; set; }
+
+    public AccountModel(int id, string emailAddress, string password, string fullName, string phoneNumber)
     {
         Id = id;
         EmailAddress = emailAddress;
         Password = password;
         FullName = fullName;
+        PhoneNumber = phoneNumber;
     }
 
 }
