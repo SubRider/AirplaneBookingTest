@@ -26,7 +26,7 @@
         Reservations.RemoveAll(reservation => reservation.FlightID == flightID);
         UpdateJsonData(Reservations);
         Renderer.Clear();
-        Console.WriteLine("Succesfully canceled");
+        Console.WriteLine("Successfully cancelled");
         Thread.Sleep(2000);
         BookingMenu.StartScreen();
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Xml.Linq;
 
@@ -374,6 +375,7 @@ static class BookingMenu
         }
 
     }
+
     public static void History()
     {
         Renderer.Clear();
@@ -396,9 +398,10 @@ static class BookingMenu
                     }
                 }
             }
+
+            AddMenuBar(w1);
+            MenuUpdated = true;
         }
-        AddMenuBar(w1);
-        MenuUpdated = true;
     }
 
     public static void CancelFlight()
