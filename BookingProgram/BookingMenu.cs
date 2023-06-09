@@ -398,11 +398,11 @@ static class BookingMenu
                     }
                 }
             }
+        }
 
-            AddMenuBar(w1);
+        AddMenuBar(w1);
             MenuUpdated = true;
         }
-    }
 
     public static void CancelFlight()
     {

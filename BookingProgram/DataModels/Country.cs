@@ -2,11 +2,9 @@ public class Country : IHasID
 {
     public int ID { get; set; }
     public string City { get; set; }
-    public List<Country> countries = new();
-    
+    public static List<Country> countries = new();
     public static List<Country> CreateCountryList()
     {
-        List<Country> countries = new List<Country>();
 
         for (int i = 0; i < countryList.Count; i++)
         {
