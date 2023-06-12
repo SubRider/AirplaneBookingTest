@@ -50,7 +50,7 @@ static class BookingMenu
         _ = new Button("My Flights", 0, 2, menuBar, "left", () => History());
         _ = new Button("Account", 0, 3, menuBar, "left", () => AccountMenu());
         _ = new Button("Info", 0, 4, menuBar, "left", () => AirlineInfo());
-        _ = new Button("Cancel", 0, 5, menuBar, "left", () => CancelFlight());
+        _ = new Button("Calendar", 0, 5, menuBar, "left", () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year));
         _ = new Button("Log out", 0, 6, menuBar, "left", () => LogOut());
         _ = new Button("Cancel", 0, 7, menuBar, "left", () => CancelFlight());
     }
@@ -619,25 +619,25 @@ static class BookingMenu
 
         Renderer.Clear();
         Window w1 = new(1, 0.85);
-        w1.Text += $" {Calendar.PrintCal(year, month, minYear, maxYear)}";
-        
-        if (month == 12)
+        List<string> months = new() { "January", "February", "March", "April", "May", "June", 
+                                    "July", "August", "September", "October", "November", "December" };
+        _ = new Button($"{months[month-1]}", 0, w1, () => { }, false);
+        _ = new Button($"{year}", 0, 3, w1, () => { }, false);
+        Button previous = new("Previous", 2, w1, "bottom", () =>
         {
-            Button previous = new("Previous", 2, w1, "bottom", () => CalendarMenu(month - 1, year));
-            Button next = new("Next", 2, 40, w1, "bottom", () => CalendarMenu(1, year + 1));
-        }
-        else if (month == 1)
+            if (month == 1) CalendarMenu(12, year - 1);
+            else CalendarMenu(month - 1, year);
+        });
+        Button next = new("Next", 2, 3, w1, "bottom", () =>
         {
-            Button previous = new("Previous", 2, w1, "bottom", () => CalendarMenu(12, year - 1));
-            Button next = new("Next", 2, 40, w1, "bottom", () => CalendarMenu(month + 1, year));
+            if (month == 12) CalendarMenu(1, year + 1);
+            else CalendarMenu(month + 1, year);
+        });
+        Calendar.PrintCal(year, month, minYear, maxYear, w1);
+        //w1.Text += $" {Calendar.PrintCal(year, month, minYear, maxYear, w1)}";
 
-        }
-        else 
-        {
-            Button previous = new("Previous", 2, w1, "bottom", () => CalendarMenu(month - 1, year));
-            Button next = new("Next", 2, 40, w1, "bottom", () => CalendarMenu(month + 1, year));
-        }
-        _ = new Button("back", 0, w1, "bottom", () => FlightSearchMenu(false));
+
+
         AddMenuBar(w1);
         MenuUpdated = true;
     }
