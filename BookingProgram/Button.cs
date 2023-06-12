@@ -36,7 +36,8 @@
                     if (leftButtons > 0) return (_reference.Width / leftButtons) * _relativeXPosition + 1;
                     else return (_reference.Width * _relativeXPosition + 1);
                 default:
-                    return _relativeXPosition + 1;
+                    if (_relativeXPosition > 0) return _relativeXPosition * 4;
+                    else return _relativeXPosition + 1;
         } } }
 
     // Main constructor for creating a button with all properties
