@@ -2,7 +2,7 @@
   "profiles": {
     "BookingProgram": {
       "commandName": "Project",
-      "workingDirectory": "C:\\Users\\marco\\Desktop\\Opdrachten C#\\AirplaneBookingTest\\BookingProgram"
+      "workingDirectory": "C:\\Users\\tomzu\\source\\repos\\AirplaneBookingTest\\BookingProgram"
     }
   }
 }

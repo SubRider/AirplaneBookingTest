@@ -53,13 +53,13 @@ static class Calendar
                     {
                         if (month == currentMonth)
                         {
-                            if (dayNumber >= currentDay) _ = new Button($"{dayNumber}", i + 2, j, w1, () => { Date = new DateTime(year, month, day); });
-                            else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", i + 2, j, w1, () => { Date = new DateTime(year, month, day); });
+                            if (dayNumber >= currentDay) _ = new Button($"{dayNumber}", i + 2, j, w1, () => { Date = new DateTime(year, month, dayNumber); });
+                            else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", i + 2, j, w1, () => { Date = new DateTime(year, month, dayNumber); });
                         }
-                        else if (month > currentMonth) _ = new Button($"{dayNumber}", i + 2, j, w1, () => { Date = new DateTime(year, month, day); });
-                        else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", i + 2, j, w1, () => { Date = new DateTime(year, month, day); });
+                        else if (month > currentMonth) _ = new Button($"{dayNumber}", i + 2, j, w1, () => { Date = new DateTime(year, month, dayNumber); });
+                        else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", i + 2, j, w1, () => { Date = new DateTime(year, month, dayNumber); });
                     }
-                    else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", i + 2, j, w1, () => { Date = new DateTime(year, month, day); });
+                    else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", i + 2, j, w1, () => { Date = new DateTime(year, month, dayNumber); });
                 }
                 dayNumber++;
             }
