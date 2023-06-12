@@ -1,1 +1,100 @@
-[{"id":1,"emailAddress":"n@b.c","password":"xyz","fullName":"Nikola Tesla"},{"id":2,"emailAddress":"123","password":"abc","fullName":"Thomas Edison"},{"id":3,"emailAddress":"hj.vdstelt@gmail.com","password":"1kkanhetnietverg3t3n","fullName":"Henri van der Stelt"},{"id":4,"emailAddress":"tomzuidema@outlook.com","password":"password","fullName":"Tom Zuidema"},{"id":5,"emailAddress":"marco.speksnijder@gmail.com","password":"Marco","fullName":"Marco Speksnijder"},{"id":6,"emailAddress":"test4@","password":"test4@","fullName":"test4"},{"id":6,"emailAddress":"newmethod@new.com","password":"testthis","fullName":"John Ham"},{"id":6,"emailAddress":"newmethod@new.com","password":"testthis","fullName":"John Ham"},{"id":6,"emailAddress":"newmethod@new.com","password":"testthis","fullName":"John Ham"},{"id":6,"emailAddress":"newmethod@new.com","password":"testthis","fullName":"John Ham"},{"id":10,"emailAddress":"tester@h","password":"pas","fullName":"isthismyname?"},{"id":11,"emailAddress":"edd","password":"dwdd","fullName":"dwdwd"},{"id":12,"emailAddress":"jjkhb.kjgn","password":"jhkl","fullName":"ghfj,hgk"},{"id":13,"emailAddress":"testemial","password":"John","fullName":"Johannes Testosteron"}]
+[
+  {
+    "id": 1,
+    "emailAddress": "n@b.c",
+    "password": "xyz",
+    "fullName": "Nikola Tesla",
+    "phoneNumber": null
+  },
+  {
+    "id": 2,
+    "emailAddress": "123",
+    "password": "abc",
+    "fullName": "Geert Wilders",
+    "phoneNumber": "06 11 en de rest komt vanzelf"
+  },
+  {
+    "id": 3,
+    "emailAddress": "hj.vdstelt@gmail.com",
+    "password": "1kkanhetnietverg3t3n",
+    "fullName": "Henri van der Stelt",
+    "phoneNumber": null
+  },
+  {
+    "id": 4,
+    "emailAddress": "tomzuidema@outlook.com",
+    "password": "password",
+    "fullName": "Tom Zuidema",
+    "phoneNumber": null
+  },
+  {
+    "id": 5,
+    "emailAddress": "marco.speksnijder@gmail.com",
+    "password": "Marco",
+    "fullName": "Marco Speksnijder",
+    "phoneNumber": null
+  },
+  {
+    "id": 6,
+    "emailAddress": "test4@",
+    "password": "test4@",
+    "fullName": "test4",
+    "phoneNumber": null
+  },
+  {
+    "id": 6,
+    "emailAddress": "newmethod@new.com",
+    "password": "testthis",
+    "fullName": "John Ham",
+    "phoneNumber": null
+  },
+  {
+    "id": 6,
+    "emailAddress": "newmethod@new.com",
+    "password": "testthis",
+    "fullName": "John Ham",
+    "phoneNumber": null
+  },
+  {
+    "id": 6,
+    "emailAddress": "newmethod@new.com",
+    "password": "testthis",
+    "fullName": "John Ham",
+    "phoneNumber": null
+  },
+  {
+    "id": 6,
+    "emailAddress": "newmethod@new.com",
+    "password": "testthis",
+    "fullName": "John Ham",
+    "phoneNumber": null
+  },
+  {
+    "id": 10,
+    "emailAddress": "tester@h",
+    "password": "pas",
+    "fullName": "isthismyname?",
+    "phoneNumber": null
+  },
+  {
+    "id": 11,
+    "emailAddress": "edd",
+    "password": "dwdd",
+    "fullName": "dwdwd",
+    "phoneNumber": null
+  },
+  {
+    "id": 12,
+    "emailAddress": "jjkhb.kjgn",
+    "password": "jhkl",
+    "fullName": "ghfj,hgk",
+    "phoneNumber": null
+  },
+  {
+    "id": 13,
+    "emailAddress": "testemial",
+    "password": "John",
+    "fullName": "Johannes Testosteron",
+    "phoneNumber": null
+  }
+]
