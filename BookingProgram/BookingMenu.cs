@@ -51,8 +51,7 @@ static class BookingMenu
         _ = new Button("My Flights", 0, 2, menuBar, "left", () => History());
         _ = new Button("Account", 0, 3, menuBar, "left", () => AccountMenu());
         _ = new Button("Info", 0, 4, menuBar, "left", () => AirlineInfo());
-        _ = new Button("Calendar", 0, 5, menuBar, "left", () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year));
-        _ = new Button("Log out", 0, 6, menuBar, "left", () => LogOut());
+        _ = new Button("Log out", 0, 5, menuBar, "left", () => LogOut());
     }
     public static void StartScreen()
     {
@@ -236,8 +235,8 @@ static class BookingMenu
             Window w1 = new(1, 0.85);
             InputButton origin = new("Origin", 0, w1);
             InputButton destination = new("Destination", 1, w1);
-            InputButton departureInput = new("Departure (press enter to see calendar)", 2, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year));
-            InputButton arivalInput = new("Arrival (press enter to see calendar)", 3, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year));
+            InputButton departureInput = new("Departure (press enter to see calendar)", 2, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year, "Departure"));
+            InputButton arivalInput = new("Arrival (press enter to see calendar)", 3, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year, "Arrival"));
             // Button departure = new("Departure", 2, w1, () => CalendarMenu(Convert.ToInt32(DateTime.Now.Date), Convert.ToInt32(DateTime.Now.Year)));
             // Button arival = new("Arrival", 3, w1, () => CalendarMenu(Convert.ToInt32(DateTime.Now.Date), Convert.ToInt32(DateTime.Now.Year)));
 
@@ -700,26 +699,37 @@ static class BookingMenu
         MenuUpdated = true;
     }
 
-    public static string CalendarMenu(int month, int year)
+    public static string CalendarMenu(int month, int year, string direction)
     {
         int minYear = 1;
         int maxYear = 9999;
 
         Renderer.Clear();
         Window w1 = new(1, 0.85);
+
+        // give the page a header tekst to make sure user knows what they are supposed to do on that page
+        if (direction == "Departure")
+        {
+            w1.Text +=  $"\u001b[96m Departure date\u001b[0m\n║\u001b[96m------------------\u001b[0m\n║";
+        }
+        else if (direction == "Arrival")
+        {
+            w1.Text +=  $"\u001b[96m Arrival date\u001b[0m\n║\u001b[96m---------------\u001b[0m\n║";
+        }
+
         List<string> months = new() { "January", "February", "March", "April", "May", "June", 
                                     "July", "August", "September", "October", "November", "December" };
-        _ = new Button($"{months[month-1]}", 0, w1, () => { }, false);
-        _ = new Button($"{year}", 0, 3, w1, () => { }, false);
+        _ = new Button($"{months[month-1]}", 3, w1, () => { }, false);
+        _ = new Button($"{year}", 3, 3, w1, () => { }, false);
         Button previous = new("Previous", 2, w1, "bottom", () =>
         {
-            if (month == 1) CalendarMenu(12, year - 1);
-            else CalendarMenu(month - 1, year);
+            if (month == 1) CalendarMenu(12, year - 1, direction);
+            else CalendarMenu(month - 1, year, direction);
         });
         Button next = new("Next", 2, 3, w1, "bottom", () =>
         {
-            if (month == 12) CalendarMenu(1, year + 1);
-            else CalendarMenu(month + 1, year);
+            if (month == 12) CalendarMenu(1, year + 1, direction);
+            else CalendarMenu(month + 1, year, direction);
         });
         Calendar.PrintCal(year, month, minYear, maxYear, w1);
         //w1.Text += $" {Calendar.PrintCal(year, month, minYear, maxYear, w1)}";
