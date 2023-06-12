@@ -5,17 +5,6 @@ static class Calendar
         Console.Clear();
         DateTime Date = default;
 
-        // validate year and month
-        if (year < minYear || year > maxYear)
-        {
-            return $"Invalid year. Please enter a year between {minYear} and {maxYear}.";
-        }
-
-        if (month < 1 || month > 12)
-        {
-            return "Invalid month. Please enter a valid month between 1 and 12.";
-        }
-
         // determine first- and last day of month
         DateTime firstDayOfMonth = new DateTime(year, month, 1);
         DayOfWeek startingDay = firstDayOfMonth.DayOfWeek;
@@ -53,13 +42,13 @@ static class Calendar
                     {
                         if (month == currentMonth)
                         {
-                            if (dayNumber >= currentDay) _ = new Button($"{dayNumber}", i + 2, j, w1, () => { Date = new DateTime(year, month, day); });
-                            else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", i + 2, j, w1, () => { Date = new DateTime(year, month, day); });
+                            if (dayNumber >= currentDay) _ = new Button($"{dayNumber}", i + 5, j, w1, () => { Date = new DateTime(year, month, day); });
+                            else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", i + 5, j, w1, () => { Date = new DateTime(year, month, day); });
                         }
-                        else if (month > currentMonth) _ = new Button($"{dayNumber}", i + 2, j, w1, () => { Date = new DateTime(year, month, day); });
-                        else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", i + 2, j, w1, () => { Date = new DateTime(year, month, day); });
+                        else if (month > currentMonth) _ = new Button($"{dayNumber}", i + 5, j, w1, () => { Date = new DateTime(year, month, day); });
+                        else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", i + 5, j, w1, () => { Date = new DateTime(year, month, day); });
                     }
-                    else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", i + 2, j, w1, () => { Date = new DateTime(year, month, day); });
+                    else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", i + 5, j, w1, () => { Date = new DateTime(year, month, day); });
                 }
                 dayNumber++;
             }
