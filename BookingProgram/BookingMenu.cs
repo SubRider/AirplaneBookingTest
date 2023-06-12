@@ -50,7 +50,7 @@ static class BookingMenu
         _ = new Button("Book Flight", 0, 1, menuBar, "left", () => FlightSearchMenu(false));
         _ = new Button("My Flights", 0, 2, menuBar, "left", () => History());
         _ = new Button("Account", 0, 3, menuBar, "left", () => AccountMenu());
-        _ = new Button("Info", 0, 4, menuBar, "left", () => AirlineInfo());
+        _ = new Button("About", 0, 4, menuBar, "left", () => AirlineInfo());
         _ = new Button("Cancel", 0, 5, menuBar, "left", () => CancelFlight());
         _ = new Button("Log out", 0, 6, menuBar, "left", () => LogOut());
     }
@@ -380,6 +380,7 @@ static class BookingMenu
     {
         Renderer.Clear();
         Window w1 = new(1, 0.85);
+        w1.Text += $"\u001b[96m History\u001b[0m\n║\u001b[96m----------\u001b[0m\n║\n║";
         if (AccountLogic.CurrentAccount == null) w1.Text += "You are not logged in";
         else
         {
@@ -409,6 +410,7 @@ static class BookingMenu
         Renderer.Clear();
         CurrentMenu = () => CancelFlight();
         Window w1 = new(1, 0.85);
+        w1.Text += $"\u001b[96m Cancel\u001b[0m\n║\u001b[96m----------\u001b[0m\n║\n║";
         int count = 2;
         if (AccountLogic.CurrentAccount == null) w1.Text += "You are not logged in";
         else
@@ -418,7 +420,7 @@ static class BookingMenu
                 if (reservation.CustomerID == AccountLogic.CurrentAccount.Id)
                 {
                     Flight flight = Flight.FindByID(reservation.FlightID);
-                    Button FlightButton = new Button($"{flight}", count, w1, "left", () => reservation.RemoveFlight(ReservationModel.Reservations, reservation.FlightID));
+                    Button FlightButton = new Button($"{flight}", count + 1, w1, "left", () => reservation.RemoveFlight(ReservationModel.Reservations, reservation.FlightID));
                     count =+ 1;
                 }
             }
