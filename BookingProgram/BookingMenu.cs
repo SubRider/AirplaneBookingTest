@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Xml.Linq;
@@ -9,7 +9,7 @@ static class BookingMenu
     public static string ReservationChoice;
     public static int FlightID = -1;
     public static int ResultID = -1;
-    public static Flight CurrentFlight;
+    public static Airplane CurrentPlane;
     public static int AmountOfSeatsReserved;
     public static string SingleOrRetour;
     public static bool MenuUpdated;
@@ -254,6 +254,8 @@ static class BookingMenu
     {
         Renderer.Clear();
         FlightID = ResultID;
+        int index = Flight.Flights.FindIndex(i => i.ID == FlightID);
+        CurrentPlane = Airplane.Planes.Find(i => i.ID == Flight.Flights[index].AirplaneID);
         Window w1 = new(1, 0.85);
         Button first = new("First Class", 0, w1, () => { ReservationChoice = "First";RetourOrSingle(); });
         Button business = new("Business Class", 1, w1, () => { ReservationChoice = "Business";RetourOrSingle(); });
@@ -336,9 +338,9 @@ static class BookingMenu
         
         Renderer.Clear();
         Window w1 = new(1, 0.85);
-        if (ReservationChoice == "First") Renderer.ShowSeats(CurrentFlight.FirstClassSeats, w1);
-        else if (ReservationChoice == "Business") Renderer.ShowSeats(CurrentFlight.BusinessClassSeats, w1);
-        else Renderer.ShowSeats(CurrentFlight.EconomyClassSeats, w1);
+        if (ReservationChoice == "First") Renderer.ShowSeats(CurrentPlane.FirstClassSeats, w1);
+        else if (ReservationChoice == "Business") Renderer.ShowSeats(CurrentPlane.BusinessClassSeats, w1);
+        else Renderer.ShowSeats(CurrentPlane.EconomyClassSeats, w1);
         Button back = new("back", 0, w1, "bottom", () => SeatsReservationMenu());
         AddMenuBar(w1);
         MenuUpdated = true;
@@ -511,7 +513,6 @@ static class BookingMenu
             Renderer.Clear();
             CurrentMenu = () => AddFlightMenu(true);
             Window w1 = new();
-            SearchMenu<Country> countrySearch = new(Country.countries);
             InputButton origin = new("Origin", 0, w1);
             InputButton destination = new("Destination", 1, w1);
             InputButton departureDate = new("Departure date", 2, w1);
