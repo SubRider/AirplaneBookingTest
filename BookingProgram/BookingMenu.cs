@@ -23,6 +23,7 @@ static class BookingMenu
         Airplane.Planes = JsonCommunicator.Read<Airplane>("Airplanes.json");
         AccountLogic.Accounts = JsonCommunicator.Read<AccountModel>("Accounts.json");
         ReservationModel.Reservations = JsonCommunicator.Read<ReservationModel>("reservations.json");
+        City.CreateCountryList();
 
         Console.CursorVisible = true;
         Renderer.Clear();
@@ -249,8 +250,8 @@ static class BookingMenu
             MenuUpdated = true;
         }
         if (loop) Renderer.ClearLines();
-        SearchMenu<Country> countrySearch = new(Country.countries);
-        countrySearch.Activate(new() { ("City", InputButton.InputButtons[0].Input) });
+        SearchMenu<City> citySearch = new(City.Cities);
+        citySearch.Activate(new() { ("Name", InputButton.InputButtons[0].Input) });
     }
 
     public static void ClassReservationMenu()

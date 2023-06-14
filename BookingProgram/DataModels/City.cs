@@ -1,21 +1,6 @@
-public class Country : IHasID
+public class City : IHasID
 {
-    public int ID { get; set; }
-    public string City { get; set; }
-    public static List<Country> countries = new();
-    public static List<Country> CreateCountryList()
-    {
-
-        for (int i = 0; i < countryList.Count; i++)
-        {
-            Country country = new Country(i + 1, countryList[i]);
-            countries.Add(country);
-        }
-
-        return countries;
-    }
-    
-    public static List<string> countryList = new()
+    private static List<string> _cityList = new()
     {
         "Abu Dhabi", "Abuja", "Accra", "Addis Ababa", "Algiers", "Amman", "Amsterdam", "Ankara", "Antananarivo", "Apia",
         "Ashgabat", "Asmara", "Astana", "Asunción", "Athens", "Avarua", "Baghdad", "Baku", "Bamako",
@@ -40,10 +25,29 @@ public class Country : IHasID
         "Ulaanbaatar", "Vaduz", "Valletta", "Vatican City", "Victoria", "Vienna", "Vientiane", "Vilnius", "Warsaw",
         "Washington, D.C.", "Wellington", "Windhoek", "Yaoundé", "Yerevan", "Zagreb"
     };
-    
-    public Country(int iD, string city)
+
+    public static List<City> Cities = new();
+    public int ID { get; set; }
+    public string Name { get; set; }
+
+    public City(int iD, string city)
     {
         ID = iD;
-        City = city;
+        Name = city;
+    }
+
+    public static void CreateCountryList()
+    {
+        foreach (string city in _cityList)
+        {
+            int id = Cities.Count;
+            City capital = new City(id, city);
+            Cities.Add(capital);
+        }
+    }   
+
+    public override string ToString()
+    {
+        return $"{Name}";
     }
 }
