@@ -1,6 +1,6 @@
 static class Calendar
 {
-    public static string PrintCal(int year, int month, int minYear, int maxYear, Window w1)
+    public static string PrintCal(int year, int month, int minYear, int maxYear, Window w1, string direction, int selectedMonth, int selectedYear)
     {
         Console.Clear();
         DateTime Date = default;
@@ -24,12 +24,20 @@ static class Calendar
             for (int j = 0; j < 7; j++)
             {
                 Action action = () => BookingMenu.FlightSearchMenu(false, "", "", "", "");
+                if (direction == "Departure")
+                {
+                    action = () => BookingMenu.FlightSearchMenu(false, "", "", $"{1}-{selectedMonth}-{selectedYear}", "");
+                }
+                else if (direction == "Arrival")
+                {
+                    action = () => BookingMenu.FlightSearchMenu(false, "", "", "", $"{1}-{selectedMonth}-{selectedYear}");
+                }
                 Action errorAction = () => 
                 {
                     Renderer.Clear();
                     Console.WriteLine("\u001b[91mThis date is not available");
                     Thread.Sleep(850);
-                    BookingMenu.CalendarMenu(DateTime.Now.Month, DateTime.Now.Year, "Departure"); // need to choose departure or arrival somehow
+                    BookingMenu.CalendarMenu(DateTime.Now.Month, DateTime.Now.Year, direction);
                 };
 
                 int day = j + (7 * i);
