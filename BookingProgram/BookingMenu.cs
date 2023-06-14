@@ -47,7 +47,7 @@ static class BookingMenu
     {
         Window menuBar = new(1, 0.15, reference);
         _ = new Button("Home", 0, 0, menuBar, "left", () => StartScreen());
-        _ = new Button("Book Flight", 0, 1, menuBar, "left", () => FlightSearchMenu(false));
+        _ = new Button("Book Flight", 0, 1, menuBar, "left", () => FlightSearchMenu(false, "", "", "", ""));
         _ = new Button("My Flights", 0, 2, menuBar, "left", () => History());
         _ = new Button("Account", 0, 3, menuBar, "left", () => AccountMenu());
         _ = new Button("Info", 0, 4, menuBar, "left", () => AirlineInfo());
@@ -106,6 +106,7 @@ static class BookingMenu
             _ = new Button("Save", 3, w1, "bottom", () =>
             {
                 List<AccountModel> accountList = AccountsAccess.LoadAll();
+                
                 // change account details if not empty
                 if (name.Input.Count() > 0) 
                 { 
@@ -143,6 +144,8 @@ static class BookingMenu
                         }
                     }
                 }  
+
+                // write new details to json and go back to accountmenu
                 AccountsAccess.WriteAll(accountList); 
                 Renderer.Clear();
                 Console.WriteLine("Changed Details");
@@ -152,24 +155,6 @@ static class BookingMenu
             _ = new Button("Back", 2, w1, "bottom", () => AccountMenu());
             
             AddMenuBar(w1);
-            // Renderer.Clear();
-            // Window w1 = new(1, 0.85);
-
-            // w1.Text +=  $"\u001b[96m Edit Account\u001b[0m\n║\u001b[96m---------------\u001b[0m\n║* All empty fields will not change\n║\n║";
-            // InputButton name = new("Name", 4, w1);
-            // InputButton email = new("Email address", 5, w1);
-            // InputButton phoneNumber = new("Phone number", 6, w1);
-            // // _ = new Button("Save", 3, w1, "bottom", () => 
-            // // {
-            // //     if (name.Input != "")
-            // //     {
-            // //         AccountLogic.CurrentAccount.FullName = name.Input;
-            // //     }
-            // //     // change accounts and write to json
-            // // });
-            // // _ = new Button("Back", 2, w1, "bottom", () => AccountMenu());
-
-            // AddMenuBar(w1);
         }
     }
 
@@ -225,20 +210,18 @@ static class BookingMenu
         }
     }
   
-    public static void FlightSearchMenu(bool loop)
+    public static void FlightSearchMenu(bool loop, string origin, string destination, string departure, string arrival)
     {      
         if (!loop)
         {
             Renderer.Clear();
-            CurrentMenu = () => FlightSearchMenu(true);
+            CurrentMenu = () => FlightSearchMenu(true, "", "", "", "");
             NextMenu = () => ClassReservationMenu();
             Window w1 = new(1, 0.85);
-            InputButton origin = new("Origin", 0, w1);
-            InputButton destination = new("Destination", 1, w1);
+            InputButton originInput = new("Origin", 0, w1);
+            InputButton destinationInput = new("Destination", 1, w1);
             InputButton departureInput = new("Departure (press enter to see calendar)", 2, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year, "Departure"));
             InputButton arivalInput = new("Arrival (press enter to see calendar)", 3, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year, "Arrival"));
-            // Button departure = new("Departure", 2, w1, () => CalendarMenu(Convert.ToInt32(DateTime.Now.Date), Convert.ToInt32(DateTime.Now.Year)));
-            // Button arival = new("Arrival", 3, w1, () => CalendarMenu(Convert.ToInt32(DateTime.Now.Date), Convert.ToInt32(DateTime.Now.Year)));
 
             AddMenuBar(w1);
             MenuUpdated = true;
@@ -259,7 +242,7 @@ static class BookingMenu
         Button first = new("First Class", 0, w1, () => { ReservationChoice = "First";RetourOrSingle(); });
         Button business = new("Business Class", 1, w1, () => { ReservationChoice = "Business";RetourOrSingle(); });
         Button economy = new("Economy Class", 2, w1, () => { ReservationChoice = "Economy";RetourOrSingle(); });
-        _ = new Button("back", 0, w1, "bottom", () => FlightSearchMenu(false));
+        _ = new Button("back", 0, w1, "bottom", () => FlightSearchMenu(false, "", "", "", "")); 
 
         AddMenuBar(w1);
         MenuUpdated = true;
@@ -717,16 +700,18 @@ static class BookingMenu
             w1.Text +=  $"\u001b[96m Arrival date\u001b[0m\n║\u001b[96m---------------\u001b[0m\n║";
         }
 
+        w1.Text +=  "\n║\n║\n║\u001b[92m   Mo Tu  We  Th  Fr  Sa  Su \u001b[0m  \n║\n║";
+
         List<string> months = new() { "January", "February", "March", "April", "May", "June", 
                                     "July", "August", "September", "October", "November", "December" };
-        _ = new Button($"{months[month-1]}", 3, w1, () => { }, false);
-        _ = new Button($"{year}", 3, 3, w1, () => { }, false);
-        Button previous = new("Previous", 2, w1, "bottom", () =>
+        _ = new Button($"{months[month-1]}", 3, 1, w1, () => { }, false);
+        _ = new Button($"{year}", 3, 4, w1, () => { }, false);
+        Button previous = new("Previous", 2, 1, w1, "bottom", () =>
         {
             if (month == 1) CalendarMenu(12, year - 1, direction);
             else CalendarMenu(month - 1, year, direction);
         });
-        Button next = new("Next", 2, 3, w1, "bottom", () =>
+        Button next = new("Next", 2, 5, w1, "bottom", () =>
         {
             if (month == 12) CalendarMenu(1, year + 1, direction);
             else CalendarMenu(month + 1, year, direction);
@@ -734,7 +719,7 @@ static class BookingMenu
         Calendar.PrintCal(year, month, minYear, maxYear, w1);
         //w1.Text += $" {Calendar.PrintCal(year, month, minYear, maxYear, w1)}";
 
-
+        _ = new Button ("Back", 0, 1, w1, "bottom", () => FlightSearchMenu(false, "", "", "", ""));
 
         AddMenuBar(w1);
         MenuUpdated = true;
