@@ -219,9 +219,13 @@ static class BookingMenu
             NextMenu = () => ClassReservationMenu();
             Window w1 = new(1, 0.85);
             InputButton originInput = new("Origin", 0, w1);
+            originInput.Input = origin;
             InputButton destinationInput = new("Destination", 1, w1);
+            destinationInput.Input = destination;
             InputButton departureInput = new("Departure (press enter to see calendar)", 2, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year, "Departure"));
-            InputButton arivalInput = new("Arrival (press enter to see calendar)", 3, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year, "Arrival"));
+            departureInput.Input = departure;
+            InputButton arrivalInput = new("Arrival (press enter to see calendar)", 3, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year, "Arrival"));
+            arrivalInput.Input = arrival;
 
             AddMenuBar(w1);
             MenuUpdated = true;
@@ -716,7 +720,7 @@ static class BookingMenu
             if (month == 12) CalendarMenu(1, year + 1, direction);
             else CalendarMenu(month + 1, year, direction);
         });
-        Calendar.PrintCal(year, month, minYear, maxYear, w1);
+        Calendar.PrintCal(year, month, minYear, maxYear, w1, direction, month, year);
         //w1.Text += $" {Calendar.PrintCal(year, month, minYear, maxYear, w1)}";
 
         _ = new Button ("Back", 0, 1, w1, "bottom", () => FlightSearchMenu(false, "", "", "", ""));
@@ -724,6 +728,6 @@ static class BookingMenu
         AddMenuBar(w1);
         MenuUpdated = true;
 
-        return "25-06-2023";
+        return "";
     }
 }
