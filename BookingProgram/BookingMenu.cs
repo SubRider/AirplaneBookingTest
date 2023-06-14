@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Xml.Linq;
@@ -218,7 +218,8 @@ static class BookingMenu
             CurrentMenu = () => FlightSearchMenu(true, "", "", "", "");
             NextMenu = () => ClassReservationMenu();
             Window w1 = new(1, 0.85);
-            InputButton originInput = new("Origin", 0, w1);
+            InputButton originInput = new("Origin", 0, w1, () => {CountrySelection();});
+            originInput.Input = origin;
             InputButton destinationInput = new("Destination", 1, w1);
             InputButton departureInput = new("Departure (press enter to see calendar)", 2, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year, "Departure"));
             InputButton arivalInput = new("Arrival (press enter to see calendar)", 3, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year, "Arrival"));
@@ -230,6 +231,19 @@ static class BookingMenu
         SearchMenu<Flight> flightSearch = new(Flight.Flights);
         flightSearch.Activate(new() { ("Origin", InputButton.InputButtons[0].Input), ("Destination", InputButton.InputButtons[1].Input), ("DepartureDate", InputButton.InputButtons[2].Input), ("ArrivalDate", InputButton.InputButtons[3].Input) });
 
+    }
+
+        public static void CountrySelection()
+    {
+        Renderer.Clear();
+        Window w1 = new(1, 0.85);
+        Country c = new(1, "");
+        int count = 0;
+        foreach (string country in Country.countryList)
+        {
+            _ = new Button(country, count, w1, () => {FlightSearchMenu(true, country, "", "", "");});
+            count ++;
+        }
     }
 
     public static void ClassReservationMenu()
