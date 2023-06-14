@@ -44,7 +44,11 @@ public class City : IHasID
             City capital = new City(id, city);
             Cities.Add(capital);
         }
-    }   
+    }
+    public static City FindByID(int id)
+    {
+        return Cities.Find(f => f.ID == id);
+    }
 
     public override string ToString()
     {

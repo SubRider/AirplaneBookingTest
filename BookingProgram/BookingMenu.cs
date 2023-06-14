@@ -243,7 +243,7 @@ static class BookingMenu
         {
             Renderer.Clear();
             CurrentMenu = () => CountrySelection(true);
-            NextMenu = () => FlightSearchMenu(false, InputButton.InputButtons[0].Input, "", "", "");
+            NextMenu = () => FlightSearchMenu(false, City.FindByID(ResultID).ToString(), "", "", "");
             Window w1 = new(1, 0.85);
             InputButton city = new("City", 0, w1);
             AddMenuBar(w1);
