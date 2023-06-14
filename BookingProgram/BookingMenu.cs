@@ -737,7 +737,7 @@ static class BookingMenu
             if (month == 12) CalendarMenu(1, year + 1, direction);
             else CalendarMenu(month + 1, year, direction);
         });
-        Calendar.PrintCal(year, month, minYear, maxYear, w1);
+        Calendar.PrintCal(year, month, minYear, maxYear, w1, direction, month, year);
         //w1.Text += $" {Calendar.PrintCal(year, month, minYear, maxYear, w1)}";
 
         _ = new Button ("Back", 0, 1, w1, "bottom", () => FlightSearchMenu(false, "", "", "", ""));
