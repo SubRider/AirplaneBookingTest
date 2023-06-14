@@ -218,7 +218,7 @@ static class BookingMenu
             CurrentMenu = () => FlightSearchMenu(true, "", "", "", "");
             NextMenu = () => ClassReservationMenu();
             Window w1 = new(1, 0.85);
-            InputButton originInput = new("Origin", 0, w1);
+            InputButton originInput = new("Origin", 0, w1, () => {CountrySelection(false);});
             originInput.Input = origin;
             InputButton destinationInput = new("Destination", 1, w1);
             destinationInput.Input = destination;
@@ -233,7 +233,24 @@ static class BookingMenu
         if (loop) Renderer.ClearLines();
         SearchMenu<Flight> flightSearch = new(Flight.Flights);
         flightSearch.Activate(new() { ("Origin", InputButton.InputButtons[0].Input), ("Destination", InputButton.InputButtons[1].Input), ("DepartureDate", InputButton.InputButtons[2].Input), ("ArrivalDate", InputButton.InputButtons[3].Input) });
-
+ 
+    }
+    
+    public static void CountrySelection(bool loop)
+    {
+        if (!loop)
+        {
+            Renderer.Clear();
+            CurrentMenu = () => CountrySelection(true);
+            NextMenu = () => FlightSearchMenu(false, InputButton.InputButtons[0].Input, "", "", "");
+            Window w1 = new(1, 0.85);
+            InputButton city = new("City", 0, w1);
+            AddMenuBar(w1);
+            MenuUpdated = true;
+        }
+        if (loop) Renderer.ClearLines();
+        SearchMenu<Country> countrySearch = new(Country.countries);
+        countrySearch.Activate(new() { ("City", InputButton.InputButtons[0].Input) });
     }
 
     public static void ClassReservationMenu()
@@ -694,7 +711,7 @@ static class BookingMenu
         Renderer.Clear();
         Window w1 = new(1, 0.85);
 
-        // Give the page a header text to make sure user knows what they are supposed to do on that page
+        // give the page a header tekst to make sure user knows what they are supposed to do on that page
         if (direction == "Departure")
         {
             w1.Text +=  $"\u001b[96m Departure date\u001b[0m\n║\u001b[96m------------------\u001b[0m\n║";
@@ -720,7 +737,7 @@ static class BookingMenu
             if (month == 12) CalendarMenu(1, year + 1, direction);
             else CalendarMenu(month + 1, year, direction);
         });
-        Calendar.PrintCal(year, month, minYear, maxYear, w1, direction, month, year);
+        Calendar.PrintCal(year, month, minYear, maxYear, w1);
         //w1.Text += $" {Calendar.PrintCal(year, month, minYear, maxYear, w1)}";
 
         _ = new Button ("Back", 0, 1, w1, "bottom", () => FlightSearchMenu(false, "", "", "", ""));
@@ -728,6 +745,6 @@ static class BookingMenu
         AddMenuBar(w1);
         MenuUpdated = true;
 
-        return "";
+        return "25-06-2023";
     }
 }
