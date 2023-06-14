@@ -221,7 +221,7 @@ static class BookingMenu
             Window w1 = new(1, 0.85);
             InputButton originInput = new("Origin", 0, w1, () => {CountrySelection(false);});
             originInput.Input = origin;
-            InputButton destinationInput = new("Destination", 1, w1);
+            InputButton destinationInput = new("Destination", 1, w1, () => {CountrySelection(false);});
             destinationInput.Input = destination;
             InputButton departureInput = new("Departure (press enter to see calendar)", 2, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year, "Departure"));
             departureInput.Input = departure;
