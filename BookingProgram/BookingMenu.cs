@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Xml.Linq;
@@ -218,7 +218,7 @@ static class BookingMenu
             CurrentMenu = () => FlightSearchMenu(true, "", "", "", "");
             NextMenu = () => ClassReservationMenu();
             Window w1 = new(1, 0.85);
-            InputButton originInput = new("Origin", 0, w1, () => {CountrySelection();});
+            InputButton originInput = new("Origin", 0, w1, () => {CountrySelection(false);});
             originInput.Input = origin;
             InputButton destinationInput = new("Destination", 1, w1);
             InputButton departureInput = new("Departure (press enter to see calendar)", 2, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year, "Departure"));
@@ -230,20 +230,24 @@ static class BookingMenu
         if (loop) Renderer.ClearLines();
         SearchMenu<Flight> flightSearch = new(Flight.Flights);
         flightSearch.Activate(new() { ("Origin", InputButton.InputButtons[0].Input), ("Destination", InputButton.InputButtons[1].Input), ("DepartureDate", InputButton.InputButtons[2].Input), ("ArrivalDate", InputButton.InputButtons[3].Input) });
-
+ 
     }
-
-        public static void CountrySelection()
+    
+    public static void CountrySelection(bool loop)
     {
-        Renderer.Clear();
-        Window w1 = new(1, 0.85);
-        Country c = new(1, "");
-        int count = 0;
-        foreach (string country in Country.countryList)
+        if (!loop)
         {
-            _ = new Button(country, count, w1, () => {FlightSearchMenu(true, country, "", "", "");});
-            count ++;
+            Renderer.Clear();
+            CurrentMenu = () => CountrySelection(true);
+            NextMenu = () => FlightSearchMenu(false, InputButton.InputButtons[0].Input, "", "", "");
+            Window w1 = new(1, 0.85);
+            InputButton city = new("City", 0, w1);
+            AddMenuBar(w1);
+            MenuUpdated = true;
         }
+        if (loop) Renderer.ClearLines();
+        SearchMenu<Country> countrySearch = new(Country.countries);
+        countrySearch.Activate(new() { ("City", InputButton.InputButtons[0].Input) });
     }
 
     public static void ClassReservationMenu()

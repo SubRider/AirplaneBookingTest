@@ -17,6 +17,7 @@ public class Country : IHasID
     
     public static List<string> countryList = new()
     {
+        "Abu Dhabi", "Abuja", "Accra", "Addis Ababa", "Algiers", "Amman", "Amsterdam", "Ankara", "Antananarivo", "Apia",
         "Ashgabat", "Asmara", "Astana", "Asunción", "Athens", "Avarua", "Baghdad", "Baku", "Bamako",
         "Bandar Seri Begawan", "Bangkok", "Bangui", "Banjul", "Basseterre", "Beijing", "Beirut", "Belgrade", "Belmopan",
         "Berlin", "Bern", "Bishkek", "Bissau", "Bogotá", "Brasília", "Bratislava", "Brazzaville", "Bridgetown",
