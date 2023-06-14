@@ -1,1 +1,122 @@
-[{"ID":82,"Origin":"France","Destination":"Hungary","DepartureDate":"25-06-2023","ArrivalDate":"26-06-2023","AirplaneID":4}]
+[
+  {
+    "ID": 1,
+    "Origin": "London",
+    "Destination": "Paris",
+    "DepartureDate": "14/06/2023",
+    "ArrivalDate": "14/06/2023",
+    "AirplaneID": 1
+  },
+  {
+    "ID": 2,
+    "Origin": "Rome",
+    "Destination": "Madrid",
+    "DepartureDate": "15/06/2023",
+    "ArrivalDate": "15/06/2023",
+    "AirplaneID": 1
+  },
+  {
+    "ID": 3,
+    "Origin": "Berlin",
+    "Destination": "Amsterdam",
+    "DepartureDate": "16/06/2023",
+    "ArrivalDate": "16/06/2023",
+    "AirplaneID": 1
+  },
+  {
+    "ID": 4,
+    "Origin": "Tokyo",
+    "Destination": "Seoul",
+    "DepartureDate": "17/06/2023",
+    "ArrivalDate": "17/06/2023",
+    "AirplaneID": 1
+  },
+  {
+    "ID": 5,
+    "Origin": "New York",
+    "Destination": "Los Angeles",
+    "DepartureDate": "18/06/2023",
+    "ArrivalDate": "18/06/2023",
+    "AirplaneID": 1
+  },
+  {
+    "ID": 6,
+    "Origin": "Moscow",
+    "Destination": "Beijing",
+    "DepartureDate": "19/06/2023",
+    "ArrivalDate": "19/06/2023",
+    "AirplaneID": 1
+  },
+  {
+    "ID": 7,
+    "Origin": "Paris",
+    "Destination": "London",
+    "DepartureDate": "20/06/2023",
+    "ArrivalDate": "20/06/2023",
+    "AirplaneID": 1
+  },
+  {
+    "ID": 8,
+    "Origin": "Madrid",
+    "Destination": "Rome",
+    "DepartureDate": "21/06/2023",
+    "ArrivalDate": "21/06/2023",
+    "AirplaneID": 1
+  },
+  {
+    "ID": 9,
+    "Origin": "Amsterdam",
+    "Destination": "Berlin",
+    "DepartureDate": "22/06/2023",
+    "ArrivalDate": "22/06/2023",
+    "AirplaneID": 1
+  },
+  {
+    "ID": 10,
+    "Origin": "Seoul",
+    "Destination": "Tokyo",
+    "DepartureDate": "23/06/2023",
+    "ArrivalDate": "23/06/2023",
+    "AirplaneID": 1
+  },
+  {
+    "ID": 11,
+    "Origin": "Los Angeles",
+    "Destination": "New York",
+    "DepartureDate": "24/06/2023",
+    "ArrivalDate": "24/06/2023",
+    "AirplaneID": 1
+  },
+  {
+    "ID": 12,
+    "Origin": "Beijing",
+    "Destination": "Moscow",
+    "DepartureDate": "25/06/2023",
+    "ArrivalDate": "25/06/2023",
+    "AirplaneID": 1
+  },
+  {
+    "ID": 13,
+    "Origin": "Sydney",
+    "Destination": "Melbourne",
+    "DepartureDate": "26/06/2023",
+    "ArrivalDate": "26/06/2023",
+    "AirplaneID": 1
+  },
+  {
+    "ID": 14,
+    "Origin": "Toronto",
+    "Destination": "Vancouver",
+    "DepartureDate": "27/06/2023",
+    "ArrivalDate": "27/06/2023",
+    "AirplaneID": 1
+  },
+  {
+    "ID": 15,
+    "Origin": "Dubai",
+    "Destination": "Cairo",
+    "DepartureDate": "28/06/2023",
+    "ArrivalDate": "28/06/2023",
+    "AirplaneID": 1
+  }
+]
