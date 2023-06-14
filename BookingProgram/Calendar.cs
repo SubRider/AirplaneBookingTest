@@ -1,6 +1,6 @@
 static class Calendar
 {
-    public static string PrintCal(int year, int month, int minYear, int maxYear, Window w1)
+    public static string PrintCal(int year, int month, int minYear, int maxYear, Window w1, string direction, int selectedMonth, int selectedYear)
     {
         Console.Clear();
         DateTime Date = default;
@@ -17,44 +17,57 @@ static class Calendar
         int currentMonth = currentDate.Month;
         int currentYear = currentDate.Year;
 
-        // print calendar
-        string calendar = "\n";
-        /*        calendar += $"║   {(new DateTime(DateTime.Now.Year, month, 1).ToString("MMMM")).ToUpper()}, {year}\n\n" +
-                            "║  ┌──────────────────────────────────────┐\n" +
-                            "║  │   Mo   Tu   We   Th   Fr   Sa   Su   │\n" +
-                            "║  ├──────────────────────────────────────┤\n";*/
+        // print calendar buttons
         int dayNumber = 1;
         for (int i = 0; i < 6; i++)
         {
             for (int j = 0; j < 7; j++)
             {
-                
+                Action action = () => BookingMenu.FlightSearchMenu(false, "", "", "", "");
+                if (direction == "Departure")
+                {
+                    action = () => BookingMenu.FlightSearchMenu(false, "", "", $"{1}-{selectedMonth}-{selectedYear}", "");
+                }
+                else if (direction == "Arrival")
+                {
+                    action = () => BookingMenu.FlightSearchMenu(false, "", "", "", $"{1}-{selectedMonth}-{selectedYear}");
+                }
+                Action errorAction = () => 
+                {
+                    Renderer.Clear();
+                    Console.WriteLine("\u001b[91mThis date is not available");
+                    Thread.Sleep(850);
+                    BookingMenu.CalendarMenu(DateTime.Now.Month, DateTime.Now.Year, direction);
+                };
+
                 int day = j + (7 * i);
                 if (day < firstDay) continue;
                 if (dayNumber > lastDayOfMonth)
                 {
-                    _ = new Button(" ", i + 2, j, w1, () => { }, false);
+                    _ = new Button(" ", (i + 4) * 2, j + 1, w1, () => { }, false);
                 }
                 else 
                 {
-                    if (year > currentYear) _ = new Button($"{dayNumber}", i + 2, j, w1, () => { Date = new DateTime(year, month, day); });
+                    if (year > currentYear) _ = new Button($"{dayNumber}", (i + 4) * 2, j + 1, w1, action);
                     else if (year == currentYear)
                     {
                         if (month == currentMonth)
                         {
-                            if (dayNumber >= currentDay) _ = new Button($"{dayNumber}", i + 5, j, w1, () => { Date = new DateTime(year, month, day); });
-                            else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", i + 5, j, w1, () => { Date = new DateTime(year, month, day); });
+                            if (dayNumber >= currentDay) _ = new Button($"{dayNumber}", (i + 4) * 2, j + 1, w1, action);
+                            else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", (i + 4) * 2, j + 1, w1, errorAction);
                         }
-                        else if (month > currentMonth) _ = new Button($"{dayNumber}", i + 5, j, w1, () => { Date = new DateTime(year, month, day); });
-                        else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", i + 5, j, w1, () => { Date = new DateTime(year, month, day); });
+                        else if (month > currentMonth) _ = new Button($"{dayNumber}", (i + 4) * 2, j + 1, w1, action);
+                        else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", (i + 4) * 2, j + 1, w1, errorAction);
                     }
-                    else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", i + 5, j, w1, () => { Date = new DateTime(year, month, day); });
+                    else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", (i + 4) * 2, j + 1, w1, errorAction);
                 }
                 dayNumber++;
             }
         }
         List<Button> B = Button.Buttons;
-        //calendar += "║  └──────────────────────────────────────┘";
+
+        
+        
         return $"";
     }
 }
