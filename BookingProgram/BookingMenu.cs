@@ -690,7 +690,7 @@ static class BookingMenu
         Renderer.Clear();
         Window w1 = new(1, 0.85);
 
-        // give the page a header tekst to make sure user knows what they are supposed to do on that page
+        // Give the page a header text to make sure user knows what they are supposed to do on that page
         if (direction == "Departure")
         {
             w1.Text +=  $"\u001b[96m Departure date\u001b[0m\n║\u001b[96m------------------\u001b[0m\n║";
