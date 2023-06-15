@@ -23,15 +23,6 @@ static class Calendar
         {
             for (int j = 0; j < 7; j++)
             {
-                Action action = () => BookingMenu.FlightSearchMenu(false, "", "", "", "");
-                if (direction == "Departure")
-                {
-                    action = () => BookingMenu.FlightSearchMenu(false, "", "", $"{1}-{selectedMonth}-{selectedYear}", "");
-                }
-                else if (direction == "Arrival")
-                {
-                    action = () => BookingMenu.FlightSearchMenu(false, "", "", "", $"{1}-{selectedMonth}-{selectedYear}");
-                }
                 Action errorAction = () => 
                 {
                     Renderer.Clear();
@@ -39,6 +30,7 @@ static class Calendar
                     Thread.Sleep(850);
                     BookingMenu.CalendarMenu(DateTime.Now.Month, DateTime.Now.Year, direction);
                 };
+                int number = dayNumber;
 
                 int day = j + (7 * i);
                 if (day < firstDay) continue;
@@ -48,15 +40,37 @@ static class Calendar
                 }
                 else 
                 {
-                    if (year > currentYear) _ = new Button($"{dayNumber}", (i + 4) * 2, j + 1, w1, action);
+                    if (year > currentYear) _ = new Button($"{dayNumber}", (i + 4) * 2, j + 1, w1, () =>
+                    {
+                        if (direction == "Departure")
+                        {
+                            BookingMenu.FlightSearchMenu(false, "", "", $"{number}-{selectedMonth}-{selectedYear}", "");
+                        }
+                        else BookingMenu.FlightSearchMenu(false, "", "", "", $"{number}-{selectedMonth}-{selectedYear}");
+                    });
                     else if (year == currentYear)
                     {
                         if (month == currentMonth)
                         {
-                            if (dayNumber >= currentDay) _ = new Button($"{dayNumber}", (i + 4) * 2, j + 1, w1, action);
+                            if (dayNumber >= currentDay) _ = new Button($"{dayNumber}", (i + 4) * 2, j + 1, w1, () =>
+                            {
+                                if (direction == "Departure")
+                                {
+                                    BookingMenu.FlightSearchMenu(false, "", "", $"{number}-{selectedMonth}-{selectedYear}", "");
+                                }
+                                else BookingMenu.FlightSearchMenu(false, "", "", "", $"{number}-{selectedMonth}-{selectedYear}");
+                            });
                             else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", (i + 4) * 2, j + 1, w1, errorAction);
                         }
-                        else if (month > currentMonth) _ = new Button($"{dayNumber}", (i + 4) * 2, j + 1, w1, action);
+
+                        else if (month > currentMonth) _ = new Button($"{dayNumber}", (i + 4) * 2, j + 1, w1, () =>
+                        {
+                            if (direction == "Departure")
+                            {
+                                BookingMenu.FlightSearchMenu(false, "", "", $"{number}-{selectedMonth}-{selectedYear}", "");
+                            }
+                            else BookingMenu.FlightSearchMenu(false, "", "", "", $"{number}-{selectedMonth}-{selectedYear}");
+                        });
                         else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", (i + 4) * 2, j + 1, w1, errorAction);
                     }
                     else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", (i + 4) * 2, j + 1, w1, errorAction);
