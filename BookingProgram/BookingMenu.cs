@@ -31,7 +31,7 @@
         Renderer.Clear();
         ToASCIIArt.Write("Rotterdam");
         ToASCIIArt.Write("Airlines", 1);
-        //Thread.Sleep(4000);
+        Thread.Sleep(4000);
         StartScreen();
         while (!Quit)
         {
