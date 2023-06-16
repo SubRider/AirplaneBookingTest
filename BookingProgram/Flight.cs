@@ -27,6 +27,7 @@
         ArrivalDate = arrivalDate;
         Destination = destination;
         AirplaneID = airplaneID;
+        Groups = new();
         ID = Flights.Count;
         Model = Airplane.Planes[AirplaneID - 1].Model;
         switch (Model)
