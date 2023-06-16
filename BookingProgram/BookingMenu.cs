@@ -746,7 +746,7 @@ static class BookingMenu
             w1.Text +=  $"\u001b[96m Arrival date\u001b[0m\n║\u001b[96m---------------\u001b[0m\n║";
         }
 
-        w1.Text +=  "\n║\n║\n║\u001b[92m   Mo Tu  We  Th  Fr  Sa  Su \u001b[0m  \n║\n║";
+        w1.Text +=  "\n║\n║\n║\u001b[92m Mo Tu We Th Fr Sa Su \u001b[0m  \n║\n║";
 
         List<string> months = new() { "January", "February", "March", "April", "May", "June", 
                                     "July", "August", "September", "October", "November", "December" };
