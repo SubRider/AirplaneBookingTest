@@ -668,6 +668,10 @@ static class BookingMenu
         {
             AmountofAirplanes += 1;
         }
+        foreach(Seat seat in Seats)
+        {
+            AmountOfSeatsReserved += 1;
+        }
         w1.Text = $"Amount of flights booked: {AmountofFlightsReserved}\n║Amount of seats booked: {AmountOfSeatsReserved}\n║Amount of airplanes: {AmountofAirplanes}\n║Amount of revenue: $";
 
         AddAdminMenuBar(w1);
