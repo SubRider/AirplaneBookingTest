@@ -7,6 +7,7 @@ class Airplane
     public static List<Airplane> Planes { get; set; } = new();
     public int ID { get; set; }
     public string Model { get; set; }
+    public List<Seat> Seats { get; set; }
     public List<Seat> FirstClassSeats { get; set; }
     public List<Seat> BusinessClassSeats { get; set; }
     public List<Seat> EconomyClassSeats { get; set; }
@@ -38,6 +39,7 @@ class Airplane
                 EconomyClassSeats = LoadSeats(6, 20, 15, "Economy");
                 break;
         }
+        Seats = FirstClassSeats.Concat(BusinessClassSeats).Concat(EconomyClassSeats).ToList();
         Planes.Add(this);
     }
     public List<Seat> LoadSeats(int rowSize, int amountOfRows, int prevClassRows, string _class)
