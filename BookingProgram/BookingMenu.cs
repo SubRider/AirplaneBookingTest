@@ -7,13 +7,16 @@ using System.Xml.Linq;
 static class BookingMenu
 {
     public static bool Quit = false;
+    public static string Origin = "";
+    public static string Destination = "";
+    public static string DepartureDate = "";
+    public static string ArrivalDate = "";
     public static string ReservationChoice;
     public static int FlightID = -1;
     public static int ResultID = -1;
     public static Airplane CurrentPlane;
     public static int AmountOfSeatsReserved;
     public static string SingleOrRetour;
-    public static bool MenuUpdated;
     public static Action CurrentMenu;
     public static Action NextMenu;
     public static List<Seat> Seats = new();
@@ -43,7 +46,7 @@ static class BookingMenu
     {
         Window menuBar = new(1, 0.15, reference);
         _ = new Button("Home", 0, 0, menuBar, "left", () => StartScreen());
-        _ = new Button("Book Flight", 0, 1, menuBar, "left", () => FlightSearchMenu(false, "", "", "", ""));
+        _ = new Button("Book Flight", 0, 1, menuBar, "left", () => FlightSearchMenu(false));
         _ = new Button("My Flights", 0, 2, menuBar, "left", () => History());
         _ = new Button("Account", 0, 3, menuBar, "left", () => AccountMenu());
         _ = new Button("Info", 0, 4, menuBar, "left", () => AirlineInfo());
@@ -58,7 +61,6 @@ static class BookingMenu
         w1.Text += "Welcome to the homescreen.";
 
         AddMenuBar(w1);
-        MenuUpdated = true;
     }
 
     public static void AccountMenu()
@@ -88,7 +90,6 @@ static class BookingMenu
                 _ = new Button("Yes", 3, w1, "top", () => DeleteAccount());
                 _ = new Button("No", 4, w1, "top", () => AccountMenu());
                 AddMenuBar(w1);
-                MenuUpdated = true;
             });
         }
         
@@ -235,25 +236,24 @@ static class BookingMenu
         }
     }
   
-    public static void FlightSearchMenu(bool loop, string origin, string destination, string departure, string arrival)
+    public static void FlightSearchMenu(bool loop)
     {      
         if (!loop)
         {
             Renderer.Clear();
-            CurrentMenu = () => FlightSearchMenu(true, "", "", "", "");
+            CurrentMenu = () => FlightSearchMenu(true);
             NextMenu = () => ClassReservationMenu();
             Window w1 = new(1, 0.85);
-            InputButton originInput = new("Origin", 0, w1, () => {CountrySelection(false);});
-            originInput.Input = origin;
-            InputButton destinationInput = new("Destination", 1, w1, () => {CountrySelection(false);});
-            destinationInput.Input = destination;
+            InputButton originInput = new("Origin", 0, w1, () => {CountrySelection(false, "origin");});
+            originInput.Input = Origin;
+            InputButton destinationInput = new("Destination", 1, w1, () => {CountrySelection(false, "destination");});
+            destinationInput.Input = Destination;
             InputButton departureInput = new("Departure (press enter to see calendar)", 2, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year, "Departure"));
-            departureInput.Input = departure;
+            departureInput.Input = DepartureDate;
             InputButton arrivalInput = new("Arrival (press enter to see calendar)", 3, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year, "Arrival"));
-            arrivalInput.Input = arrival;
+            arrivalInput.Input = ArrivalDate;
 
             AddMenuBar(w1);
-            MenuUpdated = true;
         }
         if (loop) Renderer.ClearLines();
         SearchMenu<Flight> flightSearch = new(Flight.Flights);
@@ -261,17 +261,21 @@ static class BookingMenu
  
     }
     
-    public static void CountrySelection(bool loop)
+    public static void CountrySelection(bool loop, string inputField)
     {
         if (!loop)
         {
             Renderer.Clear();
-            CurrentMenu = () => CountrySelection(true);
-            NextMenu = () => FlightSearchMenu(false, City.FindByID(ResultID).ToString(), "", "", "");
+            CurrentMenu = () => CountrySelection(true, inputField);
+            NextMenu = () =>
+            {
+                if (inputField == "origin") Origin = City.FindByID(ResultID).ToString();
+                if (inputField == "destination") Destination = City.FindByID(ResultID).ToString();
+                FlightSearchMenu(false);
+            };
             Window w1 = new(1, 0.85);
             InputButton city = new("City", 0, w1);
             AddMenuBar(w1);
-            MenuUpdated = true;
         }
         if (loop) Renderer.ClearLines();
         SearchMenu<City> citySearch = new(City.Cities);
@@ -288,10 +292,9 @@ static class BookingMenu
         Button first = new("First Class", 0, w1, () => { ReservationChoice = "First";RetourOrSingle(); });
         Button business = new("Business Class", 1, w1, () => { ReservationChoice = "Business";RetourOrSingle(); });
         Button economy = new("Economy Class", 2, w1, () => { ReservationChoice = "Economy";RetourOrSingle(); });
-        _ = new Button("back", 0, w1, "bottom", () => FlightSearchMenu(false, "", "", "", "")); 
+        _ = new Button("back", 0, w1, "bottom", () => FlightSearchMenu(false)); 
 
         AddMenuBar(w1);
-        MenuUpdated = true;
     }
     public static void RetourOrSingle()
     {
@@ -304,7 +307,6 @@ static class BookingMenu
         Button back = new("back", 0, w1, "bottom", () => ClassReservationMenu());
 
         AddMenuBar(w1);
-        MenuUpdated = true;
     }
 
     public static void SeatsReservationMenu()
@@ -342,7 +344,6 @@ static class BookingMenu
         );
         _ = new Button("back", 0, w1, "bottom", () => RetourOrSingle());
         AddMenuBar(w1);
-        MenuUpdated = true;
     }
 
     public static void ConfirmationMenu()
@@ -358,7 +359,6 @@ static class BookingMenu
         _ = new Button("Yes", AmountOfSeatsReserved + 2, w1, () => Reserving());
         _ = new Button ("No", AmountOfSeatsReserved + 3, w1, () => SeatMenu());
         AddMenuBar(w1);
-        MenuUpdated = true;
     }
 
     public static void SeatMenu()
@@ -371,7 +371,6 @@ static class BookingMenu
         else Renderer.ShowSeats(CurrentPlane.EconomyClassSeats, w1);
         Button back = new("back", 0, w1, "bottom", () => SeatsReservationMenu());
         AddMenuBar(w1);
-        MenuUpdated = true;
     }
 
     public static void Reserving()
@@ -430,8 +429,7 @@ static class BookingMenu
         }
 
         AddMenuBar(w1);
-            MenuUpdated = true;
-        }
+    }
 
     public static void CancelFlight()
     {
@@ -454,7 +452,6 @@ static class BookingMenu
             }
         }
         AddMenuBar(w1);
-        MenuUpdated = true;
     }
     public static void AddAdminMenuBar(Window reference)
     {
@@ -474,7 +471,6 @@ static class BookingMenu
         Renderer.Clear();
         Window w1 = new(1, 0.85);
         AddAdminMenuBar(w1);
-        MenuUpdated = true;
     }
 
 
@@ -488,7 +484,6 @@ static class BookingMenu
             InputButton origin = new("Origin", 0, w1);
             InputButton destination = new("Destination", 1, w1);
             AddAdminMenuBar(w1);
-            MenuUpdated = true;
         }
         if (loop) Renderer.ClearLines();
         SearchMenu<Flight> flightSearch = new(Flight.Flights);
@@ -500,7 +495,6 @@ static class BookingMenu
         Window w1 = new();
         foreach (Airplane airplane in Airplane.Planes) w1.Text += $"{airplane} ^ ";
         AddAdminMenuBar(w1);
-        MenuUpdated = true;
     }
 
     public static void AddAirplaneMenu()
@@ -532,7 +526,6 @@ static class BookingMenu
             AdminMenu();
         });
         AddAdminMenuBar(w1);
-        MenuUpdated = true;
     }
     public static void AddFlightMenu(bool loop)
     {
@@ -575,7 +568,6 @@ static class BookingMenu
                 }
             });
             AddAdminMenuBar(w1);
-            MenuUpdated = true;
         }
     }
 
@@ -591,7 +583,6 @@ static class BookingMenu
             InputButton destination = new("Destination", 1, w1);
             InputButton flightID = new("Flight ID", 2, w1);
             AddAdminMenuBar(w1);
-            MenuUpdated = true;
         }
         if (loop) Renderer.ClearLines();
         SearchMenu<Flight> flightSearch = new(Flight.Flights);
@@ -640,7 +631,6 @@ static class BookingMenu
                 }
             });
             AddAdminMenuBar(w1);
-            MenuUpdated = true;
         } 
     }
 
@@ -658,7 +648,6 @@ static class BookingMenu
             InputButton destination = new("Destination", 1, w1);
             InputButton flightID = new("Flight ID", 2, w1);
             AddAdminMenuBar(w1);
-            MenuUpdated = true;
         }
         else if (loop) Renderer.ClearLines();
         SearchMenu<Flight> flightSearch = new(Flight.Flights);
@@ -725,7 +714,6 @@ static class BookingMenu
         w1.Text += $" Phone Number:  {phoneNumber} ^ E-mail:        {email}";
 
         AddMenuBar(w1);
-        MenuUpdated = true;
     }
 
     public static string CalendarMenu(int month, int year, string direction)
@@ -765,10 +753,9 @@ static class BookingMenu
         Calendar.PrintCal(year, month, minYear, maxYear, w1, direction, month, year);
         //w1.Text += $" {Calendar.PrintCal(year, month, minYear, maxYear, w1)}";
 
-        _ = new Button ("Back", 0, 1, w1, "bottom", () => FlightSearchMenu(false, "", "", "", ""));
+        _ = new Button ("Back", 0, 1, w1, "bottom", () => FlightSearchMenu(false));
 
         AddMenuBar(w1);
-        MenuUpdated = true;
 
         return "25-06-2023";
     }

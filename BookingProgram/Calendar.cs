@@ -44,9 +44,14 @@ static class Calendar
                     {
                         if (direction == "Departure")
                         {
-                            BookingMenu.FlightSearchMenu(false, "", "", $"{number}-{selectedMonth}-{selectedYear}", "");
+                            BookingMenu.DepartureDate = $"{number}-{selectedMonth}-{selectedYear}";
+                            BookingMenu.FlightSearchMenu(false);
                         }
-                        else BookingMenu.FlightSearchMenu(false, "", "", "", $"{number}-{selectedMonth}-{selectedYear}");
+                        else
+                        {
+                            BookingMenu.ArrivalDate = $"{number}-{selectedMonth}-{selectedYear}";
+                            BookingMenu.FlightSearchMenu(false);
+                        }
                     });
                     else if (year == currentYear)
                     {
@@ -56,9 +61,14 @@ static class Calendar
                             {
                                 if (direction == "Departure")
                                 {
-                                    BookingMenu.FlightSearchMenu(false, "", "", $"{number}-{selectedMonth}-{selectedYear}", "");
+                                    BookingMenu.DepartureDate = $"{number}-{selectedMonth}-{selectedYear}";
+                                    BookingMenu.FlightSearchMenu(false);
                                 }
-                                else BookingMenu.FlightSearchMenu(false, "", "", "", $"{number}-{selectedMonth}-{selectedYear}");
+                                else
+                                {
+                                    BookingMenu.ArrivalDate = $"{number}-{selectedMonth}-{selectedYear}";
+                                    BookingMenu.FlightSearchMenu(false);
+                                }
                             });
                             else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", (i + 4) * 2, j + 1, w1, errorAction);
                         }
@@ -67,9 +77,14 @@ static class Calendar
                         {
                             if (direction == "Departure")
                             {
-                                BookingMenu.FlightSearchMenu(false, "", "", $"{number}-{selectedMonth}-{selectedYear}", "");
+                                BookingMenu.DepartureDate = $"{number}-{selectedMonth}-{selectedYear}";
+                                BookingMenu.FlightSearchMenu(false);
                             }
-                            else BookingMenu.FlightSearchMenu(false, "", "", "", $"{number}-{selectedMonth}-{selectedYear}");
+                            else
+                            {
+                                BookingMenu.ArrivalDate = $"{number}-{selectedMonth}-{selectedYear}";
+                                BookingMenu.FlightSearchMenu(false);
+                            }
                         });
                         else _ = new Button(ConsoleColor.DarkGray, $"{dayNumber}", (i + 4) * 2, j + 1, w1, errorAction);
                     }
