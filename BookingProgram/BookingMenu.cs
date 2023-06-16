@@ -1,6 +1,7 @@
 ﻿﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
+ using System.Data;
+ using System.Globalization;
 using System.Xml.Linq;
 
 static class BookingMenu
@@ -35,12 +36,6 @@ static class BookingMenu
         {
             Renderer.ShowWindows();
             InputChecker.CheckInput();
-            if (MenuUpdated)
-            {
-                Renderer.ShowWindows();
-                InputChecker.JumpToButton(0);
-                MenuUpdated = false;
-            }
         }
         Console.Clear();
     }
@@ -71,7 +66,7 @@ static class BookingMenu
         Renderer.Clear();
         CurrentMenu = () => AccountMenu();
         NextMenu = () => AccountMenu();
-        Window w1 = new(1, 0.85);
+        Window w1 = new();
         if (AccountLogic.CurrentAccount == null) 
         {
             
@@ -84,12 +79,20 @@ static class BookingMenu
             w1.Text +=  $"\u001b[96m Account\u001b[0m\n║\u001b[96m----------\u001b[0m\n║\n║Name: {AccountLogic.CurrentAccount.FullName}\n" +
                         $"║Email address: {AccountLogic.CurrentAccount.EmailAddress}\n" +
                         $"║Phone number: " + (AccountLogic.CurrentAccount.PhoneNumber != null ? AccountLogic.CurrentAccount.PhoneNumber : "");
-            _ = new Button("Edit", 2, w1, "bottom", () => EditAccount(false));
-            //_ = new Button("Delete Account", 3, w1, "bottom", () => { });
+            _ = new Button("Edit", 3, w1, "bottom", () => EditAccount(false));
+            _ = new Button("Delete Account", 2, w1, "bottom", () =>
+            {
+                Renderer.Clear();
+                Window w1 = new();
+                w1.Text += "Are you sure you want to delete your account?";
+                _ = new Button("Yes", 3, w1, "top", () => DeleteAccount());
+                _ = new Button("No", 4, w1, "top", () => AccountMenu());
+                AddMenuBar(w1);
+                MenuUpdated = true;
+            });
         }
         
         AddMenuBar(w1);
-        MenuUpdated = true;
     }
 
     public static void EditAccount(bool loop)
@@ -158,6 +161,27 @@ static class BookingMenu
             AddMenuBar(w1);
         }
     }
+
+    public static void DeleteAccount()
+    {
+        Renderer.Clear();
+        Window w1 = new();
+        List<AccountModel> TempAccountList = new(AccountLogic.Accounts);
+        foreach (AccountModel account in TempAccountList)
+        {
+            if (account.Id == AccountLogic.CurrentAccount.Id)
+            {
+                AccountLogic.Accounts.Remove(account);
+            }
+        }
+        JsonCommunicator.Write("Accounts.json", AccountLogic.Accounts);
+        Console.SetCursorPosition(1, 1);
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Account deleted");
+        Thread.Sleep(700);
+        AccountLogic.CurrentAccount = null;
+        StartScreen();
+    }   
 
     public static void LoginMenu(bool loop)
     {
