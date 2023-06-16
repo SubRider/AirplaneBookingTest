@@ -1,6 +1,4 @@
-﻿
-
-static class SeatAvailability
+﻿static class SeatAvailability
 {
     public static void CheckAvailability(Flight flight) 
     {

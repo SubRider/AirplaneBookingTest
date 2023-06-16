@@ -1,10 +1,4 @@
-﻿﻿using System;
-using System.ComponentModel.DataAnnotations;
- using System.Data;
- using System.Globalization;
-using System.Xml.Linq;
-
-static class BookingMenu
+﻿static class BookingMenu
 {
     public static bool Quit;
     public static bool IsAdmin ;
@@ -21,7 +15,6 @@ static class BookingMenu
     public static int ResultID = -1;
     public static Flight CurrentFlight;
     public static int AmountOfSeatsReserved;
-    public static string SingleOrRetour;
     public static Action CurrentMenu;
     public static Action NextMenu;
     public static List<Seat> Seats = new();
@@ -240,14 +233,27 @@ static class BookingMenu
             StartScreen();
         }
     }
-  
+    public static void ClassReservationMenu()
+    {
+        Renderer.Clear();
+        FlightID = ResultID;
+        int index = Flight.Flights.FindIndex(i => i.ID == FlightID);
+        CurrentFlight = Flight.Flights.Find(i => i.ID == Flight.Flights[index].AirplaneID);
+        Window w1 = new(1, 0.85);
+        Button first = new("First Class", 0, w1, () => { ReservationChoice = "First"; FlightSearchMenu(false); });
+        Button business = new("Business Class", 1, w1, () => { ReservationChoice = "Business"; FlightSearchMenu(false); });
+        Button economy = new("Economy Class", 2, w1, () => { ReservationChoice = "Economy"; FlightSearchMenu(false); });
+        _ = new Button("back", 0, w1, "bottom", () => FlightSearchMenu(false));
+        AddMenuBar(w1);
+    }
+
     public static void FlightSearchMenu(bool loop)
     {      
         if (!loop)
         {
             Renderer.Clear();
             CurrentMenu = () => FlightSearchMenu(true);
-            NextMenu = () => ClassReservationMenu();
+            NextMenu = () => SeatsReservationMenu();
             Window w1 = new(1, 0.85);
             InputButton originInput = new("Origin", 0, w1, () => {CountrySelection(false, "origin");});
             originInput.Input = Origin;
@@ -265,6 +271,7 @@ static class BookingMenu
         flightSearch.Activate(new() { ("Origin", InputButton.InputButtons[0].Input), ("Destination", InputButton.InputButtons[1].Input), ("DepartureDate", InputButton.InputButtons[2].Input), ("ArrivalDate", InputButton.InputButtons[3].Input) });
  
     }
+
     
     public static void CountrySelection(bool loop, string inputField)
     {
@@ -309,35 +316,16 @@ static class BookingMenu
         citySearch.Activate(new() { ("Name", InputButton.InputButtons[0].Input) });
     }
 
-    public static void ClassReservationMenu()
-    {
-        Renderer.Clear();
-        FlightID = ResultID;
-        int index = Flight.Flights.FindIndex(i => i.ID == FlightID);
-        CurrentFlight = Flight.Flights.Find(i => i.ID == Flight.Flights[index].AirplaneID);
-        Window w1 = new(1, 0.85);
-        Button first = new("First Class", 0, w1, () => { ReservationChoice = "First";RetourOrSingle(); });
-        Button business = new("Business Class", 1, w1, () => { ReservationChoice = "Business";RetourOrSingle(); });
-        Button economy = new("Economy Class", 2, w1, () => { ReservationChoice = "Economy";RetourOrSingle(); });
-        _ = new Button("back", 0, w1, "bottom", () => FlightSearchMenu(false)); 
-
-        AddMenuBar(w1);
-    }
-    public static void RetourOrSingle()
-    {
-        Renderer.Clear();
-
-        Window w1 = new(1, 0.85);
-        Console.WriteLine("Select if you want a retour flight or a single flight:\n");
-        Button Retour = new("Retour", 0, w1, () => {SingleOrRetour = "Retour"; SeatsReservationMenu(); }); 
-        Button Single = new("Single", 1, w1, () => {SingleOrRetour = "Single"; SeatsReservationMenu(); });
-        Button back = new("back", 0, w1, "bottom", () => ClassReservationMenu());
-
-        AddMenuBar(w1);
-    }
 
     public static void SeatsReservationMenu()
     {
+        int maxSeats = 0;
+        switch (ReservationChoice)
+        {
+            case "First": maxSeats = CurrentFlight.FirstClassAvailability.MaxGroupSize; break;
+            case "Business": maxSeats = CurrentFlight.BusinessClassAvailability.MaxGroupSize; break;
+            case "Economy": maxSeats = CurrentFlight.EconomyClassAvailability.MaxGroupSize; break;
+        };
         Renderer.Clear();
         CurrentMenu = default;
         Window w1 = new();
@@ -347,7 +335,7 @@ static class BookingMenu
             try
             {
                 AmountOfSeatsReserved = Convert.ToInt32(seats.Input);
-                if (AmountOfSeatsReserved > 12 || AmountOfSeatsReserved <= 0)
+                if (AmountOfSeatsReserved > maxSeats || AmountOfSeatsReserved <= 0)
                 {
                     Console.SetCursorPosition(1, Console.CursorTop + 1);
                     Console.Write("     Unable to reserve this amount of seats");
@@ -369,7 +357,6 @@ static class BookingMenu
             }
         }
         );
-        _ = new Button("back", 0, w1, "bottom", () => RetourOrSingle());
         AddMenuBar(w1);
     }
 
@@ -396,7 +383,6 @@ static class BookingMenu
         if (ReservationChoice == "First") Renderer.ShowSeats(CurrentFlight.FirstClassSeats, w1);
         else if (ReservationChoice == "Business") Renderer.ShowSeats(CurrentFlight.BusinessClassSeats, w1);
         else Renderer.ShowSeats(CurrentFlight.EconomyClassSeats, w1);
-        Button back = new("back", 0, w1, "bottom", () => SeatsReservationMenu());
         AddMenuBar(w1);
     }
 
@@ -411,7 +397,6 @@ static class BookingMenu
             w1.Text += "You are not logged in. Please log in or fill in your email below.";
             _ = new Button("Sign up", 1, w1, () => AccountLogic.CreateAccount(false));
             _ = new Button("Sign in", 2, w1, () => LoginMenu(false));
-            //InputButton email = new("Email", 2, w1, () => Reserving());
         }
         else
         {
@@ -419,7 +404,8 @@ static class BookingMenu
             _ = new ReservationModel(Seats, FlightID, AccountLogic.CurrentAccount.Id);
             JsonCommunicator.Write("Reservations.json", ReservationModel.Reservations);
             Console.WriteLine("Successfully Reserved.");
-            JsonCommunicator.Write("Airplanes.json", Airplane.Planes);
+            SeatAvailability.CheckAvailability(CurrentFlight);
+            JsonCommunicator.Write("Flights.json", Flight.Flights);
             Origin = "";
             Destination = "";
             DepartureDate = "";
