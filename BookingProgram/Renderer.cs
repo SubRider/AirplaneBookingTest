@@ -129,9 +129,9 @@ static class Renderer
         
         if (seat.SeatNumber == 1)
         {
-            Console.SetCursorPosition((seat.RowNumber - 1) * 3 + 2, 0);
+            Console.SetCursorPosition((seat.RowNumber - 1) + 2, 0);
             Console.ForegroundColor = ConsoleColor.White;
-            _ = new Button($"{seat.RowNumber}",seat.SeatNumber, (seat.RowNumber - 1) * 3 + 2, window, () => { }, false);
+            _ = new Button($"{seat.RowNumber}",seat.SeatNumber, (seat.RowNumber - 1) + 2, window, () => { }, false);
         }
         Button button = default;
         button = new((seat.Booked) ? ConsoleColor.Red : (seat.Selected) ? ConsoleColor.Blue : ConsoleColor.Green, "■", seat.SeatNumber + 1, (seat.RowNumber - 1) * 3 + 2, window, () =>
