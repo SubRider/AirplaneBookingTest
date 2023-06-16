@@ -8,13 +8,16 @@ static class SeatAvailability
         List<Seat> s2 = FillSeats(flight, "Business", flight.BusinessClassRowSize);
         List<Seat> s3 = FillSeats(flight, "Economy", flight.EconomyClassRowSize);
 
-        FindBiggestGroup(s1, flight.FirstClassRowSize);
-        FindBiggestGroup(s2, flight.BusinessClassRowSize);
-        FindBiggestGroup(s3, flight.EconomyClassRowSize);
+        int g1 = FindBiggestGroup(s1, flight.FirstClassRowSize);
+        int g2 = FindBiggestGroup(s2, flight.BusinessClassRowSize);
+        int g3 = FindBiggestGroup(s3, flight.EconomyClassRowSize);
         
-        CheckAisleAndWindow(s1, flight.FirstClassRowSize);
-        CheckAisleAndWindow(s2, flight.BusinessClassRowSize); 
-        CheckAisleAndWindow(s3, flight.EconomyClassRowSize);
+        (bool,bool) aAw1 = CheckAisleAndWindow(s1, flight.FirstClassRowSize);
+        (bool, bool) aAw2 = CheckAisleAndWindow(s2, flight.BusinessClassRowSize);
+        (bool, bool) aAw3 = CheckAisleAndWindow(s3, flight.EconomyClassRowSize);
+        flight.FirstClassAvailability = new(g1, aAw1.Item1, aAw1.Item2);
+        flight.BusinessClassAvailability = new(g2, aAw2.Item1, aAw2.Item2);
+        flight.EconomyClassAvailability = new(g3, aAw3.Item1, aAw3.Item2);
         
     }
     private static List<Seat> FillSeats(Flight flight, string seatClass, int rowSize)
