@@ -46,16 +46,16 @@ static class Calendar
                         {
                             BookingMenu.DepartureDate = $"{number}-{selectedMonth}-{selectedYear}";
                             if (BookingMenu.AdminAddFlight) BookingMenu.AddFlightMenu(false);
-                            if (BookingMenu.AdminEditSearcher) BookingMenu.EditSearcher(false);
-                            if (BookingMenu.AdminEditFlight) BookingMenu.EditFlightMenu();
+                            else if (BookingMenu.AdminEditSearcher) BookingMenu.EditSearcher(false);
+                            else if (BookingMenu.AdminEditFlight) BookingMenu.EditFlightMenu();
                             else BookingMenu.FlightSearchMenu(false);
                         }
                         else
                         {
                             BookingMenu.ArrivalDate = $"{number}-{selectedMonth}-{selectedYear}";
                             if (BookingMenu.AdminAddFlight) BookingMenu.AddFlightMenu(false);
-                            if (BookingMenu.AdminEditSearcher) BookingMenu.EditSearcher(false);
-                            if (BookingMenu.AdminEditFlight) BookingMenu.EditFlightMenu();
+                            else if (BookingMenu.AdminEditSearcher) BookingMenu.EditSearcher(false);
+                            else if (BookingMenu.AdminEditFlight) BookingMenu.EditFlightMenu();
                             else BookingMenu.FlightSearchMenu(false);
                         }
                     });
@@ -69,16 +69,16 @@ static class Calendar
                                 {
                                     BookingMenu.DepartureDate = $"{number}-{selectedMonth}-{selectedYear}";
                                     if (BookingMenu.AdminAddFlight) BookingMenu.AddFlightMenu(false);
-                                    if (BookingMenu.AdminEditSearcher) BookingMenu.EditSearcher(false);
-                                    if (BookingMenu.AdminEditFlight) BookingMenu.EditFlightMenu();
+                                    else if (BookingMenu.AdminEditSearcher) BookingMenu.EditSearcher(false);
+                                    else if (BookingMenu.AdminEditFlight) BookingMenu.EditFlightMenu();
                                     else BookingMenu.FlightSearchMenu(false);
                                 }
                                 else
                                 {
                                     BookingMenu.ArrivalDate = $"{number}-{selectedMonth}-{selectedYear}";
                                     if (BookingMenu.AdminAddFlight) BookingMenu.AddFlightMenu(false);
-                                    if (BookingMenu.AdminEditSearcher) BookingMenu.EditSearcher(false);
-                                    if (BookingMenu.AdminEditFlight) BookingMenu.EditFlightMenu();
+                                    else if (BookingMenu.AdminEditSearcher) BookingMenu.EditSearcher(false);
+                                    else if (BookingMenu.AdminEditFlight) BookingMenu.EditFlightMenu();
                                     else BookingMenu.FlightSearchMenu(false);
                                 }
                             });
@@ -91,16 +91,16 @@ static class Calendar
                             {
                                 BookingMenu.DepartureDate = $"{number}-{selectedMonth}-{selectedYear}";
                                 if (BookingMenu.AdminAddFlight) BookingMenu.AddFlightMenu(false);
-                                if (BookingMenu.AdminEditSearcher) BookingMenu.EditSearcher(false);
-                                if (BookingMenu.AdminEditFlight) BookingMenu.EditFlightMenu();
+                                else if (BookingMenu.AdminEditSearcher) BookingMenu.EditSearcher(false);
+                                else if (BookingMenu.AdminEditFlight) BookingMenu.EditFlightMenu();
                                 else BookingMenu.FlightSearchMenu(false);
                             }
                             else
                             {
                                 BookingMenu.ArrivalDate = $"{number}-{selectedMonth}-{selectedYear}";
                                 if (BookingMenu.AdminAddFlight) BookingMenu.AddFlightMenu(false);
-                                if (BookingMenu.AdminEditSearcher) BookingMenu.EditSearcher(false);
-                                if (BookingMenu.AdminEditFlight) BookingMenu.EditFlightMenu();
+                                else if (BookingMenu.AdminEditSearcher) BookingMenu.EditSearcher(false);
+                                else if (BookingMenu.AdminEditFlight) BookingMenu.EditFlightMenu();
                                 else BookingMenu.FlightSearchMenu(false);
                             }
                         });
