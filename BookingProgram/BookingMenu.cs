@@ -6,15 +6,20 @@ using System.Xml.Linq;
 
 static class BookingMenu
 {
-    public static bool Quit = false;
+    public static bool Quit;
+    public static bool IsAdmin ;
+    public static bool AdminAddFlight;
+    public static bool AdminEditSearcher;
+    public static bool AdminEditFlight;
     public static string Origin = "";
     public static string Destination = "";
     public static string DepartureDate = "";
     public static string ArrivalDate = "";
+    public static int AirplaneID;
     public static string ReservationChoice;
     public static int FlightID = -1;
     public static int ResultID = -1;
-    public static Airplane CurrentPlane;
+    public static Flight CurrentFlight;
     public static int AmountOfSeatsReserved;
     public static string SingleOrRetour;
     public static Action CurrentMenu;
@@ -22,9 +27,8 @@ static class BookingMenu
     public static List<Seat> Seats = new();
     static void Main()
     {
-
-        Flight.Flights = JsonCommunicator.Read<Flight>("Flights.json");
         Airplane.Planes = JsonCommunicator.Read<Airplane>("Airplanes.json");
+        Flight.Flights = JsonCommunicator.Read<Flight>("Flights.json");
         AccountLogic.Accounts = JsonCommunicator.Read<AccountModel>("Accounts.json");
         ReservationModel.Reservations = JsonCommunicator.Read<ReservationModel>("reservations.json");
         City.CreateCountryList();
@@ -196,7 +200,8 @@ static class BookingMenu
             InputButton password = new("Password", 1, w1);
             _ = new Button("Continue", 3, w1, () =>
             {
-                if (email.Input == "admin") { AdminMenu(); return; }
+                if (email.Input == "admin")
+                { IsAdmin = true; AdminMenu(); return; }
                 AccountModel account = AccountLogic.CheckLogin(email.Input, password.Input);
                 if (account != null)
                 {
@@ -271,11 +276,33 @@ static class BookingMenu
             {
                 if (inputField == "origin") Origin = City.FindByID(ResultID).ToString();
                 if (inputField == "destination") Destination = City.FindByID(ResultID).ToString();
-                FlightSearchMenu(false);
+                if (AdminAddFlight)
+                {
+                    AddFlightMenu(false);
+                }
+                if (AdminEditSearcher)
+                {
+                    EditSearcher(false);
+                }
+                if (AdminEditFlight)
+                {
+                    EditFlightMenu();
+                }
+                else
+                {
+                    FlightSearchMenu(false);
+                }
             };
-            Window w1 = new(1, 0.85);
+            Window w1 = new();
             InputButton city = new("City", 0, w1);
-            AddMenuBar(w1);
+            if (IsAdmin)
+            {
+                AddAdminMenuBar(w1);
+            }
+            else
+            {
+                AddMenuBar(w1);
+            }
         }
         if (loop) Renderer.ClearLines();
         SearchMenu<City> citySearch = new(City.Cities);
@@ -287,7 +314,7 @@ static class BookingMenu
         Renderer.Clear();
         FlightID = ResultID;
         int index = Flight.Flights.FindIndex(i => i.ID == FlightID);
-        CurrentPlane = Airplane.Planes.Find(i => i.ID == Flight.Flights[index].AirplaneID);
+        CurrentFlight = Flight.Flights.Find(i => i.ID == Flight.Flights[index].AirplaneID);
         Window w1 = new(1, 0.85);
         Button first = new("First Class", 0, w1, () => { ReservationChoice = "First";RetourOrSingle(); });
         Button business = new("Business Class", 1, w1, () => { ReservationChoice = "Business";RetourOrSingle(); });
@@ -366,9 +393,9 @@ static class BookingMenu
         
         Renderer.Clear();
         Window w1 = new(1, 0.85);
-        if (ReservationChoice == "First") Renderer.ShowSeats(CurrentPlane.FirstClassSeats, w1);
-        else if (ReservationChoice == "Business") Renderer.ShowSeats(CurrentPlane.BusinessClassSeats, w1);
-        else Renderer.ShowSeats(CurrentPlane.EconomyClassSeats, w1);
+        if (ReservationChoice == "First") Renderer.ShowSeats(CurrentFlight.FirstClassSeats, w1);
+        else if (ReservationChoice == "Business") Renderer.ShowSeats(CurrentFlight.BusinessClassSeats, w1);
+        else Renderer.ShowSeats(CurrentFlight.EconomyClassSeats, w1);
         Button back = new("back", 0, w1, "bottom", () => SeatsReservationMenu());
         AddMenuBar(w1);
     }
@@ -393,6 +420,10 @@ static class BookingMenu
             JsonCommunicator.Write("Reservations.json", ReservationModel.Reservations);
             Console.WriteLine("Successfully Reserved.");
             JsonCommunicator.Write("Airplanes.json", Airplane.Planes);
+            Origin = "";
+            Destination = "";
+            DepartureDate = "";
+            ArrivalDate = "";
 
             Seats = new();
             AmountOfSeatsReserved = 0;
@@ -460,14 +491,17 @@ static class BookingMenu
         _ = new Button("Show Airplanes", 0, 1, menuBar, "left", () => AirplaneListMenu());
         _ = new Button("Add flights", 0, 2, menuBar, "left", () => AddFlightMenu(false));
         _ = new Button("Add Airplanes", 0, 3, menuBar, "left", () => AddAirplaneMenu());
-        _ = new Button("Edit flights", 0, 4, menuBar, "left", () => EditFlightMenu(false));
+        _ = new Button("Edit flights", 0, 4, menuBar, "left", () => EditSearcher(false));
         _ = new Button("Remove flights", 0, 5, menuBar, "left", () => RemoveFlightMenu(false));
         _ = new Button("Dashboard", 0, 6, menuBar, "left", () => Dashboard());
         _ = new Button("Log out", 0, 7, menuBar, "left", () => LogOut());
     }
     public static void AdminMenu()
     {
-
+        Origin = "";
+        Destination = "";
+        DepartureDate = "";
+        ArrivalDate = "";
         Renderer.Clear();
         Window w1 = new(1, 0.85);
         AddAdminMenuBar(w1);
@@ -505,7 +539,7 @@ static class BookingMenu
         {
             _ = new Airplane("737");
             JsonCommunicator.Write("Airplanes.json", Airplane.Planes);
-            Console.Write("Sucessfully created a new airplane.");
+            Console.Write("Successfully created a new airplane.");
             Thread.Sleep(700);
             AdminMenu();
         });
@@ -513,7 +547,7 @@ static class BookingMenu
         {
             _ = new Airplane("787");
             JsonCommunicator.Write("Airplanes.json", Airplane.Planes);
-            Console.Write("Sucessfully created a new airplane.");
+            Console.Write("Successfully created a new airplane.");
             Thread.Sleep(700);
             AdminMenu();
         });
@@ -521,7 +555,7 @@ static class BookingMenu
         {
             _ = new Airplane("A330");
             JsonCommunicator.Write("Airplanes.json", Airplane.Planes);
-            Console.Write("Sucessfully created a new airplane.");
+            Console.Write("Successfully created a new airplane.");
             Thread.Sleep(700);
             AdminMenu();
         });
@@ -531,37 +565,39 @@ static class BookingMenu
     {
         if (!loop)
         {
+            AdminAddFlight = true;
+            AdminEditSearcher = false;
+            AdminEditFlight = false;
             Renderer.Clear();
             CurrentMenu = () => AddFlightMenu(true);
             Window w1 = new();
-            InputButton origin = new("Origin", 0, w1);
-            InputButton destination = new("Destination", 1, w1);
-            InputButton departureDate = new("Departure date", 2, w1);
-            InputButton arrivalDate = new("Arrival date", 3, w1);
-            InputButton airplaneID = new("Airplane ID", 4, w1);
-            _ = new Button("Confirm edit", 6, w1, () =>
+            Button origin = new($"Origin: {Origin}", 0, w1, () => CountrySelection(false, "origin"));
+            Button destination = new($"Destination: {Destination}", 1, w1, () => CountrySelection(false, "destination"));
+            Button departureDate = new($"Departure date: {DepartureDate}", 2, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year, "Departure"));
+            Button arrivalDate = new($"Arrival date: {ArrivalDate}", 3, w1, () => CalendarMenu(DateTime.Now.Month, DateTime.Now.Year, "Arrival"));
+            Button airplaneID = new($"Airplane ID: {AirplaneID}", 4, w1, () => AirplaneSelection(false));
+
+            _ = new Button("Add flight", 6, w1, () =>
             {
                 try 
-                { 
-                    DateTime DepartureDate = DateTime.Parse(departureDate.Input);
-                    DateTime ArrivalDate = DateTime.Parse(departureDate.Input);
-                    Convert.ToInt32(airplaneID.Input);
-                    _ = new Flight(origin.Input, destination.Input, departureDate.Input, arrivalDate.Input, Convert.ToInt32(airplaneID.Input));
+                {
+                    Console.WriteLine(Origin);
+                    _ = new Flight(Origin, Destination, DepartureDate, ArrivalDate, AirplaneID);
                     JsonCommunicator.Write("Flights.json", Flight.Flights);
+                    Origin = "";
+                    Destination = "";
+                    DepartureDate = "";
+                    ArrivalDate = "";
+                    AirplaneID = 0;
                     AdminMenu(); 
                 }
-                catch 
+                catch
                 {
                     Console.SetCursorPosition(1, 6);
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("Invalid input");
                     Thread.Sleep(1200);
                     Console.ResetColor();
-                    origin.Input = "";
-                    destination.Input = "";
-                    departureDate.Input = "";
-                    arrivalDate.Input = "";
-                    airplaneID.Input = "";
 
                     Renderer.ClearLines();
                     Renderer.ShowButtons(w1);
@@ -571,16 +607,50 @@ static class BookingMenu
         }
     }
 
-    public static void EditFlightMenu(bool loop)
+    public static void AirplaneSelection(bool loop)
     {
         if (!loop)
         {
             Renderer.Clear();
-            CurrentMenu = () => EditFlightMenu(true);
-            NextMenu = () => ChangeFlightMenu(false);
+            CurrentMenu = () => AirplaneSelection(true);
+            NextMenu = () =>
+            {
+                AirplaneID = Airplane.FindByID(ResultID).ID;
+                if (AdminEditSearcher)
+                {
+                    EditSearcher(false);
+                }
+                if (AdminEditFlight)
+                {
+                    EditFlightMenu();
+                }
+                else
+                {
+                    AddFlightMenu(false);
+                }
+            };
             Window w1 = new();
-            InputButton origin = new("Origin", 0, w1);
-            InputButton destination = new("Destination", 1, w1);
+            InputButton airplaneID = new("Airplane ID", 0, w1);
+            AddAdminMenuBar(w1);
+        }
+        if (loop) Renderer.ClearLines();
+        SearchMenu<Airplane> airplaneIdSearch = new(Airplane.Planes);
+        airplaneIdSearch.Activate(new() { ("ID", InputButton.InputButtons[0].Input) });
+    }
+
+    public static void EditSearcher(bool loop)
+    {
+        if (!loop)
+        {
+            AdminAddFlight = false;
+            AdminEditSearcher = true;
+            AdminEditFlight = false;
+            Renderer.Clear();
+            CurrentMenu = () => EditSearcher(true);
+            NextMenu = () => EditFlightMenu();
+            Window w1 = new();
+            InputButton origin = new("Origin", 0, w1, () => CountrySelection(false, "origin"));
+            InputButton destination = new("Destination", 1, w1, () => CountrySelection(false, "destination"));
             InputButton flightID = new("Flight ID", 2, w1);
             AddAdminMenuBar(w1);
         }
@@ -589,49 +659,42 @@ static class BookingMenu
         flightSearch.Activate(new() { ("Origin", InputButton.InputButtons[0].Input), ("Destination", InputButton.InputButtons[1].Input), ("ID", InputButton.InputButtons[2].Input) });
     }
 
-    public static void ChangeFlightMenu(bool loop)
+    public static void EditFlightMenu()
     {
-        if (!loop)
-        {
-            Flight flight = Flight.FindByID(ResultID);
-            int index = flight.FindIndex();
+        AdminAddFlight = false;
+        AdminEditSearcher = false;
+        AdminEditFlight = true;
+        Flight flight = Flight.FindByID(ResultID);
 
-            Renderer.Clear();
-            CurrentMenu = () => ChangeFlightMenu(true);
-            Window w1 = new();
-            InputButton origin = new("Origin", 0, w1);
-            origin.Input = flight.Origin;
-            InputButton destination = new("Destination", 1, w1);
-            destination.Input = flight.Destination;
-            InputButton flightID = new("Flight ID", 2, w1);
-            flightID.Input = Convert.ToString(flight.ID);
-            InputButton airplaneID = new("Airplane ID", 3, w1);
-            airplaneID.Input = Convert.ToString(flight.AirplaneID);
-            _ = new Button("Confirm edit", 4, w1, () =>
+        Renderer.Clear();
+        CurrentMenu = () => EditFlightMenu();
+        NextMenu = () => EditFlightMenu();
+        Window w1 = new();
+        Button origin = new($"Origin: {flight.Origin}", 0, w1, () => CountrySelection(false, "origin"));
+        Button destination = new($"Destination: {flight.Destination}", 1, w1, () => CountrySelection(false, "destination"));
+        Button airplaneID = new($"Airplane ID: {flight.AirplaneID}", 2, w1, () => AirplaneSelection(false));
+        _ = new Button("Confirm edit", 4, w1, () =>
+        {
+            try 
             {
-                try 
-                { 
-                    flight = Flight.Flights[index];
-                    flight.Origin = origin.Input;
-                    flight.Destination = destination.Input;
-                    flight.ID = Convert.ToInt32(flightID.Input);
-                    flight.AirplaneID = Convert.ToInt32(airplaneID.Input);
-                    JsonCommunicator.Write("Flights.json", Flight.Flights);
-                    AdminMenu();
-                }
-                catch
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.SetCursorPosition(1, 6);
-                    Console.Write("Invalid input of an ID (only numbers)");
-                    Console.ResetColor();
-                    Thread.Sleep(1200);
-                    Renderer.ClearLines();
-                    Renderer.ShowButtons(w1);
-                }
-            });
-            AddAdminMenuBar(w1);
-        } 
+                flight.Origin = Origin;
+                flight.Destination = Destination;
+                flight.AirplaneID = AirplaneID;
+                JsonCommunicator.Write("Flights.json", Flight.Flights);
+                AdminMenu();
+            }
+            catch
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.SetCursorPosition(1, 6);
+                Console.Write("Invalid input of an ID (only numbers)");
+                Console.ResetColor();
+                Thread.Sleep(1200);
+                Renderer.ClearLines();
+                Renderer.ShowButtons(w1);
+            }
+        });
+        AddAdminMenuBar(w1);
     }
 
 
@@ -716,7 +779,7 @@ static class BookingMenu
         AddMenuBar(w1);
     }
 
-    public static string CalendarMenu(int month, int year, string direction)
+    public static void CalendarMenu(int month, int year, string direction)
     {
         int minYear = 1;
         int maxYear = 9999;
@@ -724,7 +787,7 @@ static class BookingMenu
         Renderer.Clear();
         Window w1 = new(1, 0.85);
 
-        // give the page a header tekst to make sure user knows what they are supposed to do on that page
+        // give the page a header text to make sure user knows what they are supposed to do on that page
         if (direction == "Departure")
         {
             w1.Text +=  $"\u001b[96m Departure date\u001b[0m\n║\u001b[96m------------------\u001b[0m\n║";
@@ -753,10 +816,13 @@ static class BookingMenu
         Calendar.PrintCal(year, month, minYear, maxYear, w1, direction, month, year);
         //w1.Text += $" {Calendar.PrintCal(year, month, minYear, maxYear, w1)}";
 
-        _ = new Button ("Back", 0, 1, w1, "bottom", () => FlightSearchMenu(false));
+        _ = new Button ("Back", 0, 1, w1, "bottom", () =>
+        {
+            if (IsAdmin) AddFlightMenu(false);
+            else FlightSearchMenu(false);
 
-        AddMenuBar(w1);
-
-        return "25-06-2023";
+        });
+        if (IsAdmin) AddAdminMenuBar(w1);
+        else AddMenuBar(w1);
     }
 }
