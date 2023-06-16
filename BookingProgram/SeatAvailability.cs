@@ -5,7 +5,6 @@
         List<Seat> s1 = FillSeats(flight, "First", flight.FirstClassRowSize);
         List<Seat> s2 = FillSeats(flight, "Business", flight.BusinessClassRowSize);
         List<Seat> s3 = FillSeats(flight, "Economy", flight.EconomyClassRowSize);
-
         int g1 = FindBiggestGroup(s1, flight.FirstClassRowSize);
         int g2 = FindBiggestGroup(s2, flight.BusinessClassRowSize);
         int g3 = FindBiggestGroup(s3, flight.EconomyClassRowSize);
@@ -21,9 +20,9 @@
     public static List<Seat> FillSeats(Flight flight, string seatClass, int rowSize)
     {
         List<Seat> simulatedSeats = new(flight.Seats);
+        if (flight.Groups == null || flight.Groups.Count == 0) return simulatedSeats.Where(s => s.SeatClass == seatClass).ToList();
         List<Group> bookedGroups = new(flight.Groups);
         List<List<Seat>> smallestGroups = new();
-
         while (bookedGroups.Count > 0)
         {
             List<int> bookedGroupSizes = new();
@@ -67,30 +66,41 @@
     {
         List<int> emptyRows = new();
         int biggestGroup = new();
-
+        int emptySeats = 0;
         foreach (Seat seat in seats)
         {
-            int emptySeats = 0;
+
             if (!seat.Booked) emptySeats++;
             else continue;
             if (emptySeats == maxRowSize)
             {
                 emptyRows.Add(seat.RowNumber);
+                emptySeats = 0;
             }
         }
         int groupSize = 0;
-        foreach (int row in Enumerable.Range(0,emptyRows.Count))
+        foreach (int row in Enumerable.Range(0, emptyRows.Count))
         {
-            if (emptyRows[row] == emptyRows[row + 1] - 1)
+            try
             {
-                groupSize += maxRowSize;
+                if (emptyRows[row] == emptyRows[row + 1] - 1 && emptyRows[row] == emptyRows[row + 2] - 2)
+                {
+                    groupSize += maxRowSize;
+                }
+                else
+                {
+                    if (groupSize > biggestGroup) biggestGroup = groupSize;
+                    groupSize = 0;
+                }
+                
             }
-            else
+            catch 
             {
                 if (groupSize > biggestGroup) biggestGroup = groupSize;
-                groupSize = 0;
+                return biggestGroup; 
             }
         }
+        if (groupSize > biggestGroup) biggestGroup = groupSize;
         return biggestGroup;
     }
     private static List<List<Seat>> FindSmallestGroups(List<Seat> seats,string seatClass, int maxRowSize)

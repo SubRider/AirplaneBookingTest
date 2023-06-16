@@ -44,7 +44,7 @@
     {
         Window menuBar = new(1, 0.15, reference);
         _ = new Button("Home", 0, 0, menuBar, "left", () => StartScreen());
-        _ = new Button("Book Flight", 0, 1, menuBar, "left", () => FlightSearchMenu(false));
+        _ = new Button("Book Flight", 0, 1, menuBar, "left", () => ClassReservationMenu());
         _ = new Button("My Flights", 0, 2, menuBar, "left", () => History());
         _ = new Button("Account", 0, 3, menuBar, "left", () => AccountMenu());
         _ = new Button("Info", 0, 4, menuBar, "left", () => AirlineInfo());
@@ -237,9 +237,6 @@
     public static void ClassReservationMenu()
     {
         Renderer.Clear();
-        FlightID = ResultID;
-        int index = Flight.Flights.FindIndex(i => i.ID == FlightID);
-        CurrentFlight = Flight.Flights.Find(i => i.ID == Flight.Flights[index].AirplaneID);
         Window w1 = new(1, 0.85);
         Button first = new("First Class", 0, w1, () => { ReservationChoice = "First"; PremiumChoiceMenu(); });
         Button business = new("Business Class", 1, w1, () => { ReservationChoice = "Business"; PremiumChoiceMenu(); });
@@ -255,6 +252,7 @@
         Console.WriteLine("What option do you want?:");
         _ = new Button("Standard (Random seats next to each other)", 1, w1, () => { PremiumChoice = "Standard"; FlightSearchMenu(false); });
         _ = new Button("Premium (Full seating choice)", 2, w1, () => { PremiumChoice = "Premium"; FlightSearchMenu(false); });
+        AddMenuBar(w1);
     }
 
     public static void FlightSearchMenu(bool loop)
@@ -329,6 +327,8 @@
 
     public static void SeatsReservationMenu()
     {
+        FlightID = ResultID;
+        CurrentFlight = Flight.FindByID(FlightID);
         int maxSeats = 0;
         switch (ReservationChoice)
         {
@@ -355,7 +355,10 @@
                     Renderer.ShowButtons(w1);
                 }
                 else if (PremiumChoice == "Premium") SeatMenu();
-                else CurrentFlight.Groups.Add(new(AmountOfSeatsReserved));
+                else
+                {
+                    Reserving();
+                };
             }
             catch
             {
@@ -410,8 +413,16 @@
         }
         else
         {
+            if (Seats.Count == 0) 
+            { 
+                _ = new ReservationModel(Seats, new(AmountOfSeatsReserved), FlightID, AccountLogic.CurrentAccount.Id);
+                CurrentFlight.Groups.Add(new(AmountOfSeatsReserved));
+            }
+            else
+            {
+                _ = new ReservationModel(Seats, new(0), FlightID, AccountLogic.CurrentAccount.Id);
+            }
             foreach (Seat seat in Seats) seat.Booked = true;
-            _ = new ReservationModel(Seats, FlightID, AccountLogic.CurrentAccount.Id);
             JsonCommunicator.Write("Reservations.json", ReservationModel.Reservations);
             Console.WriteLine("Successfully Reserved.");
             SeatAvailability.CheckAvailability(CurrentFlight);
