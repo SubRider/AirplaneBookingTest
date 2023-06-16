@@ -578,7 +578,8 @@
                 try 
                 {
                     Console.WriteLine(Origin);
-                    _ = new Flight(Origin, Destination, DepartureDate, ArrivalDate, AirplaneID);
+                    Flight flight = new (Origin, Destination, DepartureDate, ArrivalDate, AirplaneID);
+                    SeatAvailability.CheckAvailability(flight);
                     JsonCommunicator.Write("Flights.json", Flight.Flights);
                     Origin = "";
                     Destination = "";
