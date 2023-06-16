@@ -1,8 +1,4 @@
-﻿using System.IO;
-using Newtonsoft;
-using Newtonsoft.Json;
-
-class Flight : IHasID
+﻿class Flight : IHasID
 {
     public static List<Flight> Flights { get; set; } = new();
     public int ID { get; set; }

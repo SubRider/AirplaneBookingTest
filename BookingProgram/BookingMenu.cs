@@ -11,6 +11,7 @@
     public static string ArrivalDate = "";
     public static int AirplaneID;
     public static string ReservationChoice;
+    public static string PremiumChoice;
     public static int FlightID = -1;
     public static int ResultID = -1;
     public static Flight CurrentFlight;
@@ -240,11 +241,20 @@
         int index = Flight.Flights.FindIndex(i => i.ID == FlightID);
         CurrentFlight = Flight.Flights.Find(i => i.ID == Flight.Flights[index].AirplaneID);
         Window w1 = new(1, 0.85);
-        Button first = new("First Class", 0, w1, () => { ReservationChoice = "First"; FlightSearchMenu(false); });
-        Button business = new("Business Class", 1, w1, () => { ReservationChoice = "Business"; FlightSearchMenu(false); });
-        Button economy = new("Economy Class", 2, w1, () => { ReservationChoice = "Economy"; FlightSearchMenu(false); });
-        _ = new Button("back", 0, w1, "bottom", () => FlightSearchMenu(false));
+        Button first = new("First Class", 0, w1, () => { ReservationChoice = "First"; PremiumChoiceMenu(); });
+        Button business = new("Business Class", 1, w1, () => { ReservationChoice = "Business"; PremiumChoiceMenu(); });
+        Button economy = new("Economy Class", 2, w1, () => { ReservationChoice = "Economy"; PremiumChoiceMenu(); });
+        _ = new Button("back", 0, w1, "bottom", () => PremiumChoiceMenu());
         AddMenuBar(w1);
+    }
+    public static void PremiumChoiceMenu()
+    {
+        Renderer.Clear();
+        Window w1 = new();
+        Console.SetCursorPosition(1, 1);
+        Console.WriteLine("What option do you want?:");
+        _ = new Button("Standard (Random seats next to eachother)", 1, w1, () => { PremiumChoice = "Standard"; FlightSearchMenu(false); });
+        _ = new Button("Premium (Full seating choice)", 2, w1, () => { PremiumChoice = "Premium"; FlightSearchMenu(false); });
     }
 
     public static void FlightSearchMenu(bool loop)
@@ -344,7 +354,8 @@
                     Renderer.ClearLine();
                     Renderer.ShowButtons(w1);
                 }
-                else SeatMenu();
+                else if (PremiumChoice == "Premium") SeatMenu();
+                else CurrentFlight.Groups.Add(new(AmountOfSeatsReserved));
             }
             catch
             {
@@ -357,6 +368,16 @@
             }
         }
         );
+        AddMenuBar(w1);
+    }
+    public static void SeatMenu()
+    {
+
+        Renderer.Clear();
+        Window w1 = new(1, 0.85);
+        if (ReservationChoice == "First") Renderer.ShowSeats(SeatAvailability.FillSeats(CurrentFlight, "First", CurrentFlight.FirstClassRowSize), w1);
+        else if (ReservationChoice == "Business") Renderer.ShowSeats(SeatAvailability.FillSeats(CurrentFlight, "Business", CurrentFlight.BusinessClassRowSize), w1);
+        else Renderer.ShowSeats(SeatAvailability.FillSeats(CurrentFlight, "Economy", CurrentFlight.EconomyClassRowSize), w1);
         AddMenuBar(w1);
     }
 
@@ -372,17 +393,6 @@
 
         _ = new Button("Yes", AmountOfSeatsReserved + 2, w1, () => Reserving());
         _ = new Button ("No", AmountOfSeatsReserved + 3, w1, () => SeatMenu());
-        AddMenuBar(w1);
-    }
-
-    public static void SeatMenu()
-    {
-        
-        Renderer.Clear();
-        Window w1 = new(1, 0.85);
-        if (ReservationChoice == "First") Renderer.ShowSeats(CurrentFlight.FirstClassSeats, w1);
-        else if (ReservationChoice == "Business") Renderer.ShowSeats(CurrentFlight.BusinessClassSeats, w1);
-        else Renderer.ShowSeats(CurrentFlight.EconomyClassSeats, w1);
         AddMenuBar(w1);
     }
 

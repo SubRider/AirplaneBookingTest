@@ -18,7 +18,7 @@
         flight.EconomyClassAvailability = new(g3, aAw3.Item1, aAw3.Item2);
         
     }
-    private static List<Seat> FillSeats(Flight flight, string seatClass, int rowSize)
+    public static List<Seat> FillSeats(Flight flight, string seatClass, int rowSize)
     {
         List<Seat> simulatedSeats = new(flight.Seats);
         List<Group> bookedGroups = new(flight.Groups);
