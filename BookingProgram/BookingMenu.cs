@@ -253,7 +253,7 @@
         Window w1 = new();
         Console.SetCursorPosition(1, 1);
         Console.WriteLine("What option do you want?:");
-        _ = new Button("Standard (Random seats next to eachother)", 1, w1, () => { PremiumChoice = "Standard"; FlightSearchMenu(false); });
+        _ = new Button("Standard (Random seats next to each other)", 1, w1, () => { PremiumChoice = "Standard"; FlightSearchMenu(false); });
         _ = new Button("Premium (Full seating choice)", 2, w1, () => { PremiumChoice = "Premium"; FlightSearchMenu(false); });
     }
 
@@ -297,11 +297,11 @@
                 {
                     AddFlightMenu(false);
                 }
-                if (AdminEditSearcher)
+                else if (AdminEditSearcher)
                 {
                     EditSearcher(false);
                 }
-                if (AdminEditFlight)
+                else if (AdminEditFlight)
                 {
                     EditFlightMenu();
                 }
@@ -490,7 +490,14 @@
         _ = new Button("Edit flights", 0, 4, menuBar, "left", () => EditSearcher(false));
         _ = new Button("Remove flights", 0, 5, menuBar, "left", () => RemoveFlightMenu(false));
         _ = new Button("Dashboard", 0, 6, menuBar, "left", () => Dashboard());
-        _ = new Button("Log out", 0, 7, menuBar, "left", () => LogOut());
+        _ = new Button("Log out", 0, 7, menuBar, "left", () =>
+        {
+            IsAdmin = false;
+            AdminAddFlight = false;
+            AdminEditSearcher = false;
+            AdminEditFlight = false;
+            LogOut();
+        });
     }
     public static void AdminMenu()
     {
@@ -510,6 +517,7 @@
         {
             Renderer.Clear();
             CurrentMenu = () => DisplayFlights(true);
+            NextMenu = () => DisplayFlights(false);
             Window w1 = new(1, 0.85);
             InputButton origin = new("Origin", 0, w1);
             InputButton destination = new("Destination", 1, w1);
