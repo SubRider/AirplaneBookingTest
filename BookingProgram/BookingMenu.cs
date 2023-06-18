@@ -766,7 +766,7 @@
         {
             Flight.Flights.Remove(flight);
             JsonCommunicator.Write("Flights.json", Flight.Flights);
-            Button.Clear();
+            Renderer.Clear();
             Console.Write("Flight successfully removed.");
             Thread.Sleep(700);
             AdminMenu();
